@@ -23,7 +23,7 @@ onAuthStateChanged(auth, async (user) => {
             document.getElementById('welcomeMessage').textContent = `¡Bienvenido/a, ${userData.name || user.email.split('@')[0]}!`;
             
             // Actualizar estadísticas
-            const totalModules = 6;
+            const totalModules = 14;
             const totalProgress = Object.values(userData.progress || {}).reduce((a, b) => a + b, 0);
             const avgProgress = Math.round(totalProgress / totalModules);
             
@@ -35,7 +35,7 @@ onAuthStateChanged(auth, async (user) => {
             document.getElementById('totalTime').textContent = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
             
             // Actualizar progreso de cada módulo
-            for (let i = 1; i <= 6; i++) {
+            for (let i = 1; i <= 14; i++) {
                 const progress = userData.progress[`module${i}`] || 0;
                 const progressBar = document.getElementById(`progress-module${i}`);
                 const progressText = document.getElementById(`text-module${i}`);
@@ -44,15 +44,10 @@ onAuthStateChanged(auth, async (user) => {
                     progressBar.style.width = `${progress}%`;
                 }
                 
-                if (progressText && i === 1) {
-                    progressText.textContent = `${progress}% completado`;
-                } else if (progressText && i === 2 && userData.progress.module1 >= 100) {
-                    progressText.textContent = `${progress}% completado`;
-                    // Desbloquear módulo 2
-                    const module2Card = document.querySelectorAll('.module-card')[1];
-                    if (module2Card) {
-                        module2Card.classList.remove('locked');
-                        module2Card.onclick = () => goToModule(2);
+                if (progressText) {
+                    // Solo actualizar texto si no es un módulo bloqueado o "próximamente"
+                    if (i === 1 || i === 3 || i >= 4) {
+                        progressText.textContent = `${progress}% completado`;
                     }
                 }
             }
@@ -71,9 +66,11 @@ onAuthStateChanged(auth, async (user) => {
 // Función para ir a un módulo
 window.goToModule = function(moduleNumber) {
     if (moduleNumber === 1) {
-        window.location.href = `modulo1.html`;
+        window.location.href = `/plataforma-afc/modulo1.html`;
+    } else if (moduleNumber === 2) {
+        alert('El Módulo 2 está en desarrollo. Próximamente disponible.');
     } else {
-        // Por ahora, los otros módulos están bloqueados
-        alert(`El Módulo ${moduleNumber} estará disponible próximamente`);
+        // Los demás módulos están disponibles pero aún no tienen contenido
+        alert(`El Módulo ${moduleNumber} estará disponible próximamente con contenido completo.`);
     }
 }
