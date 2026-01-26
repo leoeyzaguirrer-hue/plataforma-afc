@@ -42,7 +42,7 @@ function showError(elementId, message) {
 window.logout = async function() {
     try {
         await signOut(auth);
-        window.location.href = 'index.html';
+        window.location.href = '/plataforma-afc/login.html';
     } catch (error) {
         console.error('Error al cerrar sesión:', error);
     }
