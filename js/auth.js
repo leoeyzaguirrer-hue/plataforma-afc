@@ -42,7 +42,7 @@ function showError(elementId, message) {
 window.logout = async function() {
     try {
         await signOut(auth);
-        window.location.href = '/plataforma-afc/login.html';
+        window.location.href = 'index.html';
     } catch (error) {
         console.error('Error al cerrar sesión:', error);
     }
@@ -88,7 +88,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         module3: 0,
                         module4: 0,
                         module5: 0,
-                        module6: 0
+                        module6: 0,
+                        module7: 0,
+                        module8: 0,
+                        module9: 0,
+                        module10: 0,
+                        module11: 0,
+                        module12: 0,
+                        module13: 0,
+                        module14: 0
                     },
                     completedActivities: [],
                     totalTimeMinutes: 0
