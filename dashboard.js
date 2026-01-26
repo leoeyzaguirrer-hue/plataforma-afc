@@ -1,13 +1,13 @@
 // ===== DASHBOARD CON FIREBASE =====
 
-import { auth, db } from './firebase-config.js';
+import { auth, db } from '/plataforma-afc/js/firebase-config.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
 // Verificar autenticación y cargar datos del usuario
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
-        window.location.href = 'index.html';
+        window.location.href = '/plataforma-afc/index.html';
         return;
     }
     
