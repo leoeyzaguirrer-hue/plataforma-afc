@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Plataforma AFC</title>
-    <link rel="stylesheet" href="/plataforma-afc/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="dashboard">
     <!-- Navbar -->
@@ -45,82 +45,209 @@
         <!-- Módulos -->
         <section>
             <h2 style="margin-bottom: 24px; font-size: 1.8rem;">Módulos de Formación</h2>
-            <div class="modules-grid">
-                <!-- Módulo 1 -->
-                <div class="module-card" onclick="goToModule(1)">
-                    <div class="module-icon">📚</div>
-                    <h3>Módulo 1: Fundamentos del Análisis Funcional</h3>
-                    <p>Aprende los conceptos básicos del análisis funcional de la conducta, el modelo E-R-E y las variables disposicionales.</p>
-                    <div class="module-progress">
-                        <div class="progress-bar" id="progress-module1" style="width: 0%"></div>
+            
+            <!-- FASE 1: Fundamentos -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #2563eb; margin-bottom: 1rem; font-size: 1.3rem;">📘 FASE 1: Fundamentos de la Conducta</h3>
+                <div class="modules-grid">
+                    <!-- Módulo 1 -->
+                    <div class="module-card" onclick="goToModule(1)">
+                        <div class="module-icon">📝</div>
+                        <h3>Operacionalización de la Conducta</h3>
+                        <p>Aprende a definir conductas de forma medible y observable</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module1" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module1">0% completado</span>
+                        </div>
                     </div>
-                    <div class="progress-text">
-                        <span id="text-module1">0% completado</span>
+
+                    <!-- Módulo 2 -->
+                    <div class="module-card locked">
+                        <div class="module-icon">🎯</div>
+                        <h3>Módulo 2</h3>
+                        <p>En desarrollo</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module2" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module2">🔒 Próximamente</span>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 3 -->
+                    <div class="module-card" onclick="goToModule(3)">
+                        <div class="module-icon">🔍</div>
+                        <h3>Identificación de Estímulos</h3>
+                        <p>Reconoce y clasifica eventos ambientales</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module3" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module3">0% completado</span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Módulo 2 -->
-                <div class="module-card locked">
-                    <div class="module-icon">🔍</div>
-                    <h3>Módulo 2: Identificación de Conductas</h3>
-                    <p>Domina la identificación de conductas según funcionalidad, topografía y morfología.</p>
-                    <div class="module-progress">
-                        <div class="progress-bar" id="progress-module2" style="width: 0%"></div>
+            <!-- FASE 2: Procesos de Condicionamiento -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #2563eb; margin-bottom: 1rem; font-size: 1.3rem;">🔬 FASE 2: Procesos de Condicionamiento</h3>
+                <div class="modules-grid">
+                    <!-- Módulo 4 -->
+                    <div class="module-card" onclick="goToModule(4)">
+                        <div class="module-icon">🧪</div>
+                        <h3>Condicionamiento Clásico</h3>
+                        <p>Comprende y aplica principios del CC</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module4" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module4">0% completado</span>
+                        </div>
                     </div>
-                    <div class="progress-text">
-                        <span id="text-module2">🔒 Completa el Módulo 1</span>
+
+                    <!-- Módulo 5 -->
+                    <div class="module-card" onclick="goToModule(5)">
+                        <div class="module-icon">⚡</div>
+                        <h3>Condicionamiento Operante - Reforzamiento</h3>
+                        <p>Domina los principios del reforzamiento</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module5" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module5">0% completado</span>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 6 -->
+                    <div class="module-card" onclick="goToModule(6)">
+                        <div class="module-icon">🛑</div>
+                        <h3>Castigo y Extinción</h3>
+                        <p>Procedimientos de reducción conductual</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module6" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module6">0% completado</span>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 7 -->
+                    <div class="module-card" onclick="goToModule(7)">
+                        <div class="module-icon">🎛️</div>
+                        <h3>Control de Estímulos</h3>
+                        <p>Control discriminativo y contextual</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module7" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module7">0% completado</span>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 8 -->
+                    <div class="module-card" onclick="goToModule(8)">
+                        <div class="module-icon">📊</div>
+                        <h3>Programas de Reforzamiento</h3>
+                        <p>Efectos de diferentes programas</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module8" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module8">0% completado</span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Módulo 3 -->
-                <div class="module-card locked">
-                    <div class="module-icon">📊</div>
-                    <h3>Módulo 3: Análisis de Secuencias</h3>
-                    <p>Aprende a analizar secuencias conductuales identificando antecedentes y consecuentes.</p>
-                    <div class="module-progress">
-                        <div class="progress-bar" id="progress-module3" style="width: 0%"></div>
+            <!-- FASE 3: Análisis Funcional Básico -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #2563eb; margin-bottom: 1rem; font-size: 1.3rem;">🎯 FASE 3: Análisis Funcional Básico</h3>
+                <div class="modules-grid">
+                    <!-- Módulo 9 -->
+                    <div class="module-card" onclick="goToModule(9)">
+                        <div class="module-icon">🔗</div>
+                        <h3>Contingencia de Tres Términos</h3>
+                        <p>Integra antecedentes, respuesta y consecuentes</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module9" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module9">0% completado</span>
+                        </div>
                     </div>
-                    <div class="progress-text">
-                        <span id="text-module3">🔒 Próximamente</span>
+
+                    <!-- Módulo 10 -->
+                    <div class="module-card" onclick="goToModule(10)">
+                        <div class="module-icon">💡</div>
+                        <h3>Formulación de Hipótesis Funcionales</h3>
+                        <p>Genera explicaciones funcionales</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module10" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module10">0% completado</span>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 11 -->
+                    <div class="module-card" onclick="goToModule(11)">
+                        <div class="module-icon">📋</div>
+                        <h3>Evaluación Funcional</h3>
+                        <p>Recopila información para análisis funcional</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module11" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module11">0% completado</span>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 12 -->
+                    <div class="module-card" onclick="goToModule(12)">
+                        <div class="module-icon">🏗️</div>
+                        <h3>Construcción del Análisis Funcional</h3>
+                        <p>Integra toda la información en un AF completo</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module12" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module12">0% completado</span>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Módulo 4 -->
-                <div class="module-card locked">
-                    <div class="module-icon">🎯</div>
-                    <h3>Módulo 4: Habilidades Específicas</h3>
-                    <p>Desarrolla habilidades de resolución de problemas y competencia social.</p>
-                    <div class="module-progress">
-                        <div class="progress-bar" id="progress-module4" style="width: 0%"></div>
+            <!-- FASE 4: Análisis Funcional Avanzado -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #2563eb; margin-bottom: 1rem; font-size: 1.3rem;">🚀 FASE 4: Análisis Funcional Avanzado</h3>
+                <div class="modules-grid">
+                    <!-- Módulo 13 -->
+                    <div class="module-card" onclick="goToModule(13)">
+                        <div class="module-icon">🧩</div>
+                        <h3>Equivalencia y Conducta Relacional</h3>
+                        <p>Aprendizaje complejo y relacional</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module13" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module13">0% completado</span>
+                        </div>
                     </div>
-                    <div class="progress-text">
-                        <span id="text-module4">🔒 Próximamente</span>
-                    </div>
-                </div>
 
-                <!-- Módulo 5 -->
-                <div class="module-card locked">
-                    <div class="module-icon">💼</div>
-                    <h3>Módulo 5: Casos Prácticos Completos</h3>
-                    <p>Practica con casos reales de fobias, ansiedad y contextos aplicados.</p>
-                    <div class="module-progress">
-                        <div class="progress-bar" id="progress-module5" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-text">
-                        <span id="text-module5">🔒 Próximamente</span>
-                    </div>
-                </div>
-
-                <!-- Módulo 6 -->
-                <div class="module-card locked">
-                    <div class="module-icon">📈</div>
-                    <h3>Módulo 6: Diseño de Intervención</h3>
-                    <p>Aprende a diseñar planes de tratamiento basados en el análisis funcional.</p>
-                    <div class="module-progress">
-                        <div class="progress-bar" id="progress-module6" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-text">
-                        <span id="text-module6">🔒 Próximamente</span>
+                    <!-- Módulo 14 -->
+                    <div class="module-card" onclick="goToModule(14)">
+                        <div class="module-icon">💬</div>
+                        <h3>Conducta Gobernada por Reglas</h3>
+                        <p>Analiza el control verbal sobre la conducta</p>
+                        <div class="module-progress">
+                            <div class="progress-bar" id="progress-module14" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="text-module14">0% completado</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,12 +267,12 @@
         window.logout = async function() {
             try {
                 await signOut(auth);
-                window.location.href = '/plataforma-afc/login.html';
+                window.location.href = 'index.html';
             } catch (error) {
                 console.error('Error al cerrar sesión:', error);
             }
         }
     </script>
-    <script type="module" src="/plataforma-afc/js/dashboard.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
 </body>
 </html>
