@@ -1,6 +1,6 @@
 // ===== SISTEMA DE AUTENTICACIÓN CON FIREBASE =====
 
-import { auth, db } from './firebase-config.js';
+import { auth, db } from '/plataforma-afc/js/firebase-config.js';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword,
@@ -42,7 +42,7 @@ function showError(elementId, message) {
 window.logout = async function() {
     try {
         await signOut(auth);
-        window.location.href = 'index.html';
+        window.location.href = '/plataforma-afc/index.html';
     } catch (error) {
         console.error('Error al cerrar sesión:', error);
     }
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Redirigir al dashboard
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/plataforma-afc/dashboard.html';
                 }, 1500);
                 
             } catch (error) {
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Redirigir al dashboard
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/plataforma-afc/dashboard.html';
                 }, 1000);
                 
             } catch (error) {
@@ -170,7 +170,7 @@ window.checkAuth = function() {
     return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                window.location.href = 'index.html';
+                window.location.href = '/plataforma-afc/index.html';
                 resolve(null);
             } else {
                 // Obtener datos adicionales del usuario desde Firestore
