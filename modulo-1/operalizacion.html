@@ -718,6 +718,176 @@ html, body {
 }
 .step-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
 .step-dot.done { background: var(--green); }
+
+/* ============================================= */
+/* ===== RESPONSIVE: TABLET (768px+) ===== */
+/* ============================================= */
+@media (min-width: 768px) {
+  html, body { font-size: 18px; }
+
+  .screen {
+    max-width: 680px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    width: 100%;
+    border-left: 1px solid rgba(14,116,144,0.08);
+    border-right: 1px solid rgba(14,116,144,0.08);
+    background: rgba(255,255,255,0.25);
+  }
+  .screen.active { transform: translateX(-50%); }
+  .screen.exit-left { transform: translateX(calc(-50% - 30px)); opacity: 0; }
+
+  .topbar {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    border-radius: 0 0 16px 16px;
+  }
+  .topbar-title { font-size: 18px; }
+  .topbar-subtitle { font-size: 13px; }
+  .topbar-progress-bar { width: 80px; height: 7px; }
+  .topbar-progress-text { font-size: 12px; }
+
+  .content { padding: 28px 32px 110px; }
+
+  .bottom-bar {
+    max-width: 680px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    width: 100%;
+    padding: 14px 32px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .home-icon { width: 90px; height: 90px; font-size: 46px; border-radius: 26px; }
+  .home-title { font-size: 32px; }
+  .home-desc { font-size: 17px; max-width: 440px; }
+  .home-stat-num { font-size: 28px; }
+  .home-stat-label { font-size: 13px; }
+  .home-stats { gap: 36px; }
+
+  .workshop-banner { padding: 22px 24px; gap: 18px; }
+  .workshop-icon { width: 58px; height: 58px; font-size: 28px; }
+  .workshop-name { font-size: 18px; }
+  .workshop-desc { font-size: 14px; }
+
+  .levels-section-title { font-size: 15px; margin: 28px 0 18px; }
+  .level-card { padding: 20px 22px; gap: 16px; }
+  .level-num { width: 50px; height: 50px; font-size: 20px; border-radius: 16px; }
+  .level-name { font-size: 18px; }
+  .level-desc { font-size: 14.5px; }
+
+  .theory-block { padding: 24px 28px; }
+  .theory-label { font-size: 12px; }
+  .theory-heading { font-size: 24px; }
+  .theory-text { font-size: 16.5px; line-height: 1.8; }
+  .theory-highlight { font-size: 16.5px; padding: 16px 20px; }
+  .theory-source { font-size: 13px; }
+  .theory-example { padding: 16px 20px; }
+  .theory-example-label { font-size: 13px; }
+  .theory-example p { font-size: 15.5px; }
+
+  .question-card { padding: 24px 28px; }
+  .question-number { font-size: 12px; }
+  .question-text { font-size: 18.5px; line-height: 1.6; }
+  .question-context { font-size: 15.5px; padding: 12px 16px; }
+
+  .option { padding: 16px 18px; gap: 14px; }
+  .option-marker { width: 28px; height: 28px; font-size: 14px; }
+  .option-text { font-size: 16.5px; line-height: 1.6; }
+
+  .feedback { font-size: 15.5px; padding: 16px 20px; }
+
+  .btn { font-size: 17px; padding: 16px 24px; }
+
+  .summary-circle { width: 160px; height: 160px; }
+  .summary-score { font-size: 48px; }
+  .summary-total { font-size: 15px; }
+  .summary-message { font-size: 26px; }
+  .summary-sub { font-size: 16px; }
+  .summary-item-text { font-size: 15.5px; }
+
+  .case-vignette { padding: 24px 28px; }
+  .case-vignette-title { font-size: 20px; }
+  .case-vignette p { font-size: 15.5px; }
+
+  .classify-label { font-size: 15px; padding: 5px 14px; }
+  .drag-item { font-size: 15px; padding: 10px 16px; }
+}
+
+/* ============================================= */
+/* ===== RESPONSIVE: DESKTOP (1024px+) ===== */
+/* ============================================= */
+@media (min-width: 1024px) {
+  html, body { font-size: 18.5px; }
+
+  .screen {
+    max-width: 760px;
+    box-shadow: 0 0 60px rgba(14,116,144,0.06);
+  }
+
+  .topbar { max-width: 760px; padding: 16px 36px; }
+  .topbar-title { font-size: 19px; }
+  .topbar-back { width: 40px; height: 40px; font-size: 20px; }
+  .topbar-back:hover { background: var(--bg-mid); border-color: var(--blue); }
+
+  .content { padding: 32px 40px 120px; }
+  .bottom-bar { max-width: 760px; padding: 16px 40px; }
+
+  .home-title { font-size: 36px; }
+  .home-desc { font-size: 18px; max-width: 480px; }
+  .home-icon { width: 100px; height: 100px; font-size: 50px; border-radius: 28px; }
+
+  .workshop-banner { padding: 24px 28px; border-radius: 20px; }
+  .workshop-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(212,149,10,0.15); }
+  .workshop-name { font-size: 19px; }
+  .workshop-desc { font-size: 15px; }
+
+  .level-card { padding: 22px 26px; border-radius: 18px; }
+  .level-card:hover { background: var(--bg-card-hover); border-color: rgba(14,116,144,0.25); transform: translateY(-1px); }
+  .level-card:hover::before { opacity: 1; }
+  .level-name { font-size: 19px; }
+  .level-desc { font-size: 15px; }
+
+  .theory-block { padding: 28px 32px; border-radius: 18px; }
+  .theory-heading { font-size: 26px; }
+  .theory-text { font-size: 17px; }
+  .theory-highlight { font-size: 17px; padding: 18px 22px; }
+  .theory-example p { font-size: 16px; }
+
+  .question-card { padding: 28px 32px; border-radius: 18px; }
+  .question-text { font-size: 19.5px; }
+  .question-context { font-size: 16px; }
+
+  .option { padding: 18px 20px; border-radius: 14px; }
+  .option:hover { background: rgba(14,116,144,0.03); border-color: rgba(14,116,144,0.2); }
+  .option-text { font-size: 17px; }
+
+  .feedback { font-size: 16px; padding: 18px 22px; }
+
+  .btn { font-size: 17.5px; padding: 17px 28px; border-radius: 14px; }
+  .btn:hover { filter: brightness(1.05); }
+
+  .case-vignette { padding: 28px 32px; border-radius: 18px; }
+  .case-vignette-title { font-size: 21px; }
+  .case-vignette p { font-size: 16px; }
+
+  .summary-message { font-size: 28px; }
+  .summary-sub { font-size: 17px; }
+}
+
+/* ============================================= */
+/* ===== RESPONSIVE: WIDE DESKTOP (1400px+) ===== */
+/* ============================================= */
+@media (min-width: 1400px) {
+  .screen { max-width: 820px; }
+  .topbar { max-width: 820px; }
+  .bottom-bar { max-width: 820px; }
+  .content { padding: 36px 48px 120px; }
+}
 </style>
 </head>
 <body>
@@ -754,7 +924,7 @@ html, body {
     </div>
 
     <!-- WORKSHOP BANNER -->
-    <a class="workshop-banner animate-in delay-1" href="talleropera.html">
+    <a class="workshop-banner animate-in delay-1" href="modulo-1/talleropera.html">
       <div class="workshop-icon">🔬</div>
       <div class="workshop-info">
         <div class="workshop-tag">⭐ Herramienta práctica</div>
