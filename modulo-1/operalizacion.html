@@ -40,8 +40,71 @@ html, body {
   background: linear-gradient(160deg, #dff0f5 0%, #e8f4f8 30%, #edf6f0 60%, #e4f0f6 100%);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* ===== WORKSHOP BANNER ===== */
+.workshop-banner {
+  background: linear-gradient(135deg, rgba(212,149,10,0.08), rgba(14,116,144,0.06));
+  border: 1.5px solid rgba(212,149,10,0.2);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 3px 16px rgba(212,149,10,0.08);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.workshop-banner::after {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(212,149,10,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.workshop-banner:active { transform: scale(0.98); }
+.workshop-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(212,149,10,0.2);
+}
+.workshop-info { flex: 1; z-index: 1; }
+.workshop-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--gold-dim);
+  margin-bottom: 3px;
+}
+.workshop-name {
+  font-family: 'Fraunces', serif;
   font-size: 16px;
-  line-height: 1.6;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+.workshop-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.workshop-arrow {
+  font-size: 22px;
+  color: var(--gold);
+  z-index: 1;
 }
 
 /* ===== FLOATING GOLDEN PARTICLES ===== */
@@ -103,12 +166,12 @@ html, body {
 .topbar-info { flex: 1; }
 .topbar-title {
   font-family: 'Fraunces', serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--blue);
   letter-spacing: 0.3px;
 }
-.topbar-subtitle { font-size: 11px; color: var(--text-dim); }
+.topbar-subtitle { font-size: 12px; color: var(--text-dim); }
 .topbar-progress-wrap {
   display: flex; align-items: center; gap: 6px;
 }
@@ -157,16 +220,16 @@ html, body {
 }
 .home-title {
   font-family: 'Fraunces', serif;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text-bright);
   margin-bottom: 8px;
   line-height: 1.2;
 }
 .home-desc {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-dim);
-  max-width: 320px;
+  max-width: 340px;
   margin: 0 auto 24px;
 }
 .home-stats {
@@ -180,16 +243,16 @@ html, body {
 }
 .home-stat-num {
   font-family: 'Space Mono', monospace;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--blue);
 }
-.home-stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+.home-stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* ===== LEVEL CARDS ===== */
 .levels-section-title {
   font-family: 'Fraunces', serif;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--gold-dim);
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -242,9 +305,9 @@ html, body {
 .level-card.locked .level-num { background: rgba(0,0,0,0.03); color: var(--text-dim); border-color: rgba(0,0,0,0.06); }
 
 .level-info { flex: 1; }
-.level-name { font-weight: 600; font-size: 15px; color: var(--text-bright); margin-bottom: 2px; }
-.level-desc { font-size: 12px; color: var(--text-dim); }
-.level-arrow { color: var(--text-dim); font-size: 18px; }
+.level-name { font-weight: 600; font-size: 16px; color: var(--text-bright); margin-bottom: 3px; }
+.level-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.4; }
+.level-arrow { color: var(--text-dim); font-size: 20px; }
 .level-card.completed .level-arrow { color: var(--green); }
 .level-check { color: var(--green); font-size: 20px; }
 
@@ -259,7 +322,7 @@ html, body {
 }
 .theory-label {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--gold-dim);
@@ -270,17 +333,17 @@ html, body {
 }
 .theory-heading {
   font-family: 'Fraunces', serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-bright);
   margin-bottom: 12px;
   line-height: 1.3;
 }
 .theory-text {
-  font-size: 14px;
+  font-size: 15.5px;
   color: var(--text);
   margin-bottom: 12px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 .theory-text:last-child { margin-bottom: 0; }
 
@@ -290,9 +353,9 @@ html, body {
   padding: 14px 16px;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   margin: 16px 0;
-  font-size: 14px;
+  font-size: 15.5px;
   color: var(--text-bright);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 .theory-highlight em {
   color: var(--gold-dim);
@@ -300,7 +363,7 @@ html, body {
   font-weight: 600;
 }
 .theory-source {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-dim);
   font-style: italic;
   margin-top: 8px;
@@ -313,14 +376,14 @@ html, body {
   margin: 14px 0;
 }
 .theory-example-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--blue);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin-bottom: 6px;
 }
-.theory-example p { font-size: 13px; color: var(--text); margin: 0; }
+.theory-example p { font-size: 14.5px; color: var(--text); margin: 0; }
 
 /* ===== EXERCISE SECTIONS ===== */
 .exercise-section {
@@ -328,7 +391,7 @@ html, body {
 }
 .exercise-section-title {
   font-family: 'Space Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--green);
@@ -345,21 +408,21 @@ html, body {
 }
 .question-number {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--gold-dim);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 8px;
 }
 .question-text {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--text-bright);
   margin-bottom: 16px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 .question-context {
-  font-size: 13px;
+  font-size: 14.5px;
   color: var(--text-dim);
   font-style: italic;
   margin-bottom: 14px;
@@ -407,9 +470,9 @@ html, body {
 .option.incorrect .option-marker { border-color: var(--red); color: #fff; background: var(--red); }
 
 .option-text {
-  font-size: 14px;
+  font-size: 15.5px;
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 .option.correct .option-text { color: var(--text-bright); }
 .option.incorrect .option-text { color: var(--text-dim); }
@@ -419,8 +482,8 @@ html, body {
   padding: 14px 16px;
   border-radius: var(--radius-sm);
   margin-top: 12px;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 14.5px;
+  line-height: 1.65;
   display: none;
   animation: feedbackIn 0.3s ease;
 }
@@ -450,10 +513,10 @@ html, body {
   margin-bottom: 12px;
 }
 .classify-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 10px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 6px;
   display: inline-block;
 }
@@ -465,11 +528,11 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 9px 15px;
   background: rgba(14,116,144,0.05);
   border: 1px solid rgba(14,116,144,0.12);
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   margin: 4px;
   cursor: pointer;
@@ -497,10 +560,10 @@ html, body {
 }
 .btn {
   flex: 1;
-  padding: 14px 20px;
+  padding: 15px 20px;
   border-radius: var(--radius-sm);
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -561,12 +624,12 @@ html, body {
 .summary-message {
   text-align: center;
   font-family: 'Fraunces', serif;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--text-bright);
   margin: 16px 0 8px;
 }
-.summary-sub { text-align: center; font-size: 14px; color: var(--text-dim); margin-bottom: 24px; }
+.summary-sub { text-align: center; font-size: 15px; color: var(--text-dim); margin-bottom: 24px; }
 
 .summary-breakdown {
   background: var(--bg-card);
@@ -584,9 +647,9 @@ html, body {
   border-bottom: 1px solid rgba(14,116,144,0.06);
 }
 .summary-item:last-child { border-bottom: none; }
-.summary-item-icon { font-size: 18px; }
-.summary-item-text { flex: 1; font-size: 13px; color: var(--text); }
-.summary-item-result { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; }
+.summary-item-icon { font-size: 20px; }
+.summary-item-text { flex: 1; font-size: 14.5px; color: var(--text); }
+.summary-item-result { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; }
 .summary-item-result.ok { color: var(--green); }
 .summary-item-result.fail { color: var(--red); }
 
@@ -631,13 +694,13 @@ html, body {
 }
 .case-vignette-title {
   font-family: 'Fraunces', serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--gold-dim);
   margin-bottom: 10px;
   margin-top: 4px;
 }
-.case-vignette p { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 8px; }
+.case-vignette p { font-size: 14.5px; color: var(--text); line-height: 1.75; margin-bottom: 8px; }
 .case-vignette p:last-child { margin-bottom: 0; }
 
 .step-indicator {
@@ -689,6 +752,17 @@ html, body {
         </div>
       </div>
     </div>
+
+    <!-- WORKSHOP BANNER -->
+    <a class="workshop-banner animate-in delay-1" href="modulo-1/talleropera.html">
+      <div class="workshop-icon">🔬</div>
+      <div class="workshop-info">
+        <div class="workshop-tag">⭐ Herramienta práctica</div>
+        <div class="workshop-name">Taller de Operacionalización</div>
+        <div class="workshop-desc">Practica convertir quejas vagas en formulaciones conductuales medibles paso a paso</div>
+      </div>
+      <div class="workshop-arrow">›</div>
+    </a>
 
     <div class="levels-section-title animate-in delay-1">Niveles del módulo</div>
 
