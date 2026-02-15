@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Taller: Operacionalización de la Conducta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: linear-gradient(160deg, #dff0f5 0%, #e8f4f8 30%, #edf6f0 60%, #e4f0f6 100%);
+  --bg-flat: #e8f4f8;
+  --card: #ffffff;
+  --card-hover: #f5fbfd;
+  --gold: #d4950a;
+  --gold-bright: #f0b429;
+  --gold-dim: #a87608;
+  --gold-glow: rgba(212,149,10,0.08);
+  --green: #16a34a;
+  --green-bg: rgba(22,163,74,0.08);
+  --teal: #0e7490;
+  --teal-bg: rgba(14,116,144,0.06);
+  --red: #dc2626;
+  --purple: #7c3aed;
+  --purple-bg: rgba(124,58,237,0.06);
+  --pink: #be185d;
+  --pink-bg: rgba(190,24,93,0.06);
+  --text: #2c4a56;
+  --text-dim: #6b8a97;
+  --text-bright: #1a3340;
+  --border: rgba(14,116,144,0.12);
+  --r: 16px;
+  --rs: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6}
+
+/* Particles */
+#ptc{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* Layout */
+.app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+.topbar{display:flex;align-items:center;padding:12px 16px;gap:12px;background:rgba(255,255,255,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10}
+.topbar-back{width:36px;height:36px;border-radius:50%;background:var(--bg-flat);border:1px solid var(--border);color:var(--teal);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:all 0.2s}
+.topbar-title{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--teal)}
+.topbar-sub{font-size:11px;color:var(--text-dim)}
+
+.main{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 16px 100px;-webkit-overflow-scrolling:touch}
+.main::-webkit-scrollbar{width:3px}
+.main::-webkit-scrollbar-thumb{background:rgba(14,116,144,0.12);border-radius:3px}
+
+.bottom{position:fixed;bottom:0;left:0;right:0;padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);border-top:1px solid var(--border);z-index:10;display:flex;gap:10px}
+
+/* Buttons */
+.btn{flex:1;padding:14px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;text-align:center}
+.btn:active{transform:scale(0.97)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:#fff;box-shadow:0 4px 16px rgba(212,149,10,0.2)}
+.btn-gold:disabled{opacity:0.35;pointer-events:none}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#0891b2);color:#fff;box-shadow:0 4px 16px rgba(14,116,144,0.2)}
+.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-green{background:linear-gradient(135deg,var(--green),#22c55e);color:#fff}
+.btn-sm{flex:none;padding:10px 18px;font-size:13px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+
+/* Step indicator */
+.steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:24px}
+.step-pip{height:6px;border-radius:3px;background:rgba(14,116,144,0.1);transition:all 0.4s}
+.step-pip.done{background:var(--green)}
+.step-pip.active{background:var(--gold);width:28px!important}
+.step-pip.future{background:rgba(14,116,144,0.08)}
+
+/* Phase labels */
+.phase-label{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.phase-label.teal{color:var(--teal)}
+.phase-label.gold{color:var(--gold-dim)}
+.phase-label.green{color:var(--green)}
+.phase-label.purple{color:var(--purple)}
+.phase-label.pink{color:var(--pink)}
+
+.phase-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:8px;line-height:1.3}
+.phase-desc{font-size:14px;color:var(--text-dim);margin-bottom:16px;line-height:1.6}
+
+/* Text input */
+.text-input{width:100%;min-height:100px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-bright);background:rgba(14,116,144,0.03);resize:vertical;outline:none;transition:border-color 0.2s;line-height:1.6}
+.text-input:focus{border-color:var(--teal)}
+.text-input::placeholder{color:var(--text-dim)}
+
+/* Category chips */
+.cat-detected{background:var(--gold-glow);border:1px solid rgba(212,149,10,0.2);border-radius:var(--rs);padding:14px 16px;margin:16px 0;display:flex;align-items:center;gap:10px}
+.cat-icon{font-size:24px}
+.cat-text{flex:1;font-size:14px;color:var(--text-bright)}
+.cat-text strong{color:var(--gold-dim)}
+
+.cat-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.cat-chip{padding:10px 16px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all 0.2s;-webkit-user-select:none;user-select:none}
+.cat-chip:active{transform:scale(0.96)}
+.cat-chip.selected{border-color:var(--teal);background:var(--teal-bg);color:var(--teal);font-weight:600}
+.cat-chip.em{border-color:rgba(190,24,93,0.2)}
+.cat-chip.em.selected{border-color:var(--pink);background:var(--pink-bg);color:var(--pink)}
+.cat-chip.cog{border-color:rgba(124,58,237,0.2)}
+.cat-chip.cog.selected{border-color:var(--purple);background:var(--purple-bg);color:var(--purple)}
+.cat-chip.mot{border-color:rgba(14,116,144,0.2)}
+.cat-chip.mot.selected{border-color:var(--teal);background:var(--teal-bg);color:var(--teal)}
+.cat-chip.inter{border-color:rgba(212,149,10,0.2)}
+.cat-chip.inter.selected{border-color:var(--gold);background:var(--gold-glow);color:var(--gold-dim)}
+.cat-chip.fisio{border-color:rgba(22,163,74,0.2)}
+.cat-chip.fisio.selected{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+
+/* Guided question blocks */
+.gq-block{margin-bottom:16px}
+.gq-label{font-size:13px;font-weight:600;color:var(--text-bright);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.gq-hint{font-size:12px;color:var(--text-dim);font-style:italic;margin-bottom:8px}
+.gq-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-bright);background:rgba(14,116,144,0.02);outline:none;transition:border-color 0.2s}
+.gq-input:focus{border-color:var(--teal)}
+.gq-input::placeholder{color:rgba(107,138,151,0.6)}
+
+.gq-select-group{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.gq-select-opt{padding:8px 14px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all 0.2s}
+.gq-select-opt:active{transform:scale(0.96)}
+.gq-select-opt.picked{border-color:var(--teal);background:var(--teal-bg);color:var(--teal);font-weight:600}
+
+/* Tip blocks */
+.tip{background:var(--gold-glow);border-left:3px solid var(--gold);padding:12px 14px;border-radius:0 var(--rs) var(--rs) 0;margin:14px 0;font-size:13px;color:var(--text-bright);line-height:1.6}
+.tip em{color:var(--gold-dim);font-style:normal;font-weight:600}
+
+/* Result card */
+.result-section{margin-top:8px}
+.result-label{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:6px}
+.result-original{background:rgba(220,38,38,0.04);border:1px solid rgba(220,38,38,0.12);border-radius:var(--rs);padding:14px;margin-bottom:12px;position:relative}
+.result-original::before{content:'ANTES';position:absolute;top:-8px;left:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--red);background:var(--card);padding:0 6px}
+.result-original p{font-size:14px;color:#991b1b;font-style:italic}
+
+.result-operationalized{background:var(--green-bg);border:1px solid rgba(22,163,74,0.15);border-radius:var(--rs);padding:14px;position:relative}
+.result-operationalized::before{content:'DESPUÉS — OPERACIONALIZADO';position:absolute;top:-8px;left:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--green);background:var(--card);padding:0 6px}
+.result-operationalized .ro-item{margin-bottom:10px}
+.result-operationalized .ro-item:last-child{margin-bottom:0}
+.result-operationalized .ro-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
+.result-operationalized .ro-label.motor{color:var(--teal)}
+.result-operationalized .ro-label.cognitivo{color:var(--purple)}
+.result-operationalized .ro-label.fisiologico{color:var(--pink)}
+.result-operationalized .ro-label.parametros{color:var(--gold-dim)}
+.result-operationalized .ro-label.antecedente{color:#b45309}
+.result-operationalized .ro-label.consecuente{color:var(--green)}
+.result-operationalized .ro-text{font-size:13px;color:var(--text-bright);line-height:1.5}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp 0.4s ease forwards}
+.d1{animation-delay:0.08s;opacity:0}
+.d2{animation-delay:0.16s;opacity:0}
+.d3{animation-delay:0.24s;opacity:0}
+
+/* Compare toggle */
+.compare-wrap{margin-top:20px}
+
+/* Hero */
+.hero-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--gold),var(--gold-bright));border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 6px 24px rgba(212,149,10,0.2)}
+.hero-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--text-bright);text-align:center;margin-bottom:6px}
+.hero-sub{font-size:14px;color:var(--text-dim);text-align:center;margin-bottom:24px;max-width:340px;margin-left:auto;margin-right:auto}
+
+/* Counter badge */
+.counter{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:var(--teal-bg);color:var(--teal);border:1px solid rgba(14,116,144,0.15)}
+
+/* Section divider */
+.divider{height:1px;background:var(--border);margin:20px 0}
+</style>
+</head>
+<body>
+<canvas id="ptc"></canvas>
+
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-back" onclick="history.back()">←</div>
+    <div style="flex:1">
+      <div class="topbar-title">Taller de Operacionalización</div>
+      <div class="topbar-sub">Módulo 1 · Herramienta práctica</div>
+    </div>
+  </div>
+
+  <div class="main" id="main-content">
+    <!-- Dynamic content -->
+  </div>
+
+  <div class="bottom" id="bottom-bar">
+    <!-- Dynamic buttons -->
+  </div>
+</div>
+
+<script>
+// ===== PARTICLES =====
+(function(){
+  const c=document.getElementById('ptc'),x=c.getContext('2d');let ps=[];
+  function rs(){c.width=innerWidth;c.height=innerHeight}
+  addEventListener('resize',rs);rs();
+  class P{constructor(){this.r()}r(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*3+1;this.sx=(Math.random()-0.5)*0.25;this.sy=-Math.random()*0.35-0.08;this.o=Math.random()*0.45+0.12;this.p=Math.random()*Math.PI*2;this.ps=Math.random()*0.018+0.006}u(){this.x+=this.sx;this.y+=this.sy;this.p+=this.ps;if(this.y<-10){this.y=c.height+10;this.x=Math.random()*c.width}}d(){const g=Math.sin(this.p)*0.15+0.85,a=this.o*g;x.save();x.globalAlpha=a;x.shadowBlur=this.s*4;x.shadowColor='rgba(212,149,10,0.35)';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(222,165,30,${a})`;x.fill();x.beginPath();x.arc(this.x,this.y,this.s*0.35,0,Math.PI*2);x.fillStyle=`rgba(255,220,100,${a*0.7})`;x.fill();x.restore()}}
+  for(let i=0;i<24;i++)ps.push(new P);
+  (function a(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});requestAnimationFrame(a)})()
+})();
+
+// ===== KEYWORD DATABASE =====
+const CATEGORIES = {
+  emocional: {
+    id: 'emocional',
+    label: 'Estado emocional',
+    icon: '💙',
+    chipClass: 'em',
+    keywords: {
+      // word: weight (1-3)
+      'mal':2, 'triste':3, 'tristeza':3, 'ansioso':3, 'ansiedad':3, 'angustia':3, 'angustiado':3,
+      'miedo':3, 'miedoso':2, 'asustado':2, 'pánico':3, 'terror':3, 'nervioso':3, 'nervios':2,
+      'deprimido':3, 'depresión':3, 'vacío':2, 'solo':1, 'soledad':2, 'desesperado':3,
+      'agobiado':2, 'agobio':2, 'abrumado':2, 'frustrado':2, 'frustración':2,
+      'irritable':2, 'enojado':2, 'rabia':3, 'ira':3, 'furia':3, 'enfadado':2,
+      'culpa':2, 'culpable':2, 'vergüenza':2, 'avergonzado':2,
+      'preocupado':2, 'preocupación':2, 'estresado':2, 'estrés':2,
+      'feliz':1, 'contento':1, 'alegre':1, 'eufórico':2, 'inestable':2,
+      'inseguro':2, 'inseguridad':2, 'vulnerable':2, 'siento':1, 'me siento':2
+    }
+  },
+  cognitivo: {
+    id: 'cognitivo',
+    label: 'Pensamiento / Verbalización encubierta',
+    icon: '💭',
+    chipClass: 'cog',
+    keywords: {
+      'pienso':2, 'creo':1, 'pensar':2, 'pensamiento':3, 'idea':1,
+      'no puedo':2, 'no sirvo':3, 'inútil':2, 'fracaso':2, 'fracasado':3,
+      'nadie me quiere':3, 'todo sale mal':3, 'no valgo':3,
+      'obsesión':3, 'obsesionado':3, 'no paro de pensar':3, 'rumiar':3, 'rumia':3,
+      'me digo':2, 'voz interior':2, 'cabeza':1, 'mente':1,
+      'catastrófico':2, 'anticipar':2, 'preocuparme':2,
+      'imagino':2, 'imaginar':2, 'visualizo':2, 'recuerdo':1,
+      'interpreto':2, 'evaluación':1, 'juicio':1
+    }
+  },
+  motor: {
+    id: 'motor',
+    label: 'Conducta observable / Acción',
+    icon: '🏃',
+    chipClass: 'mot',
+    keywords: {
+      'evito':3, 'evitar':3, 'evitación':3, 'escapo':3, 'huyo':3, 'huir':3,
+      'grito':3, 'gritar':3, 'golpeo':3, 'golpear':3, 'pego':3, 'peleo':2,
+      'lloro':2, 'llorar':2, 'como mucho':2, 'no como':2, 'bebo':2, 'fumo':2,
+      'me aíslo':3, 'encierro':2, 'no salgo':2, 'no hago nada':2,
+      'procrastino':2, 'postergo':2, 'no duermo':2, 'insomnio':2,
+      'compruebo':2, 'reviso':2, 'ritual':3, 'repetir':2,
+      'discuto':2, 'discutir':2, 'pelear':2, 'agredir':3,
+      'autolesión':3, 'me corto':3, 'me hago daño':3,
+      'consumo':2, 'drogas':2, 'alcohol':2, 'atracón':3
+    }
+  },
+  interpersonal: {
+    id: 'interpersonal',
+    label: 'Problema relacional / Interpersonal',
+    icon: '👥',
+    chipClass: 'inter',
+    keywords: {
+      'pareja':2, 'relación':2, 'novio':1, 'novia':1, 'marido':1, 'esposa':1,
+      'discusión':2, 'conflicto':2, 'pelea':2, 'me ignora':2,
+      'dependencia':2, 'dependiente':2, 'celos':3, 'celoso':3,
+      'rechazo':2, 'abandono':3, 'me dejó':2, 'separación':2,
+      'familia':1, 'padres':1, 'madre':1, 'padre':1, 'hijo':1, 'hija':1,
+      'jefe':1, 'compañeros':1, 'trabajo':1, 'acoso':3, 'bullying':3,
+      'no me entienden':2, 'me critican':2, 'presión social':2,
+      'sumiso':2, 'agresivo':2, 'pasivo':1, 'manipulación':2
+    }
+  },
+  fisiologico: {
+    id: 'fisiologico',
+    label: 'Sensación corporal / Fisiológico',
+    icon: '🫀',
+    chipClass: 'fisio',
+    keywords: {
+      'taquicardia':3, 'palpitaciones':3, 'corazón':2, 'sudor':3, 'sudoración':3,
+      'temblor':3, 'temblar':3, 'tiemblo':3, 'mareo':3, 'mareos':3,
+      'nudo':2, 'estómago':2, 'nudo en el estómago':3, 'presión pecho':3,
+      'tensión':2, 'tensión muscular':3, 'dolor':1, 'dolor de cabeza':2,
+      'insomnio':2, 'fatiga':2, 'cansancio':2, 'agotamiento':2,
+      'náuseas':3, 'vómito':2, 'falta de aire':3, 'ahogo':3,
+      'hormigueo':2, 'entumecimiento':2, 'calor':1, 'frío':1, 'escalofríos':3
+    }
+  }
+};
+
+// ===== GUIDED QUESTIONS PER STEP =====
+const GUIDE_STEPS = [
+  {
+    id: 'topografia',
+    phase: 'Paso 1 — Topografía',
+    phaseClass: 'teal',
+    icon: '📹',
+    title: '¿Qué haría visible una cámara?',
+    desc: 'Si grabáramos a la persona con una cámara de vídeo, ¿qué veríamos exactamente? Necesitamos conductas concretas y observables.',
+    tip: 'En Análisis Funcional, <em>operacionalizar</em> significa convertir etiquetas vagas en descripciones que dos observadores independientes podrían identificar de la misma manera.',
+    fields: [
+      { id:'topo_motor', label:'🏃 Componente Motor', hint:'¿Qué acciones observables realiza? (ej: sale corriendo, grita, se queda en cama, llama por teléfono 8 veces...)', type:'text' },
+      { id:'topo_cognitivo', label:'💭 Componente Cognitivo', hint:'¿Qué se dice a sí mismo? Verbalizaciones encubiertas con relevancia clínica (ej: "me van a despedir", "soy un inútil"...)', type:'text' },
+      { id:'topo_fisio', label:'🫀 Componente Fisiológico', hint:'¿Qué respuestas corporales presenta? (ej: taquicardia, temblor de manos, sudoración, nudo en el estómago...)', type:'text' }
+    ]
+  },
+  {
+    id: 'parametros',
+    phase: 'Paso 2 — Parámetros',
+    phaseClass: 'gold',
+    icon: '📊',
+    title: 'Cuantifica la conducta',
+    desc: 'Para que la descripción sea verdaderamente operacional, necesitamos datos medibles. Sin números no hay línea base ni forma de evaluar cambio.',
+    tip: 'Según ITEMA, la topografía se mide en cuatro parámetros: <em>ocurrencia</em> (¿se da?), <em>frecuencia</em> (¿cuántas veces?), <em>intensidad</em> (¿con qué fuerza?) y <em>duración</em> (¿cuánto tiempo dura?).',
+    fields: [
+      { id:'param_freq', label:'🔢 Frecuencia', hint:'¿Cuántas veces ocurre? (ej: 3 veces por semana, todos los días, cada vez que...)', type:'text' },
+      { id:'param_dur', label:'⏱ Duración', hint:'¿Cuánto dura cada episodio? (ej: entre 10-15 minutos, varias horas, todo el día...)', type:'text' },
+      { id:'param_int', label:'📈 Intensidad', hint:'¿Con qué fuerza? Usa descriptores observables (ej: llanto que impide hablar, grito audible desde otra habitación...)', type:'text' }
+    ]
+  },
+  {
+    id: 'antecedente',
+    phase: 'Paso 3 — Antecedentes (E→)',
+    phaseClass: 'purple',
+    icon: '⬅️',
+    title: '¿Qué ocurre justo antes?',
+    desc: 'Identifica la situación estimular antecedente. ¿Qué está presente (externo, interno o sustituto) inmediatamente antes de que aparezca la conducta?',
+    tip: 'Recuerda que muchos estímulos antecedentes en clínica son <em>encubiertos</em> (pensamientos anticipatorios, imágenes, sensaciones). El lenguaje introduce gran complejidad: un pensamiento puede funcionar como Eᴰ.',
+    fields: [
+      { id:'ant_externo', label:'🌍 Antecedente externo', hint:'¿Qué situación, persona, lugar o evento está presente? (ej: su jefe le asigna una presentación, está solo en casa de noche...)', type:'text' },
+      { id:'ant_interno', label:'🧠 Antecedente interno/sustituto', hint:'¿Qué pensamiento, imagen o sensación precede la conducta? (ej: piensa "seguro que me sale mal", imagina la escena temida...)', type:'text' }
+    ]
+  },
+  {
+    id: 'consecuente',
+    phase: 'Paso 4 — Consecuencias (→E)',
+    phaseClass: 'green',
+    icon: '➡️',
+    title: '¿Qué cambia después?',
+    desc: 'Las consecuencias son lo que mantiene la conducta. Identifica qué se obtiene (R+), qué se elimina (R-), o qué se pierde (castigo).',
+    tip: 'Pregúntate: ¿la conducta <em>produce</em> algo (R+)? ¿<em>elimina</em> algo aversivo (R-)? ¿O no produce cambios (extinción)? La función se define por el efecto sobre la conducta futura.',
+    fields: [
+      { id:'cons_inmediata', label:'⚡ Consecuencia inmediata', hint:'¿Qué ocurre justo después de la conducta? (ej: la ansiedad baja, recibe atención, evita la situación temida...)', type:'text' },
+      { id:'cons_funcion', label:'⚙️ Función probable', hint:'', type:'select', options: [
+        'Reforzamiento positivo (obtiene algo)',
+        'Reforzamiento negativo (elimina/reduce algo aversivo)',
+        'Castigo positivo (recibe algo aversivo)',
+        'Castigo negativo (pierde algo reforzante)',
+        'No estoy seguro/a aún'
+      ]}
+    ]
+  }
+];
+
+// ===== APP STATE =====
+let currentStep = 0; // 0=intro, 1=detect, 2=confirm, 3-6=guide steps, 7=result
+let userText = '';
+let detectedCategory = null;
+let confirmedCategory = null;
+let guideAnswers = {};
+
+// ===== RENDER ENGINE =====
+const $main = document.getElementById('main-content');
+const $bottom = document.getElementById('bottom-bar');
+
+function render() {
+  if (currentStep === 0) renderIntro();
+  else if (currentStep === 1) renderInput();
+  else if (currentStep === 2) renderDetection();
+  else if (currentStep >= 3 && currentStep <= 6) renderGuideStep(currentStep - 3);
+  else if (currentStep === 7) renderResult();
+}
+
+function renderIntro() {
+  $main.innerHTML = `
+    <div class="anim" style="padding-top:16px">
+      <div class="hero-icon">🔬</div>
+      <div class="hero-title">Taller de Operacionalización</div>
+      <div class="hero-sub">Practica convertir descripciones vagas en formulaciones conductuales medibles y funcionales.</div>
+    </div>
+    <div class="card anim d1">
+      <div class="phase-label gold">📖 ¿Cómo funciona?</div>
+      <div style="font-size:14px;color:var(--text);line-height:1.7">
+        <p style="margin-bottom:10px"><strong>1.</strong> Escribe una queja o descripción tal como la diría un paciente: <em>"Estoy mal"</em>, <em>"Mi hijo es agresivo"</em>, <em>"Tengo mucha ansiedad"</em>.</p>
+        <p style="margin-bottom:10px"><strong>2.</strong> El sistema detectará el tipo de descripción y te pedirá confirmar.</p>
+        <p style="margin-bottom:10px"><strong>3.</strong> Luego te guiará paso a paso por el proceso de operacionalización usando el esquema <strong>E → R → E</strong> del modelo ITEMA.</p>
+        <p><strong>4.</strong> Al final, compararás tu texto original con la versión operacionalizada.</p>
+      </div>
+    </div>
+    <div class="tip anim d2">
+      <em>Principio clave:</em> No operacionalizamos el significado. Operacionalizamos la <em>conducta</em>. Por eso el proceso es siempre el mismo: topografía → parámetros → antecedentes → consecuencias.
+    </div>
+  `;
+  $bottom.innerHTML = `<button class="btn btn-gold" onclick="currentStep=1;render()">Comenzar ›</button>`;
+}
+
+function renderInput() {
+  const pipHtml = buildPips(-1);
+  $main.innerHTML = `
+    ${pipHtml}
+    <div class="card anim">
+      <div class="phase-label teal">✏️ Escribe la queja</div>
+      <div class="phase-title">¿Qué dice el paciente?</div>
+      <div class="phase-desc">Escribe una descripción tal como la diría un paciente. Puede ser vaga, emocional, coloquial... justamente eso es lo que vamos a operacionalizar.</div>
+      <textarea class="text-input" id="user-input" placeholder="Ej: &quot;Estoy muy mal últimamente&quot;, &quot;Mi hijo no para de pegar a otros niños&quot;, &quot;No puedo más con la ansiedad&quot;..." oninput="checkInput()">${userText}</textarea>
+    </div>
+    <div class="tip anim d1">
+      Cuanto más vaga sea la descripción, más interesante será el ejercicio. En la clínica real, los pacientes rara vez llegan con conductas operacionalizadas.
+    </div>
+  `;
+  $bottom.innerHTML = `
+    <button class="btn btn-ghost btn-sm" onclick="currentStep=0;render()">←</button>
+    <button class="btn btn-gold" id="btn-analyze" onclick="analyzeText()" disabled>Analizar ›</button>
+  `;
+  // Restore state
+  const inp = document.getElementById('user-input');
+  if (userText) { inp.value = userText; checkInput(); }
+  inp.focus();
+}
+
+function checkInput() {
+  const v = document.getElementById('user-input').value.trim();
+  document.getElementById('btn-analyze').disabled = v.length < 3;
+}
+
+function analyzeText() {
+  userText = document.getElementById('user-input').value.trim();
+  detectedCategory = detectCategory(userText);
+  currentStep = 2;
+  render();
+}
+
+function detectCategory(text) {
+  const lower = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const scores = {};
+  
+  for (const [catId, cat] of Object.entries(CATEGORIES)) {
+    let score = 0;
+    for (const [word, weight] of Object.entries(cat.keywords)) {
+      const normWord = word.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (lower.includes(normWord)) {
+        score += weight;
+      }
+    }
+    scores[catId] = score;
+  }
+  
+  // Find highest
+  let best = null, bestScore = 0;
+  for (const [catId, score] of Object.entries(scores)) {
+    if (score > bestScore) { bestScore = score; best = catId; }
+  }
+  
+  return bestScore > 0 ? best : null;
+}
+
+function renderDetection() {
+  const pipHtml = buildPips(-1);
+  let detectionHtml = '';
+  
+  if (detectedCategory) {
+    const cat = CATEGORIES[detectedCategory];
+    detectionHtml = `
+      <div class="cat-detected anim">
+        <div class="cat-icon">${cat.icon}</div>
+        <div class="cat-text">Parece que describes un <strong>${cat.label.toLowerCase()}</strong>. ¿Es correcto?</div>
+      </div>
+    `;
+  } else {
+    detectionHtml = `
+      <div class="cat-detected anim" style="border-color:rgba(14,116,144,0.15);background:var(--teal-bg)">
+        <div class="cat-icon">🤔</div>
+        <div class="cat-text">No he detectado una categoría clara. <strong>Selecciona la que mejor describa lo que escribiste:</strong></div>
+      </div>
+    `;
+  }
+  
+  $main.innerHTML = `
+    ${pipHtml}
+    <div class="card anim">
+      <div class="phase-label gold">🔍 Categoría detectada</div>
+      <div style="background:rgba(14,116,144,0.04);border-radius:var(--rs);padding:12px 14px;margin-bottom:14px;font-size:14px;color:var(--text);font-style:italic;border-left:3px solid var(--teal)">
+        "${userText}"
+      </div>
+      ${detectionHtml}
+      <div style="font-size:13px;color:var(--text-dim);margin:14px 0 8px">Selecciona o cambia la categoría:</div>
+      <div class="cat-options" id="cat-options">
+        ${Object.entries(CATEGORIES).map(([id, cat]) => `
+          <div class="cat-chip ${cat.chipClass} ${id === detectedCategory ? 'selected' : ''}" 
+               data-cat="${id}" onclick="selectCategory('${id}')">
+            ${cat.icon} ${cat.label}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="tip anim d1">
+      <em>¿Por qué este paso?</em> En la clínica real, también debemos confirmar con el paciente que estamos entendiendo correctamente su queja. Este sistema <em>híbrido</em> (detección + confirmación) replica ese proceso.
+    </div>
+  `;
+  confirmedCategory = detectedCategory;
+  $bottom.innerHTML = `
+    <button class="btn btn-ghost btn-sm" onclick="currentStep=1;render()">←</button>
+    <button class="btn btn-gold" id="btn-start-guide" onclick="startGuide()" ${confirmedCategory ? '' : 'disabled'}>Operacionalizar ›</button>
+  `;
+}
+
+function selectCategory(catId) {
+  confirmedCategory = catId;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`.cat-chip[data-cat="${catId}"]`).classList.add('selected');
+  document.getElementById('btn-start-guide').disabled = false;
+}
+
+function startGuide() {
+  currentStep = 3;
+  render();
+}
+
+function renderGuideStep(idx) {
+  const step = GUIDE_STEPS[idx];
+  const pipHtml = buildPips(idx);
+  
+  let fieldsHtml = '';
+  step.fields.forEach(f => {
+    const val = guideAnswers[f.id] || '';
+    if (f.type === 'text') {
+      fieldsHtml += `
+        <div class="gq-block">
+          <div class="gq-label">${f.label}</div>
+          <div class="gq-hint">${f.hint}</div>
+          <input class="gq-input" id="${f.id}" placeholder="Describe aquí..." value="${val}" oninput="saveField('${f.id}',this.value)">
+        </div>
+      `;
+    } else if (f.type === 'select') {
+      fieldsHtml += `
+        <div class="gq-block">
+          <div class="gq-label">${f.label}</div>
+          <div class="gq-select-group">
+            ${f.options.map((opt, oi) => `
+              <div class="gq-select-opt ${val === opt ? 'picked' : ''}" onclick="pickSelect('${f.id}','${opt.replace(/'/g,"\\'")}',this)">
+                ${opt}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+  });
+  
+  $main.innerHTML = `
+    ${pipHtml}
+    <div class="card anim">
+      <div class="phase-label ${step.phaseClass}">${step.icon} ${step.phase}</div>
+      <div class="phase-title">${step.title}</div>
+      <div class="phase-desc">${step.desc}</div>
+      <div class="divider"></div>
+      ${fieldsHtml}
+    </div>
+    <div class="tip anim d1">${step.tip}</div>
+  `;
+  
+  const isLast = idx === GUIDE_STEPS.length - 1;
+  $bottom.innerHTML = `
+    <button class="btn btn-ghost btn-sm" onclick="currentStep=${currentStep - 1};render()">←</button>
+    <button class="btn ${isLast ? 'btn-green' : 'btn-gold'}" onclick="nextGuideStep()">
+      ${isLast ? 'Ver resultado ›' : 'Siguiente paso ›'}
+    </button>
+  `;
+}
+
+function saveField(id, val) { guideAnswers[id] = val; }
+function pickSelect(id, val, el) {
+  guideAnswers[id] = val;
+  el.parentNode.querySelectorAll('.gq-select-opt').forEach(e => e.classList.remove('picked'));
+  el.classList.add('picked');
+}
+
+function nextGuideStep() {
+  if (currentStep < 6) { currentStep++; render(); }
+  else { currentStep = 7; render(); }
+}
+
+function renderResult() {
+  const cat = CATEGORIES[confirmedCategory];
+  
+  // Build operationalized result from answers
+  const sections = [
+    { label:'Motor', cls:'motor', val: guideAnswers.topo_motor },
+    { label:'Cognitivo', cls:'cognitivo', val: guideAnswers.topo_cognitivo },
+    { label:'Fisiológico', cls:'fisiologico', val: guideAnswers.topo_fisio },
+    { label:'Parámetros', cls:'parametros', val: [guideAnswers.param_freq, guideAnswers.param_dur, guideAnswers.param_int].filter(Boolean).join(' · ') },
+    { label:'Antecedentes', cls:'antecedente', val: [guideAnswers.ant_externo, guideAnswers.ant_interno].filter(Boolean).join(' | ') },
+    { label:'Consecuencias', cls:'consecuente', val: [guideAnswers.cons_inmediata, guideAnswers.cons_funcion].filter(Boolean).join(' → ') }
+  ].filter(s => s.val);
+  
+  let resultItemsHtml = sections.map(s => `
+    <div class="ro-item">
+      <div class="ro-label ${s.cls}">${s.label}</div>
+      <div class="ro-text">${s.val}</div>
+    </div>
+  `).join('');
+  
+  $main.innerHTML = `
+    <div style="text-align:center;padding:20px 0 16px" class="anim">
+      <div style="font-size:48px;margin-bottom:8px">✅</div>
+      <div class="phase-title" style="text-align:center">¡Conducta operacionalizada!</div>
+      <div class="phase-desc" style="text-align:center">Compara cómo llegó la queja vs. cómo la has formulado tú.</div>
+    </div>
+    
+    <div class="card compare-wrap anim d1">
+      <div class="result-original">
+        <p>"${userText}"</p>
+      </div>
+      <div style="text-align:center;margin:12px 0;font-size:20px">⬇️</div>
+      <div class="result-operationalized">
+        ${resultItemsHtml || '<div class="ro-text" style="color:var(--text-dim)">No se completaron campos. Vuelve a los pasos e intenta de nuevo.</div>'}
+      </div>
+    </div>
+    
+    <div class="card anim d2">
+      <div class="phase-label green">💡 Reflexión clínica</div>
+      <div style="font-size:14px;color:var(--text);line-height:1.7">
+        <p style="margin-bottom:10px">Observa la diferencia entre "${userText}" y tu formulación operacionalizada. La primera es una <strong>etiqueta</strong>; la segunda es un <strong>análisis funcional incipiente</strong> con conductas medibles, parámetros cuantificables y relaciones E→R→E identificadas.</p>
+        <p>En la práctica clínica, este proceso ocurre durante la <strong>evaluación</strong> mediante entrevista, observación y auto-observación. El análisis funcional completo requiere además evaluar las <strong>variables disposicionales</strong> (del entorno y del individuo).</p>
+      </div>
+    </div>
+    
+    <div class="tip anim d3">
+      <em>Recuerda (ITEMA):</em> Cada caso se contempla como único. El análisis funcional nos aporta la información relevante, nos guía en las variables a modificar y nos permite ajustar la intervención al caso concreto.
+    </div>
+  `;
+  
+  $bottom.innerHTML = `
+    <button class="btn btn-ghost" onclick="resetAll()">🔄 Nuevo caso</button>
+    <button class="btn btn-teal" onclick="history.back()">Volver al módulo</button>
+  `;
+}
+
+function resetAll() {
+  currentStep = 0;
+  userText = '';
+  detectedCategory = null;
+  confirmedCategory = null;
+  guideAnswers = {};
+  render();
+}
+
+// ===== STEP PIPS =====
+function buildPips(activeGuideIdx) {
+  // activeGuideIdx: -1 for pre-guide steps, 0-3 for guide steps
+  const labels = ['Topografía', 'Parámetros', 'Antecedentes', 'Consecuencias'];
+  let html = '<div class="steps">';
+  for (let i = 0; i < 4; i++) {
+    let cls = 'step-pip';
+    let w = '20px';
+    if (activeGuideIdx === i) { cls += ' active'; w = '28px'; }
+    else if (i < activeGuideIdx) { cls += ' done'; }
+    else { cls += ' future'; }
+    html += `<div class="${cls}" style="width:${w}" title="${labels[i]}"></div>`;
+  }
+  html += '</div>';
+  return activeGuideIdx >= 0 ? html : '';
+}
+
+// ===== INIT =====
+render();
+</script>
+</body>
+</html>
