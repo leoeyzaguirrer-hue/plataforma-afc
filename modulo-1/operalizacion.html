@@ -1,1867 +1,1077 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Módulo 1: Operacionalización de la Conducta</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-deep: #e8f4f8;
-  --bg-mid: #d4ecf2;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f0f9fb;
-  --gold: #d4950a;
-  --gold-bright: #f0b429;
-  --gold-dim: #a87608;
-  --gold-glow: rgba(212, 149, 10, 0.1);
-  --green: #16a34a;
-  --green-bg: rgba(22, 163, 74, 0.1);
-  --red: #dc2626;
-  --red-bg: rgba(220, 38, 38, 0.08);
-  --blue: #0e7490;
-  --blue-bg: rgba(14, 116, 144, 0.08);
-  --text: #2c4a56;
-  --text-dim: #6b8a97;
-  --text-bright: #1a3340;
-  --border: rgba(14, 116, 144, 0.15);
-  --border-gold: rgba(212, 149, 10, 0.25);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 4px 24px rgba(14, 116, 144, 0.08);
-  --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+/* ===== #1 DARK MODE + THEME SYSTEM ===== */
+:root,[data-theme="light"]{
+--bg:#e8f4f8;--bg2:#f0f7fa;--card:#ffffff;--card2:#f8fbfc;
+--gold:#d4950a;--gold-b:#f0b429;--gold-d:#a87608;--gold-g:rgba(212,149,10,0.07);
+--green:#16a34a;--green-b:#22c55e;--green-g:rgba(22,163,74,0.07);
+--red:#dc2626;--red-g:rgba(220,38,38,0.06);
+--teal:#0e7490;--teal-b:#0891b2;--teal-g:rgba(14,116,144,0.05);
+--purple:#7c3aed;--purple-g:rgba(124,58,237,0.06);
+--text:#2c4a56;--dim:#6b8a97;--bright:#1a3340;
+--border:rgba(14,116,144,0.12);--border2:rgba(14,116,144,0.06);
+--r:16px;--rs:10px;
+--shadow:0 2px 12px rgba(0,0,0,0.05);--shadow2:0 4px 24px rgba(0,0,0,0.08);
+--overlay:rgba(255,255,255,0.88);--overlay2:rgba(255,255,255,0.92);
+/* #1 Stage intensity colors */
+--stA:#e0f2fe;--stA-b:#0ea5e9;--stA-t:#0c4a6e;
+--stB:#fef3c7;--stB-b:#f59e0b;--stB-t:#78350f;
+--stC:#fce7f3;--stC-b:#ec4899;--stC-t:#831843;
+--stD:#ede9fe;--stD-b:#8b5cf6;--stD-t:#4c1d95;
 }
+[data-theme="dark"]{
+--bg:#0f1a1e;--bg2:#162228;--card:#1a2c34;--card2:#213840;
+--gold:#f0b429;--gold-b:#fbbf24;--gold-d:#fcd34d;--gold-g:rgba(240,180,41,0.1);
+--green:#22c55e;--green-b:#4ade80;--green-g:rgba(34,197,94,0.1);
+--red:#f87171;--red-g:rgba(248,113,113,0.1);
+--teal:#22d3ee;--teal-b:#67e8f9;--teal-g:rgba(34,211,238,0.08);
+--purple:#a78bfa;--purple-g:rgba(167,139,250,0.1);
+--text:#c4dce6;--dim:#7a9aaa;--bright:#e8f4f8;
+--border:rgba(34,211,238,0.12);--border2:rgba(34,211,238,0.06);
+--shadow:0 2px 12px rgba(0,0,0,0.2);--shadow2:0 4px 24px rgba(0,0,0,0.3);
+--overlay:rgba(15,26,30,0.92);--overlay2:rgba(15,26,30,0.95);
+--stA:#0c3547;--stA-b:#38bdf8;--stA-t:#bae6fd;
+--stB:#3d2e0a;--stB-b:#fbbf24;--stB-t:#fef3c7;
+--stC:#3b0e2a;--stC-b:#f472b6;--stC-t:#fce7f3;
+--stD:#2e1a5e;--stD-b:#a78bfa;--stD-t:#ede9fe;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+/* #24 ACCESSIBILITY focus */
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:17px;line-height:1.65;transition:background .35s,color .35s}
+#ptc{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* ===== LAYOUT ===== */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+.top{display:flex;align-items:center;padding:12px 16px;gap:10px;background:var(--overlay);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10;transition:background .3s}
+.top-back{width:38px;height:38px;border-radius:50%;background:var(--bg);border:1px solid var(--border);color:var(--teal);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;transition:all .2s}
+.top-back:hover{background:var(--teal-g);border-color:var(--teal)}
+.top-back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.top-t{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--teal);line-height:1.2}
+.top-s{font-size:11.5px;color:var(--dim)}
+.top-prog{margin-left:auto;display:flex;align-items:center;gap:6px}
+.top-prog-bar{width:56px;height:5px;border-radius:3px;background:var(--border);overflow:hidden}
+.top-prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .5s ease}
+.top-prog-txt{font-family:'Space Mono',monospace;font-size:10px;color:var(--dim)}
+/* #6 Dark toggle */
+.top-dm{width:34px;height:34px;border-radius:50%;background:var(--bg);border:1px solid var(--border);color:var(--dim);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .2s;margin-left:4px;flex-shrink:0}
+.top-dm:hover{color:var(--gold);border-color:var(--gold)}
+.cnt{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 16px 110px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.cnt::-webkit-scrollbar{width:3px}.cnt::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.bot{position:fixed;bottom:0;left:0;right:0;padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:var(--overlay2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border2);z-index:10;display:flex;gap:10px;transition:background .3s}
 
-html, body {
-  height: 100%;
-  overflow: hidden;
-  background: linear-gradient(160deg, #dff0f5 0%, #e8f4f8 30%, #edf6f0 60%, #e4f0f6 100%);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 17px;
-  line-height: 1.65;
-}
+/* ===== BUTTONS ===== */
+.btn{flex:1;padding:15px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:all .2s;text-align:center}
+.btn:active{transform:scale(0.97)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-b));color:#fff;box-shadow:0 4px 16px rgba(212,149,10,0.2)}
+.btn-gold:disabled{opacity:0.35;pointer-events:none}
+.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border);flex:none;padding:15px 18px}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--green-b));color:#fff;box-shadow:0 4px 16px rgba(22,163,74,0.2)}
+.btn-teal{background:linear-gradient(135deg,var(--teal),var(--teal-b));color:#fff}
+.btn-sm{flex:none;padding:10px 16px;font-size:14px;border-radius:8px}
+.btn-icon{flex:none;width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--rs);font-size:18px}
 
-/* ===== WORKSHOP BANNER ===== */
-.workshop-banner {
-  background: linear-gradient(135deg, rgba(212,149,10,0.08), rgba(14,116,144,0.06));
-  border: 1.5px solid rgba(212,149,10,0.2);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  transition: all 0.25s;
-  box-shadow: 0 3px 16px rgba(212,149,10,0.08);
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-}
-.workshop-banner::after {
-  content: '';
-  position: absolute;
-  top: -50%; right: -20%;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(212,149,10,0.1) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.workshop-banner:active { transform: scale(0.98); }
-.workshop-icon {
-  width: 52px; height: 52px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 26px;
-  flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(212,149,10,0.2);
-}
-.workshop-info { flex: 1; z-index: 1; }
-.workshop-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--gold-dim);
-  margin-bottom: 3px;
-}
-.workshop-name {
-  font-family: 'Fraunces', serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-bright);
-  margin-bottom: 2px;
-}
-.workshop-desc {
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.4;
-}
-.workshop-arrow {
-  font-size: 22px;
-  color: var(--gold);
-  z-index: 1;
-}
+/* ===== CARDS ===== */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);transition:background .3s,border .3s}
+.tag{font-family:'Space Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.tag svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.tag.teal{color:var(--teal)}.tag.gold{color:var(--gold-d)}.tag.green{color:var(--green)}.tag.purple{color:var(--purple)}
+.card-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--bright);margin-bottom:8px;line-height:1.3}
+.card-desc{font-size:15px;color:var(--dim);margin-bottom:14px;line-height:1.6}
+.th{font-size:15.5px;color:var(--text);line-height:1.75;margin-bottom:12px}
+.th b,.th strong{color:var(--bright)}
+.hl{background:var(--gold-g);border-left:3px solid var(--gold);padding:14px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:14px 0;font-size:14.5px;color:var(--bright);line-height:1.65}
+.hl em{color:var(--gold-d);font-style:normal;font-weight:600}
+.ex-box{background:var(--teal-g);border:1px solid rgba(14,116,144,0.1);border-radius:var(--rs);padding:14px 16px;margin:14px 0}
+.ex-label{font-size:10.5px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.ex-box p{font-size:14px;color:var(--text);margin:0;line-height:1.65}
 
-/* ===== FLOATING GOLDEN PARTICLES ===== */
-#particles-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
+/* ===== #4 ACCORDION THEORY ===== */
+.accord{border:1px solid var(--border);border-radius:var(--rs);margin-bottom:10px;overflow:hidden;background:var(--card);transition:all .3s}
+.accord-head{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.accord-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.accord-title{font-weight:600;font-size:15px;color:var(--bright);flex:1}
+.accord-arrow{font-size:12px;color:var(--dim);transition:transform .3s}
+.accord.open .accord-arrow{transform:rotate(180deg)}
+.accord-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.accord.open .accord-body{max-height:1200px}
+.accord-inner{padding:0 16px 16px}
 
-/* ===== SCREEN SYSTEM ===== */
-.screen {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  transform: translateX(30px);
-  z-index: 1;
-  background: transparent;
-}
-.screen.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  z-index: 10;
-}
-.screen.exit-left {
-  opacity: 0;
-  transform: translateX(-30px);
-}
+/* ===== #3 GLOBAL PROGRESS RING ===== */
+.prog-ring{display:flex;align-items:center;justify-content:center;position:relative}
+.prog-ring svg{transform:rotate(-90deg)}
+.prog-ring-txt{position:absolute;font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--bright)}
 
-/* ===== TOP BAR ===== */
-.topbar {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(14,116,144,0.1);
-  flex-shrink: 0;
-  z-index: 20;
-}
-.topbar-back {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: var(--bg-deep);
-  border: 1px solid var(--border);
-  color: var(--blue);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.2s;
-}
-.topbar-back:active { transform: scale(0.9); background: var(--bg-mid); }
-.topbar-info { flex: 1; }
-.topbar-title {
-  font-family: 'Fraunces', serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--blue);
-  letter-spacing: 0.3px;
-}
-.topbar-subtitle { font-size: 12px; color: var(--text-dim); }
-.topbar-progress-wrap {
-  display: flex; align-items: center; gap: 6px;
-}
-.topbar-progress-bar {
-  width: 60px; height: 6px;
-  background: rgba(14,116,144,0.1);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.topbar-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
-  border-radius: 3px;
-  transition: width 0.5s ease;
-}
-.topbar-progress-text { font-size: 11px; color: var(--gold-dim); font-weight: 600; font-family: 'Space Mono', monospace; }
+/* ===== HOME ===== */
+.home-header{text-align:center;padding:20px 0 10px}
+.home-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--gold),var(--gold-b));border-radius:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 32px rgba(212,149,10,0.18)}
+.home-icon svg{width:44px;height:44px;stroke:#fff;fill:none;stroke-width:1.8}
+.home-title{font-family:'Fraunces',serif;font-size:27px;font-weight:700;color:var(--bright);margin-bottom:6px}
+.home-desc{font-size:15px;color:var(--dim);max-width:360px;margin:0 auto 16px}
+.home-stats{display:flex;justify-content:center;gap:28px;margin-bottom:16px}
+.home-stat b{font-family:'Space Mono',monospace;font-size:22px;color:var(--teal);display:block}
+.home-stat span{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.sec-title{font-family:'Fraunces',serif;font-size:13px;color:var(--gold-d);text-transform:uppercase;letter-spacing:1.5px;margin:18px 0 12px}
 
-/* ===== SCROLLABLE CONTENT ===== */
-.content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px 16px 100px;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
+/* ===== #7 LEVEL CARDS (better stage pills) ===== */
+.lv-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:all .25s;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.lv-card::after{content:'';position:absolute;bottom:0;left:0;height:3px;width:0;background:var(--green);transition:width .4s}
+.lv-card.done::after{width:100%}
+.lv-card:active{transform:scale(0.98)}
+.lv-card.locked{opacity:0.4;pointer-events:none}
+.lv-card.done{border-color:rgba(22,163,74,0.2)}
+.lv-num{width:44px;height:44px;border-radius:14px;color:#fff;font-family:'Space Mono',monospace;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lv-card:nth-child(odd) .lv-num{background:linear-gradient(135deg,var(--teal),var(--teal-b))}
+.lv-card:nth-child(even) .lv-num{background:linear-gradient(135deg,var(--gold),var(--gold-b))}
+.lv-card.done .lv-num{background:linear-gradient(135deg,var(--green),var(--green-b))!important}
+.lv-name{font-weight:600;font-size:15.5px;color:var(--bright);margin-bottom:2px}
+.lv-sub{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:6px}
+.lv-sub .stars{color:var(--gold)}
+.lv-arrow{color:var(--dim);margin-left:auto;font-size:18px}
 
-/* ===== HOME SCREEN ===== */
-.home-hero {
-  text-align: center;
-  padding: 32px 0 24px;
-}
-.home-icon {
-  width: 80px; height: 80px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-  border-radius: 24px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 40px;
-  margin: 0 auto 20px;
-  box-shadow: 0 8px 30px rgba(212,149,10,0.25);
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-.home-title {
-  font-family: 'Fraunces', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-bright);
-  margin-bottom: 8px;
-  line-height: 1.2;
-}
-.home-desc {
-  font-size: 16px;
-  color: var(--text-dim);
-  max-width: 340px;
-  margin: 0 auto 24px;
-}
-.home-stats {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 8px;
-}
-.home-stat {
-  text-align: center;
-}
-.home-stat-num {
-  font-family: 'Space Mono', monospace;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--blue);
-}
-.home-stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+/* ===== #1 STAGE CARDS WITH INTENSITY ===== */
+.stage-scroll{display:flex;gap:10px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+.stage-scroll::-webkit-scrollbar{display:none}
+.st-card{min-width:140px;padding:14px;border-radius:14px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .25s;flex-shrink:0;position:relative}
+.st-card.active{transform:scale(1.03)}
+.st-card.locked{opacity:0.35;pointer-events:none}
+.st-card.done .st-check{display:flex}
+.st-check{display:none;position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:11px;align-items:center;justify-content:center}
+.st-label{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.st-name{font-weight:600;font-size:14px;color:var(--bright);margin-bottom:2px}
+.st-sub{font-size:11.5px;color:var(--dim)}
+.st-card[data-stage="A"]{border-color:rgba(14,165,233,0.2)}.st-card[data-stage="A"].active{background:var(--stA);border-color:var(--stA-b)}.st-card[data-stage="A"] .st-label{color:var(--stA-b)}
+.st-card[data-stage="B"]{border-color:rgba(245,158,11,0.2)}.st-card[data-stage="B"].active{background:var(--stB);border-color:var(--stB-b)}.st-card[data-stage="B"] .st-label{color:var(--stB-b)}
+.st-card[data-stage="C"]{border-color:rgba(236,72,153,0.2)}.st-card[data-stage="C"].active{background:var(--stC);border-color:var(--stC-b)}.st-card[data-stage="C"] .st-label{color:var(--stC-b)}
+.st-card[data-stage="D"]{border-color:rgba(139,92,246,0.2)}.st-card[data-stage="D"].active{background:var(--stD);border-color:var(--stD-b)}.st-card[data-stage="D"] .st-label{color:var(--stD-b)}
 
-/* ===== LEVEL CARDS ===== */
-.levels-section-title {
-  font-family: 'Fraunces', serif;
-  font-size: 14px;
-  color: var(--gold-dim);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin: 24px 0 16px;
-}
-.level-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-}
-.level-card::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
-  background: var(--gold);
-  border-radius: 0 4px 4px 0;
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-.level-card:active { transform: scale(0.98); background: var(--bg-card-hover); }
-.level-card:active::before { opacity: 1; }
-.level-card.completed { border-color: rgba(22,163,74,0.3); }
-.level-card.completed::before { opacity: 1; background: var(--green); }
-.level-card.locked { opacity: 0.45; pointer-events: none; }
+/* ===== #5 PATIENT FILE CARDS ===== */
+.patient{background:var(--card);border:1.5px solid rgba(212,149,10,0.2);border-radius:var(--r);padding:18px;margin-bottom:16px;box-shadow:0 3px 16px rgba(212,149,10,0.06);position:relative}
+.patient-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.patient-avatar{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0}
+.patient-avatar.f{background:linear-gradient(135deg,#ec4899,#f472b6)}
+.patient-avatar.m{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.patient-avatar.c{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.patient-meta{flex:1}
+.patient-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--bright)}
+.patient-age{font-size:12.5px;color:var(--dim)}
+.patient-badge{font-family:'Space Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:1px;padding:4px 10px;border-radius:6px;background:rgba(212,149,10,0.08);color:var(--gold-d);border:1px solid rgba(212,149,10,0.15)}
+.patient-quote{font-size:15px;font-style:italic;color:var(--text);line-height:1.65;padding:12px 14px;background:var(--bg2);border-radius:var(--rs);border-left:3px solid var(--gold);margin-top:4px}
 
-.level-num {
-  width: 44px; height: 44px;
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  font-size: 18px;
-  flex-shrink: 0;
-  background: rgba(14,116,144,0.08);
-  color: var(--blue);
-  border: 1px solid rgba(14,116,144,0.15);
-}
-.level-card.completed .level-num { background: var(--green-bg); color: var(--green); border-color: rgba(22,163,74,0.2); }
-.level-card.locked .level-num { background: rgba(0,0,0,0.03); color: var(--text-dim); border-color: rgba(0,0,0,0.06); }
+/* ===== EXERCISE COMPONENTS ===== */
+/* #20 Smooth transitions */
+.ex-wrap{transition:opacity .3s ease,transform .3s ease}
+.ex-wrap.exit{opacity:0;transform:translateX(-20px)}
+.ex-wrap.enter{opacity:0;transform:translateX(20px)}
 
-.level-info { flex: 1; }
-.level-name { font-weight: 600; font-size: 16px; color: var(--text-bright); margin-bottom: 3px; }
-.level-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.4; }
-.level-arrow { color: var(--text-dim); font-size: 20px; }
-.level-card.completed .level-arrow { color: var(--green); }
-.level-check { color: var(--green); font-size: 20px; }
+/* Pips */
+.ex-prog{display:flex;align-items:center;gap:3px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.ex-pip{width:18px;height:5px;border-radius:3px;background:var(--border);transition:all .35s}
+.ex-pip.done{background:var(--green)}
+.ex-pip.fail{background:var(--red)}
+.ex-pip.current{background:var(--gold);width:26px}
 
-/* ===== THEORY SECTIONS ===== */
-.theory-block {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-card);
-}
-.theory-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--gold-dim);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.theory-heading {
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-bright);
-  margin-bottom: 12px;
-  line-height: 1.3;
-}
-.theory-text {
-  font-size: 15.5px;
-  color: var(--text);
-  margin-bottom: 12px;
-  line-height: 1.75;
-}
-.theory-text:last-child { margin-bottom: 0; }
+/* Question */
+.q-num{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--gold-d);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+/* #21 Timer */
+.q-timer{margin-left:auto;display:flex;align-items:center;gap:4px;font-size:11px;color:var(--dim);background:var(--bg);padding:3px 8px;border-radius:6px}
+.q-timer.warn{color:var(--red);animation:pulse .5s infinite alternate}
+.q-text{font-size:17px;font-weight:500;color:var(--bright);margin-bottom:16px;line-height:1.55}
+/* #10 Instructions */
+.q-instr{font-size:13px;color:var(--dim);margin-bottom:14px;padding:10px 14px;background:var(--bg2);border-radius:var(--rs);display:flex;align-items:flex-start;gap:8px}
+.q-instr svg{width:16px;height:16px;stroke:var(--teal);flex-shrink:0;margin-top:2px}
 
-.theory-highlight {
-  background: rgba(212,149,10,0.07);
-  border-left: 3px solid var(--gold);
-  padding: 14px 16px;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  margin: 16px 0;
-  font-size: 15.5px;
-  color: var(--text-bright);
-  line-height: 1.65;
-}
-.theory-highlight em {
-  color: var(--gold-dim);
-  font-style: normal;
-  font-weight: 600;
-}
-.theory-source {
-  font-size: 12px;
-  color: var(--text-dim);
-  font-style: italic;
-  margin-top: 8px;
-}
-.theory-example {
-  background: rgba(14,116,144,0.05);
-  border: 1px solid rgba(14,116,144,0.12);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
-  margin: 14px 0;
-}
-.theory-example-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--blue);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 6px;
-}
-.theory-example p { font-size: 14.5px; color: var(--text); margin: 0; }
+/* Options */
+.opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--rs);margin-bottom:8px;cursor:pointer;transition:all .25s;-webkit-user-select:none;user-select:none}
+.opt:active{transform:scale(0.98)}
+.opt.picked{border-color:var(--gold);background:var(--gold-g)}
+.opt.correct{border-color:var(--green);background:var(--green-g)}
+.opt.wrong{border-color:var(--red);background:var(--red-g)}
+.opt.reveal{border-color:var(--green);background:var(--green-g);opacity:.6}
+.opt.disabled{pointer-events:none}
+.opt-mark{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:700;color:var(--dim);transition:all .2s}
+.opt.picked .opt-mark{border-color:var(--gold);color:var(--gold-d);background:var(--gold-g)}
+.opt.correct .opt-mark{border-color:var(--green);color:#fff;background:var(--green)}
+.opt.wrong .opt-mark{border-color:var(--red);color:#fff;background:var(--red)}
+.opt-mark.chk{border-radius:6px}
+.opt-txt{font-size:15px;color:var(--text);line-height:1.5;flex:1}
 
-/* ===== EXERCISE SECTIONS ===== */
-.exercise-section {
-  margin-top: 28px;
-}
-.exercise-section-title {
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--green);
-  margin-bottom: 16px;
-  display: flex; align-items: center; gap: 6px;
-}
-.question-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-card);
-}
-.question-number {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--gold-dim);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-.question-text {
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--text-bright);
-  margin-bottom: 16px;
-  line-height: 1.55;
-}
-.question-context {
-  font-size: 14.5px;
-  color: var(--text-dim);
-  font-style: italic;
-  margin-bottom: 14px;
-  padding: 10px 14px;
-  background: rgba(14,116,144,0.04);
-  border-radius: var(--radius-sm);
-  border-left: 2px solid rgba(14,116,144,0.15);
-}
+/* TF */
+.tf-wrap{display:flex;gap:10px;margin-bottom:8px}
+.tf-btn{flex:1;padding:18px;border:2px solid var(--border);border-radius:var(--rs);font-size:17px;font-weight:600;text-align:center;cursor:pointer;transition:all .2s;background:var(--card);color:var(--text)}
+.tf-btn:active{transform:scale(0.97)}
+.tf-btn.correct{border-color:var(--green);background:var(--green-g);color:var(--green)}
+.tf-btn.wrong{border-color:var(--red);background:var(--red-g);color:var(--red)}
+.tf-btn.disabled{pointer-events:none}
 
-/* ===== OPTIONS ===== */
-.option {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
-  border: 1.5px solid rgba(14,116,144,0.12);
-  border-radius: var(--radius-sm);
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  -webkit-user-select: none;
-  user-select: none;
-  background: rgba(14,116,144,0.02);
-}
-.option:active { transform: scale(0.98); }
-.option.selected { border-color: var(--gold); background: rgba(212,149,10,0.06); }
-.option.correct { border-color: var(--green); background: var(--green-bg); }
-.option.incorrect { border-color: var(--red); background: var(--red-bg); }
-.option.disabled { pointer-events: none; }
-.option.dimmed { opacity: 0.4; }
+/* Classify drag */
+.cl-item{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:10px}
+.cl-item-text{font-size:15px;color:var(--bright);margin-bottom:10px;font-style:italic}
+.cl-cats{display:flex;gap:6px;flex-wrap:wrap}
+.cl-cat{padding:9px 16px;border-radius:8px;font-size:13.5px;font-weight:500;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .2s}
+.cl-cat:active{transform:scale(0.96)}
+.cl-cat.correct{border-color:var(--green);background:var(--green-g);color:var(--green)}
+.cl-cat.wrong{border-color:var(--red);background:var(--red-g);color:var(--red)}
+.cl-cat.disabled{pointer-events:none}
 
-.option-marker {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  border: 2px solid rgba(14,116,144,0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700;
-  flex-shrink: 0;
-  margin-top: 1px;
-  transition: all 0.2s;
-  color: var(--text-dim);
-}
-.option.selected .option-marker { border-color: var(--gold); color: var(--gold-dim); background: rgba(212,149,10,0.1); }
-.option.correct .option-marker { border-color: var(--green); color: #fff; background: var(--green); }
-.option.incorrect .option-marker { border-color: var(--red); color: #fff; background: var(--red); }
+/* #11 Order with undo */
+.ord-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.ord-item{padding:10px 16px;border-radius:8px;font-size:14px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .2s}
+.ord-item:active{transform:scale(0.96)}
+.ord-item.placed{opacity:0.2;pointer-events:none}
+.ord-seq{min-height:48px;border:2px dashed var(--border);border-radius:var(--rs);padding:10px;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;transition:border-color .3s}
+.ord-seq.over{border-color:var(--gold)}
+.ord-placed{padding:8px 14px;border-radius:8px;font-size:13px;background:var(--teal-g);border:1px solid rgba(14,116,144,0.12);color:var(--teal);display:flex;align-items:center;gap:6px;cursor:pointer}
+.ord-placed:hover{opacity:.7}
+.ord-placed .ord-n{font-family:'Space Mono',monospace;font-size:11px;font-weight:700}
+.ord-placed.correct{background:var(--green-g);border-color:rgba(22,163,74,0.15);color:var(--green)}
+.ord-placed.wrong{background:var(--red-g);border-color:rgba(220,38,38,0.15);color:var(--red)}
+.ord-undo{font-size:12px;color:var(--dim);cursor:pointer;padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);margin-left:auto;display:none;align-items:center;gap:4px}
+.ord-undo.show{display:flex}
 
-.option-text {
-  font-size: 15.5px;
-  color: var(--text);
-  line-height: 1.55;
-}
-.option.correct .option-text { color: var(--text-bright); }
-.option.incorrect .option-text { color: var(--text-dim); }
+/* #8 Fill-in-blank */
+.fib-text{font-size:15px;color:var(--text);line-height:2.2;margin-bottom:12px}
+.fib-blank{display:inline-block;min-width:120px;padding:4px 12px;border-bottom:2px dashed var(--gold);color:var(--gold-d);font-weight:600;cursor:pointer;transition:all .2s;background:var(--gold-g);border-radius:4px 4px 0 0;font-size:14px}
+.fib-blank.filled{border-bottom-style:solid;background:rgba(14,116,144,0.06);color:var(--teal)}
+.fib-blank.correct{border-color:var(--green);color:var(--green);background:var(--green-g)}
+.fib-blank.wrong{border-color:var(--red);color:var(--red);background:var(--red-g)}
+.fib-options{display:flex;flex-wrap:wrap;gap:6px;padding:12px;background:var(--bg2);border-radius:var(--rs);margin-bottom:12px}
+.fib-opt{padding:8px 14px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .2s}
+.fib-opt:active{transform:scale(0.95)}
+.fib-opt.used{opacity:0.25;pointer-events:none}
+.fib-opt.wrong-src{border-color:var(--red);background:var(--red-g)}
 
-/* ===== FEEDBACK ===== */
-.feedback {
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  margin-top: 12px;
-  font-size: 14.5px;
-  line-height: 1.65;
-  display: none;
-  animation: feedbackIn 0.3s ease;
-}
-@keyframes feedbackIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.feedback.show { display: block; }
-.feedback.correct {
-  background: rgba(22,163,74,0.08);
-  border: 1px solid rgba(22,163,74,0.2);
-  color: #166534;
-}
-.feedback.incorrect {
-  background: rgba(220,38,38,0.06);
-  border: 1px solid rgba(220,38,38,0.15);
-  color: #991b1b;
-}
-.feedback strong { color: var(--text-bright); }
+/* #14 Speed mode */
+.speed-bar{height:6px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.speed-fill{height:100%;background:var(--green);border-radius:3px;transition:width linear}
+.speed-fill.warn{background:var(--gold)}
+.speed-fill.crit{background:var(--red)}
+.speed-stat{text-align:center;margin-bottom:10px}
+.speed-stat b{font-family:'Space Mono',monospace;font-size:28px;color:var(--bright)}
+.speed-stat span{font-size:12px;color:var(--dim);display:block}
 
-/* ===== MULTI-SELECT (for classify exercises) ===== */
-.classify-target {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 12px;
-}
-.classify-label {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  padding: 5px 12px;
-  border-radius: 6px;
-  display: inline-block;
-}
-.classify-label.motor { background: rgba(14,116,144,0.1); color: #0e7490; }
-.classify-label.cognitivo { background: rgba(126,58,183,0.1); color: #7e3ab7; }
-.classify-label.fisiologico { background: rgba(190,50,120,0.1); color: #be3278; }
+/* ===== #2 FEEDBACK + MICRO-ANIMATIONS ===== */
+.fb{padding:14px 16px;border-radius:var(--rs);margin-top:12px;font-size:14px;line-height:1.6;display:none;position:relative;overflow:hidden}
+.fb.show{display:block;animation:fbSlide .35s ease}
+@keyframes fbSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fb.ok{background:var(--green-g);border:1px solid rgba(22,163,74,0.18);color:var(--green)}
+.fb.fail{background:var(--red-g);border:1px solid rgba(220,38,38,0.13);color:var(--red)}
+[data-theme="dark"] .fb.ok{color:var(--green-b)}
+[data-theme="dark"] .fb.fail{color:#fca5a5}
+.fb b{color:var(--bright);display:block;margin-bottom:4px}
+/* #12 Hint in feedback */
+.fb-hint{margin-top:8px;padding:8px 12px;background:rgba(124,58,237,0.06);border-radius:6px;font-size:13px;color:var(--purple);display:none}
+.fb-hint.show{display:block}
 
-.drag-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 15px;
-  background: rgba(14,116,144,0.05);
-  border: 1px solid rgba(14,116,144,0.12);
-  border-radius: 20px;
-  font-size: 14px;
-  color: var(--text);
-  margin: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  -webkit-user-select: none;
-  user-select: none;
-}
-.drag-item:active { transform: scale(0.95); }
-.drag-item.placed { opacity: 0.3; pointer-events: none; }
-.drag-item.correct-item { background: var(--green-bg); border-color: rgba(22,163,74,0.25); color: #166534; }
-.drag-item.incorrect-item { background: var(--red-bg); border-color: rgba(220,38,38,0.25); color: #991b1b; }
+/* Confetti */
+.confetti-wrap{position:fixed;top:0;left:0;right:0;height:50vh;pointer-events:none;z-index:999;overflow:hidden}
+.confetti{position:absolute;width:8px;height:8px;border-radius:2px;animation:confDrop 1.2s ease-out forwards}
+@keyframes confDrop{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(50vh) rotate(720deg);opacity:0}}
+/* Shake */
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .4s ease}
+/* Pulse */
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,163,74,0.3)}70%{box-shadow:0 0 0 12px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}
+.pulse-ok{animation:pulse .6s ease}
+/* #23 Skeleton */
+.skel{background:linear-gradient(90deg,var(--border) 25%,var(--border2) 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ===== BOTTOM ACTION BAR ===== */
-.bottom-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  padding: 12px 16px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(14,116,144,0.1);
-  z-index: 20;
-  display: flex;
-  gap: 10px;
-}
-.btn {
-  flex: 1;
-  padding: 15px 20px;
-  border-radius: var(--radius-sm);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-}
-.btn:active { transform: scale(0.97); }
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(212,149,10,0.25);
-}
-.btn-primary:disabled { opacity: 0.4; pointer-events: none; }
-.btn-secondary {
-  background: var(--bg-card);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-.btn-success {
-  background: linear-gradient(135deg, var(--green), #22c55e);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(22,163,74,0.25);
-}
+/* ===== #15 SVG DIAGRAMS ===== */
+.diagram{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin:16px 0;text-align:center;overflow-x:auto}
+.diagram svg{max-width:100%;height:auto}
+.diagram-label{font-size:11px;color:var(--dim);margin-top:8px;font-style:italic}
 
-/* ===== SUMMARY SCREEN ===== */
-.summary-circle {
-  width: 140px; height: 140px;
-  border-radius: 50%;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  margin: 24px auto;
-  position: relative;
-}
-.summary-circle::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 4px solid rgba(14,116,144,0.1);
-}
-.summary-circle::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 4px solid transparent;
-  border-top-color: var(--gold);
-  transform: rotate(-90deg);
-}
-.summary-score {
-  font-family: 'Space Mono', monospace;
-  font-size: 42px;
-  font-weight: 700;
-  color: var(--text-bright);
-  line-height: 1;
-}
-.summary-total { font-size: 13px; color: var(--text-dim); }
-.summary-message {
-  text-align: center;
-  font-family: 'Fraunces', serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--text-bright);
-  margin: 16px 0 8px;
-}
-.summary-sub { text-align: center; font-size: 15px; color: var(--text-dim); margin-bottom: 24px; }
+/* ===== SUMMARY ===== */
+.sum-circle{width:130px;height:130px;border-radius:50%;border:5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px auto;transition:border-color .5s}
+.sum-circle.great{border-color:var(--green)}.sum-circle.ok{border-color:var(--gold)}.sum-circle.low{border-color:var(--red)}
+.sum-score{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:var(--bright)}
+.sum-total{font-size:13px;color:var(--dim)}
+.sum-msg{text-align:center;font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--bright);margin:12px 0 4px}
+.sum-sub{text-align:center;font-size:14px;color:var(--dim);margin-bottom:16px}
+/* #19 Error review */
+.review-card{background:var(--red-g);border:1px solid rgba(220,38,38,0.1);border-radius:var(--rs);padding:14px;margin-bottom:8px}
+.review-q{font-size:14px;color:var(--bright);margin-bottom:4px}
+.review-a{font-size:13px;color:var(--green)}
+/* #13 Cheatsheet */
+.cheat{background:var(--card);border:1.5px solid var(--gold);border-radius:var(--r);padding:18px;margin-top:16px}
+.cheat-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--gold-d);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cheat-item{font-size:13.5px;color:var(--text);padding:6px 0;border-bottom:1px solid var(--border2)}
 
-.summary-breakdown {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-card);
-}
-.summary-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(14,116,144,0.06);
-}
-.summary-item:last-child { border-bottom: none; }
-.summary-item-icon { font-size: 20px; }
-.summary-item-text { flex: 1; font-size: 14.5px; color: var(--text); }
-.summary-item-result { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; }
-.summary-item-result.ok { color: var(--green); }
-.summary-item-result.fail { color: var(--red); }
-
-/* ===== UTILITIES ===== */
-.mt-sm { margin-top: 8px; }
-.mt-md { margin-top: 16px; }
-.mt-lg { margin-top: 24px; }
-.text-center { text-align: center; }
-.hidden { display: none !important; }
+/* Workshop banner */
+.ws-banner{background:linear-gradient(135deg,var(--gold-g),var(--teal-g));border:1.5px solid rgba(212,149,10,0.18);border-radius:var(--r);padding:16px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s}
+.ws-banner:active{transform:scale(0.98)}
+.ws-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold-b));border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(212,149,10,0.15)}
+.ws-icon svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:1.8}
 
 /* ===== ANIMATIONS ===== */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:up .4s ease forwards}
+.d1{animation-delay:.07s;opacity:0}.d2{animation-delay:.14s;opacity:0}.d3{animation-delay:.21s;opacity:0}
+
+/* ===== #24 RESPONSIVE ===== */
+@media(min-width:768px){
+html{font-size:18px}
+.screen{max-width:700px;margin:0 auto;left:50%;transform:translateX(-50%);right:auto;width:100%;border-left:1px solid var(--border2);border-right:1px solid var(--border2)}
+.top,.bot{max-width:700px;left:50%;transform:translateX(-50%);right:auto;width:100%}
+.cnt{padding:28px 32px 110px}.bot{padding:14px 32px}
+.card{padding:24px 28px}
+.opt:hover:not(.disabled){background:var(--teal-g);border-color:rgba(14,116,144,0.18)}
+.tf-btn:hover:not(.disabled){background:var(--teal-g)}
+.lv-card:hover:not(.locked){border-color:rgba(14,116,144,0.22);box-shadow:var(--shadow2)}
+.btn:hover{filter:brightness(1.05)}
 }
-.animate-in { animation: slideUp 0.5s ease forwards; }
-.delay-1 { animation-delay: 0.1s; opacity: 0; }
-.delay-2 { animation-delay: 0.2s; opacity: 0; }
-.delay-3 { animation-delay: 0.3s; opacity: 0; }
-.delay-4 { animation-delay: 0.4s; opacity: 0; }
-
-/* scrollbar */
-.content::-webkit-scrollbar { width: 3px; }
-.content::-webkit-scrollbar-track { background: transparent; }
-.content::-webkit-scrollbar-thumb { background: rgba(14,116,144,0.15); border-radius: 3px; }
-
-/* ===== CASE STUDY SPECIAL ===== */
-.case-vignette {
-  background: linear-gradient(135deg, rgba(212,149,10,0.06), rgba(14,116,144,0.05));
-  border: 1px solid rgba(212,149,10,0.15);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 20px;
-  position: relative;
-  box-shadow: var(--shadow-card);
-}
-.case-vignette::before {
-  content: '📋';
-  position: absolute;
-  top: -12px; left: 16px;
-  font-size: 24px;
-}
-.case-vignette-title {
-  font-family: 'Fraunces', serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--gold-dim);
-  margin-bottom: 10px;
-  margin-top: 4px;
-}
-.case-vignette p { font-size: 14.5px; color: var(--text); line-height: 1.75; margin-bottom: 8px; }
-.case-vignette p:last-child { margin-bottom: 0; }
-
-.step-indicator {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-.step-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(14,116,144,0.12);
-  transition: all 0.3s;
-}
-.step-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
-.step-dot.done { background: var(--green); }
-
-/* ============================================= */
-/* ===== RESPONSIVE: TABLET (768px+) ===== */
-/* ============================================= */
-@media (min-width: 768px) {
-  html, body { font-size: 18px; }
-
-  .screen {
-    max-width: 680px;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-    width: 100%;
-    border-left: 1px solid rgba(14,116,144,0.08);
-    border-right: 1px solid rgba(14,116,144,0.08);
-    background: rgba(255,255,255,0.25);
-  }
-  .screen.active { transform: translateX(-50%); }
-  .screen.exit-left { transform: translateX(calc(-50% - 30px)); opacity: 0; }
-
-  .topbar {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 14px 28px;
-    border-radius: 0 0 16px 16px;
-  }
-  .topbar-title { font-size: 18px; }
-  .topbar-subtitle { font-size: 13px; }
-  .topbar-progress-bar { width: 80px; height: 7px; }
-  .topbar-progress-text { font-size: 12px; }
-
-  .content { padding: 28px 32px 110px; }
-
-  .bottom-bar {
-    max-width: 680px;
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-    width: 100%;
-    padding: 14px 32px;
-    border-radius: 16px 16px 0 0;
-  }
-
-  .home-icon { width: 90px; height: 90px; font-size: 46px; border-radius: 26px; }
-  .home-title { font-size: 32px; }
-  .home-desc { font-size: 17px; max-width: 440px; }
-  .home-stat-num { font-size: 28px; }
-  .home-stat-label { font-size: 13px; }
-  .home-stats { gap: 36px; }
-
-  .workshop-banner { padding: 22px 24px; gap: 18px; }
-  .workshop-icon { width: 58px; height: 58px; font-size: 28px; }
-  .workshop-name { font-size: 18px; }
-  .workshop-desc { font-size: 14px; }
-
-  .levels-section-title { font-size: 15px; margin: 28px 0 18px; }
-  .level-card { padding: 20px 22px; gap: 16px; }
-  .level-num { width: 50px; height: 50px; font-size: 20px; border-radius: 16px; }
-  .level-name { font-size: 18px; }
-  .level-desc { font-size: 14.5px; }
-
-  .theory-block { padding: 24px 28px; }
-  .theory-label { font-size: 12px; }
-  .theory-heading { font-size: 24px; }
-  .theory-text { font-size: 16.5px; line-height: 1.8; }
-  .theory-highlight { font-size: 16.5px; padding: 16px 20px; }
-  .theory-source { font-size: 13px; }
-  .theory-example { padding: 16px 20px; }
-  .theory-example-label { font-size: 13px; }
-  .theory-example p { font-size: 15.5px; }
-
-  .question-card { padding: 24px 28px; }
-  .question-number { font-size: 12px; }
-  .question-text { font-size: 18.5px; line-height: 1.6; }
-  .question-context { font-size: 15.5px; padding: 12px 16px; }
-
-  .option { padding: 16px 18px; gap: 14px; }
-  .option-marker { width: 28px; height: 28px; font-size: 14px; }
-  .option-text { font-size: 16.5px; line-height: 1.6; }
-
-  .feedback { font-size: 15.5px; padding: 16px 20px; }
-
-  .btn { font-size: 17px; padding: 16px 24px; }
-
-  .summary-circle { width: 160px; height: 160px; }
-  .summary-score { font-size: 48px; }
-  .summary-total { font-size: 15px; }
-  .summary-message { font-size: 26px; }
-  .summary-sub { font-size: 16px; }
-  .summary-item-text { font-size: 15.5px; }
-
-  .case-vignette { padding: 24px 28px; }
-  .case-vignette-title { font-size: 20px; }
-  .case-vignette p { font-size: 15.5px; }
-
-  .classify-label { font-size: 15px; padding: 5px 14px; }
-  .drag-item { font-size: 15px; padding: 10px 16px; }
-}
-
-/* ============================================= */
-/* ===== RESPONSIVE: DESKTOP (1024px+) ===== */
-/* ============================================= */
-@media (min-width: 1024px) {
-  html, body { font-size: 18.5px; }
-
-  .screen {
-    max-width: 760px;
-    box-shadow: 0 0 60px rgba(14,116,144,0.06);
-  }
-
-  .topbar { max-width: 760px; padding: 16px 36px; }
-  .topbar-title { font-size: 19px; }
-  .topbar-back { width: 40px; height: 40px; font-size: 20px; }
-  .topbar-back:hover { background: var(--bg-mid); border-color: var(--blue); }
-
-  .content { padding: 32px 40px 120px; }
-  .bottom-bar { max-width: 760px; padding: 16px 40px; }
-
-  .home-title { font-size: 36px; }
-  .home-desc { font-size: 18px; max-width: 480px; }
-  .home-icon { width: 100px; height: 100px; font-size: 50px; border-radius: 28px; }
-
-  .workshop-banner { padding: 24px 28px; border-radius: 20px; }
-  .workshop-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(212,149,10,0.15); }
-  .workshop-name { font-size: 19px; }
-  .workshop-desc { font-size: 15px; }
-
-  .level-card { padding: 22px 26px; border-radius: 18px; }
-  .level-card:hover { background: var(--bg-card-hover); border-color: rgba(14,116,144,0.25); transform: translateY(-1px); }
-  .level-card:hover::before { opacity: 1; }
-  .level-name { font-size: 19px; }
-  .level-desc { font-size: 15px; }
-
-  .theory-block { padding: 28px 32px; border-radius: 18px; }
-  .theory-heading { font-size: 26px; }
-  .theory-text { font-size: 17px; }
-  .theory-highlight { font-size: 17px; padding: 18px 22px; }
-  .theory-example p { font-size: 16px; }
-
-  .question-card { padding: 28px 32px; border-radius: 18px; }
-  .question-text { font-size: 19.5px; }
-  .question-context { font-size: 16px; }
-
-  .option { padding: 18px 20px; border-radius: 14px; }
-  .option:hover { background: rgba(14,116,144,0.03); border-color: rgba(14,116,144,0.2); }
-  .option-text { font-size: 17px; }
-
-  .feedback { font-size: 16px; padding: 18px 22px; }
-
-  .btn { font-size: 17.5px; padding: 17px 28px; border-radius: 14px; }
-  .btn:hover { filter: brightness(1.05); }
-
-  .case-vignette { padding: 28px 32px; border-radius: 18px; }
-  .case-vignette-title { font-size: 21px; }
-  .case-vignette p { font-size: 16px; }
-
-  .summary-message { font-size: 28px; }
-  .summary-sub { font-size: 17px; }
-}
-
-/* ============================================= */
-/* ===== RESPONSIVE: WIDE DESKTOP (1400px+) ===== */
-/* ============================================= */
-@media (min-width: 1400px) {
-  .screen { max-width: 820px; }
-  .topbar { max-width: 820px; }
-  .bottom-bar { max-width: 820px; }
-  .content { padding: 36px 48px 120px; }
+@media(min-width:1024px){
+html{font-size:18.5px}
+.screen{max-width:780px;box-shadow:0 0 80px rgba(0,0,0,0.05)}
+.top,.bot{max-width:780px}
+.cnt{padding:32px 40px 120px}.bot{padding:16px 40px}
+.card{padding:28px 36px}
+.home-title{font-size:34px}
 }
 </style>
 </head>
 <body>
-<canvas id="particles-canvas"></canvas>
-
-<!-- ==================== HOME SCREEN ==================== -->
-<div class="screen active" id="screen-home">
-  <div class="topbar">
-    <div class="topbar-back" onclick="goToDashboard()">←</div>
-    <div class="topbar-info">
-      <div class="topbar-title">Fase 1 · Fundamentos</div>
-      <div class="topbar-subtitle">Módulo 1 de 3</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="home-hero animate-in">
-      <div class="home-icon">📋</div>
-      <div class="home-title">Operacionalización de la Conducta</div>
-      <div class="home-desc">Aprende a definir conductas de forma medible, observable y funcional — la base de todo análisis funcional.</div>
-      <div class="home-stats">
-        <div class="home-stat">
-          <div class="home-stat-num">6</div>
-          <div class="home-stat-label">Niveles</div>
-        </div>
-        <div class="home-stat">
-          <div class="home-stat-num">24</div>
-          <div class="home-stat-label">Ejercicios</div>
-        </div>
-        <div class="home-stat">
-          <div class="home-stat-num">~50</div>
-          <div class="home-stat-label">Minutos</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- WORKSHOP BANNER -->
-    <a class="workshop-banner animate-in delay-1" href="talleropera.html">
-      <div class="workshop-icon">🔬</div>
-      <div class="workshop-info">
-        <div class="workshop-tag">⭐ Herramienta práctica</div>
-        <div class="workshop-name">Taller de Operacionalización</div>
-        <div class="workshop-desc">Practica convertir quejas vagas en formulaciones conductuales medibles paso a paso</div>
-      </div>
-      <div class="workshop-arrow">›</div>
-    </a>
-
-    <div class="levels-section-title animate-in delay-1">Niveles del módulo</div>
-
-    <div class="level-card animate-in delay-1" onclick="startLevel(1)">
-      <div class="level-num">1</div>
-      <div class="level-info">
-        <div class="level-name">¿Qué es Conducta?</div>
-        <div class="level-desc">Reconoce qué es y qué no es conducta desde el análisis del comportamiento</div>
-      </div>
-      <div class="level-arrow">›</div>
-    </div>
-
-    <div class="level-card animate-in delay-2 locked" id="lcard-2" onclick="startLevel(2)">
-      <div class="level-num">2</div>
-      <div class="level-info">
-        <div class="level-name">Triple Sistema de Respuesta</div>
-        <div class="level-desc">Clasifica conductas en componentes motor, cognitivo y fisiológico</div>
-      </div>
-      <div class="level-arrow">›</div>
-    </div>
-
-    <div class="level-card animate-in delay-2 locked" id="lcard-3" onclick="startLevel(3)">
-      <div class="level-num">3</div>
-      <div class="level-info">
-        <div class="level-name">Parámetros de la Conducta</div>
-        <div class="level-desc">Identifica frecuencia, intensidad, duración y ocurrencia</div>
-      </div>
-      <div class="level-arrow">›</div>
-    </div>
-
-    <div class="level-card animate-in delay-3 locked" id="lcard-4" onclick="startLevel(4)">
-      <div class="level-num">4</div>
-      <div class="level-info">
-        <div class="level-name">De la Etiqueta a la Operacionalización</div>
-        <div class="level-desc">Transforma descripciones vagas en definiciones medibles y observables</div>
-      </div>
-      <div class="level-arrow">›</div>
-    </div>
-
-    <div class="level-card animate-in delay-3 locked" id="lcard-5" onclick="startLevel(5)">
-      <div class="level-num">5</div>
-      <div class="level-info">
-        <div class="level-name">Función vs. Morfología</div>
-        <div class="level-desc">Diferencia la topografía de la función en casos concretos</div>
-      </div>
-      <div class="level-arrow">›</div>
-    </div>
-
-    <div class="level-card animate-in delay-4 locked" id="lcard-6" onclick="startLevel(6)">
-      <div class="level-num">6</div>
-      <div class="level-info">
-        <div class="level-name">Caso Clínico Integrador</div>
-        <div class="level-desc">Aplica todo lo aprendido en una viñeta clínica simulada</div>
-      </div>
-      <div class="level-arrow">›</div>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== LEVEL SCREEN (dynamic) ==================== -->
-<div class="screen" id="screen-level">
-  <div class="topbar">
-    <div class="topbar-back" onclick="backToHome()">←</div>
-    <div class="topbar-info">
-      <div class="topbar-title" id="level-topbar-title">Nivel 1</div>
-      <div class="topbar-subtitle" id="level-topbar-sub">¿Qué es Conducta?</div>
-    </div>
-    <div class="topbar-progress-wrap">
-      <div class="topbar-progress-bar">
-        <div class="topbar-progress-fill" id="level-progress-fill" style="width:0%"></div>
-      </div>
-      <div class="topbar-progress-text" id="level-progress-text">0%</div>
-    </div>
-  </div>
-  <div class="content" id="level-content">
-    <!-- Dynamic content injected here -->
-  </div>
-  <div class="bottom-bar" id="level-bottom">
-    <button class="btn btn-primary" id="btn-check" onclick="checkCurrentQuestion()" disabled>Comprobar</button>
-  </div>
-</div>
-
-<!-- ==================== SUMMARY SCREEN ==================== -->
-<div class="screen" id="screen-summary">
-  <div class="topbar">
-    <div class="topbar-back" onclick="backToHome()">←</div>
-    <div class="topbar-info">
-      <div class="topbar-title">Resumen del Nivel</div>
-      <div class="topbar-subtitle" id="summary-level-name"></div>
-    </div>
-  </div>
-  <div class="content" id="summary-content">
-    <!-- Dynamic -->
-  </div>
-  <div class="bottom-bar">
-    <button class="btn btn-secondary" onclick="backToHome()">Volver al módulo</button>
-    <button class="btn btn-success" id="btn-next-level" onclick="goNextLevel()">Siguiente nivel ›</button>
-  </div>
-</div>
+<canvas id="ptc"></canvas>
+<div class="screen" id="app" role="main" aria-label="Módulo de aprendizaje"></div>
+<!-- #2 Confetti container -->
+<div class="confetti-wrap" id="confWrap" aria-hidden="true"></div>
 
 <script>
-// ===================================================================
-// GOLDEN FLOATING PARTICLES
-// ===================================================================
-(function() {
-  const canvas = document.getElementById('particles-canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  const PARTICLE_COUNT = 28;
+// ===== PARTICLES =====
+(function(){const c=document.getElementById('ptc'),x=c.getContext('2d');let ps=[];function rs(){c.width=innerWidth;c.height=innerHeight}addEventListener('resize',rs);rs();class P{constructor(){this.r()}r(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2.8+.8;this.sx=(Math.random()-.5)*.2;this.sy=-Math.random()*.3-.06;this.o=Math.random()*.4+.1;this.p=Math.random()*Math.PI*2;this.ps=Math.random()*.015+.005}u(){this.x+=this.sx;this.y+=this.sy;this.p+=this.ps;if(this.y<-10){this.y=c.height+10;this.x=Math.random()*c.width}}d(){const g=Math.sin(this.p)*.15+.85,a=this.o*g;x.save();x.globalAlpha=a;x.shadowBlur=this.s*3;x.shadowColor='rgba(212,149,10,0.3)';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(222,165,30,${a})`;x.fill();x.restore()}}for(let i=0;i<20;i++)ps.push(new P);(function a(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});requestAnimationFrame(a)})()})();
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  class Particle {
-    constructor() { this.reset(); }
-    reset() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 3.5 + 1;
-      this.speedX = (Math.random() - 0.5) * 0.3;
-      this.speedY = -Math.random() * 0.4 - 0.1;
-      this.opacity = Math.random() * 0.5 + 0.15;
-      this.pulse = Math.random() * Math.PI * 2;
-      this.pulseSpeed = Math.random() * 0.02 + 0.008;
-    }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
-      this.pulse += this.pulseSpeed;
-      if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) {
-        this.y = canvas.height + 10;
-        this.x = Math.random() * canvas.width;
-      }
-    }
-    draw() {
-      const glow = Math.sin(this.pulse) * 0.15 + 0.85;
-      const alpha = this.opacity * glow;
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      // golden glow
-      ctx.shadowBlur = this.size * 4;
-      ctx.shadowColor = 'rgba(212, 149, 10, 0.4)';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(222, 165, 30, ${alpha})`;
-      ctx.fill();
-      // bright center
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 220, 100, ${alpha * 0.8})`;
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-
-  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();
-// ===================================================================
-// DATA: ALL LEVELS CONTENT
-// ===================================================================
-const LEVELS = {
-  1: {
-    title: "¿Qué es Conducta?",
-    theory: `
-      <div class="theory-block">
-        <div class="theory-label">📖 Concepto fundamental</div>
-        <div class="theory-heading">La conducta es todo lo que hace un organismo</div>
-        <div class="theory-text">Desde el Análisis del Comportamiento, la conducta se define como <strong>cualquier actividad que realiza un organismo</strong>. No es algo que se "tiene", sino algo que se "hace". Es una propiedad relacional, no esencial: surge de la interacción entre el organismo y su ambiente.</div>
-        <div class="theory-highlight">
-          <em>Regla clave:</em> Expresar la conducta como un <em>verbo</em> (acción), no como un <em>sustantivo</em> (cosa). Un enamorado no "tiene amor": <em>ama</em>. Un delincuente no "tiene agresividad": <em>agrede</em>. Una persona no "tiene memoria": <em>recuerda</em>.
-        </div>
-        <div class="theory-source">— Procesos Psicológicos Básicos: Un Análisis Funcional (Gutiérrez Domínguez)</div>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">🔬 Conducta pública y privada</div>
-        <div class="theory-heading">Lo encubierto también es conducta</div>
-        <div class="theory-text">El Conductismo Radical de Skinner incluye los <strong>eventos privados</strong> (pensamientos, emociones, sensaciones) como conducta legítima. Un evento privado no tiene propiedades especiales por ser inaccesible a otros; se distingue solo por su <strong>accesibilidad limitada</strong>, no por su naturaleza.</div>
-        <div class="theory-text">Pensar, imaginar, emocionarse, percibir... son conductas que operan bajo los mismos principios de aprendizaje que las conductas manifiestas. La diferencia es de <strong>accesibilidad</strong>, no de esencia.</div>
-        <div class="theory-example">
-          <div class="theory-example-label">Ejemplo</div>
-          <p>Cuando en un examen imaginas objetos en movimiento para resolver un problema de física, estás emitiendo una <strong>conducta operante encubierta</strong> (visión operante) que tiene consecuencias sobre tu conducta manifiesta.</p>
-        </div>
-        <div class="theory-source">— Skinner (1953), Ciencia y Conducta Humana</div>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">⚙️ Principio del Análisis Funcional</div>
-        <div class="theory-heading">La conducta como fenómeno interactivo</div>
-        <div class="theory-text">Desde el modelo del Análisis Funcional, la conducta no se entiende como una acción aislada, sino como un <strong>fenómeno interactivo</strong>: la interacción de alguna actividad (física, cognitiva o fisiológica) de un ser en un contexto determinado.</div>
-        <div class="theory-highlight">
-          Solo entendiendo el <em>contexto</em> (antecedente o consecuente) donde se produce una acción, podremos entender el comportamiento del sujeto y su <em>función</em>.
-        </div>
-        <div class="theory-source">— Análisis Funcional de la Conducta</div>
-      </div>
-    `,
-    questions: [
-      {
-        type: 'single',
-        text: '¿Cuál de las siguientes afirmaciones refleja mejor la definición de conducta desde el Análisis del Comportamiento?',
-        options: [
-          'La conducta es únicamente lo que podemos ver y medir externamente',
-          'La conducta es cualquier actividad que realiza un organismo, incluyendo lo público y lo privado',
-          'La conducta es la manifestación externa de procesos mentales internos',
-          'La conducta es sinónimo de movimiento corporal voluntario'
-        ],
-        correct: 1,
-        feedback_ok: '¡Exacto! La conducta incluye toda actividad del organismo. Skinner definió conducta como "cualquier cosa que haga un organismo", incluyendo pensar, sentir e imaginar.',
-        feedback_fail: 'La respuesta correcta es la B. Desde el Conductismo Radical, la conducta incluye tanto lo público (observable por otros) como lo privado (pensamientos, emociones). Se distingue por accesibilidad, no por naturaleza.'
-      },
-      {
-        type: 'single',
-        text: 'Un paciente dice: "Tengo mucha ansiedad". Desde la perspectiva conductual, ¿cuál es el problema con esta formulación?',
-        options: [
-          'Debería decir "sufro de ansiedad" para ser más preciso',
-          'Trata la ansiedad como una cosa que se posee, cuando debería describirse como algo que se hace',
-          'No hay ningún problema, es una descripción clínica válida',
-          'Debería especificar el diagnóstico del DSM'
-        ],
-        correct: 1,
-        feedback_ok: '¡Correcto! La conducta se expresa como verbo, no sustantivo. No se "tiene" ansiedad — el organismo "se activa", "anticipa peligro", "evita situaciones". Describir conductas como posesiones oscurece las relaciones funcionales.',
-        feedback_fail: 'La respuesta correcta es la B. Desde el análisis conductual, la conducta es una propiedad relacional, no esencial. Expresarla como sustantivo ("tener ansiedad") impide ver las relaciones funcionales con el entorno.'
-      },
-      {
-        type: 'single',
-        text: '¿Cuál de estas opciones es un ejemplo de conducta privada?',
-        options: [
-          'Un niño levanta la mano en clase',
-          'Una persona imagina el rostro de un ser querido al oler su perfume',
-          'Un atleta corre los 100 metros',
-          'Un perro saliva ante el sonido de una campana'
-        ],
-        correct: 1,
-        feedback_ok: '¡Bien! Imaginar es una conducta privada (visión condicionada). Es conducta legítima que opera bajo principios de condicionamiento clásico: el perfume (EC) elicita la imagen (RC privada).',
-        feedback_fail: 'La respuesta correcta es la B. Imaginar un rostro al oler un perfume es una respuesta condicionada privada. Solo es accesible al individuo que la emite, pero es conducta real sometida a las mismas leyes del aprendizaje.'
-      },
-      {
-        type: 'single',
-        text: 'Desde el Análisis Funcional, ¿por qué es fundamental entender el contexto para comprender una conducta?',
-        options: [
-          'Porque el contexto determina el diagnóstico clínico del paciente',
-          'Porque la conducta es un fenómeno interactivo cuya función solo se entiende en relación con su antecedente y consecuente',
-          'Porque sin contexto no podemos clasificar la conducta en el DSM',
-          'Porque el contexto nos dice qué piensa el paciente'
-        ],
-        correct: 1,
-        feedback_ok: '¡Perfecto! La conducta es interacción organismo-entorno. Su función emerge de esa relación. Sin conocer antecedentes y consecuentes, no podemos comprender por qué una persona se comporta como lo hace.',
-        feedback_fail: 'La respuesta correcta es la B. Desde el Análisis Funcional, la conducta es un fenómeno interactivo. Solo entendiendo el contexto (antecedente y consecuente) podemos entender la función del comportamiento.'
-      }
-    ]
-  },
-
-  2: {
-    title: "Triple Sistema de Respuesta",
-    theory: `
-      <div class="theory-block">
-        <div class="theory-label">📖 Los tres componentes</div>
-        <div class="theory-heading">Motor, Cognitivo y Fisiológico</div>
-        <div class="theory-text">Cuando describimos una conducta-problema para el análisis funcional, debemos atender a su <strong>morfología</strong>, que se descompone en tres sistemas de respuesta:</div>
-        <div class="theory-highlight">
-          <em>Motor:</em> Acciones manifiestas y observables (correr, gritar, golpear, escribir, evitar una situación).
-        </div>
-        <div class="theory-highlight">
-          <em>Cognitivo:</em> Verbalizaciones encubiertas (pensamientos) asociadas a estímulos que tienen alguna consecuencia relevante clínicamente. "Pensar por pensar" no cuenta.
-        </div>
-        <div class="theory-highlight">
-          <em>Fisiológico:</em> Respuestas del organismo: tensión muscular, sudoración, taquicardia, mareos, temblor, etc. Las <em>respuestas emocionales</em> son la combinación de componentes cognitivos y fisiológicos.
-        </div>
-        <div class="theory-source">— Análisis Funcional de la Conducta</div>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">🔑 Principio clave</div>
-        <div class="theory-heading">Mismos principios de aprendizaje</div>
-        <div class="theory-text">Ya sean componentes manifiestos o encubiertos, lo importante es que <strong>operan bajo los mismos principios de aprendizaje</strong>. De ahí que se consideren equivalentes desde el punto de vista funcional.</div>
-        <div class="theory-example">
-          <div class="theory-example-label">Caso ejemplo: Fobia a las arañas</div>
-          <p><strong>Motor:</strong> Conductas de escape (salir corriendo, pedir ayuda para que alguien la mate).</p>
-          <p><strong>Fisiológico:</strong> Escalofríos, temblor, tensión muscular, sudoración, taquicardia.</p>
-          <p><strong>Cognitivo:</strong> Verbalizaciones anticipatorias sobre la probabilidad de aparición.</p>
-        </div>
-      </div>
-    `,
-    questions: [
-      {
-        type: 'single',
-        text: 'Un cliente con fobia social, antes de una presentación, piensa: "Van a notar que estoy nervioso y se van a reír de mí". ¿A qué componente pertenece?',
-        options: ['Motor', 'Cognitivo', 'Fisiológico', 'Emocional puro'],
-        correct: 1,
-        feedback_ok: '¡Correcto! Es una verbalización encubierta (pensamiento) anticipatoria que tiene función discriminativa para conductas de evitación. Es componente cognitivo.',
-        feedback_fail: 'La respuesta correcta es Cognitivo. Los pensamientos anticipatorios son verbalizaciones encubiertas que, cuando tienen consecuencias relevantes clínicamente (como discriminar la evitación), se clasifican como componente cognitivo.'
-      },
-      {
-        type: 'single',
-        text: 'Tras recibir una mala noticia, una persona siente un nudo en el estómago y taquicardia. ¿Qué componente es?',
-        options: ['Motor', 'Cognitivo', 'Fisiológico', 'Ninguno, no es conducta'],
-        correct: 2,
-        feedback_ok: '¡Exacto! Las respuestas del sistema nervioso autónomo (taquicardia, sensaciones viscerales) son componentes fisiológicos. Son respuestas del organismo ante la estimulación.',
-        feedback_fail: 'La respuesta correcta es Fisiológico. La taquicardia y las sensaciones viscerales son respuestas fisiológicas del organismo. Son conducta real, aunque el acceso sea principalmente privado.'
-      },
-      {
-        type: 'single',
-        text: 'Una persona con agorafobia sale corriendo de un centro comercial cuando empieza a sentirse agobiada. ¿A qué componente corresponde "salir corriendo"?',
-        options: ['Motor', 'Cognitivo', 'Fisiológico', 'Emocional'],
-        correct: 0,
-        feedback_ok: '¡Bien! Salir corriendo es una acción manifiesta observable — componente motor. Es una conducta de escape que probablemente se mantiene por reforzamiento negativo (reducción de la activación aversiva).',
-        feedback_fail: 'La respuesta correcta es Motor. Salir corriendo es una acción observable y manifiesta, por tanto es componente motor. Es una conducta de escape mantenida típicamente por reforzamiento negativo.'
-      },
-      {
-        type: 'single',
-        text: 'Desde el Análisis Funcional, las respuestas emocionales (por ejemplo, sentir "miedo") se consideran:',
-        options: [
-          'Un cuarto componente independiente del triple sistema',
-          'La combinación de componentes cognitivos y fisiológicos',
-          'Exclusivamente componente fisiológico',
-          'No son conducta, son estados mentales internos'
-        ],
-        correct: 1,
-        feedback_ok: '¡Perfecto! Las respuestas emocionales son el resultado de la combinación de componentes cognitivos (verbalizaciones encubiertas) y fisiológicos (activación del organismo). No son un sistema aparte.',
-        feedback_fail: 'La respuesta correcta es la B. Desde el Análisis Funcional, las emociones no son un sistema separado sino la combinación de componentes cognitivos y fisiológicos actuando conjuntamente.'
-      }
-    ]
-  },
-
-  3: {
-    title: "Parámetros de la Conducta",
-    theory: `
-      <div class="theory-block">
-        <div class="theory-label">📖 Topografía conductual</div>
-        <div class="theory-heading">Los cuatro parámetros para medir la conducta</div>
-        <div class="theory-text">Para describir adecuadamente una conducta-problema necesitamos cuantificarla a través de sus <strong>parámetros topográficos</strong>. Estos son los aspectos medibles que permiten operativizar la conducta:</div>
-        <div class="theory-highlight"><em>Ocurrencia:</em> Si la conducta se da o no en una situación determinada. Es el parámetro más básico. ¿Aparece la conducta?</div>
-        <div class="theory-highlight"><em>Frecuencia:</em> Cuántas veces aparece la conducta en un período de tiempo. Permite establecer líneas base y medir cambios.</div>
-        <div class="theory-highlight"><em>Intensidad:</em> La fuerza o magnitud con la que se presenta la conducta. Por ejemplo, no es lo mismo un llanto leve que uno inconsolable.</div>
-        <div class="theory-highlight"><em>Duración:</em> El tiempo que la conducta se mantiene activa. Un episodio de rumia que dura 5 minutos es diferente de uno que dura 3 horas.</div>
-        <div class="theory-source">— Análisis Funcional de la Conducta</div>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">⚙️ Aplicación clínica</div>
-        <div class="theory-heading">¿Por qué medir parámetros?</div>
-        <div class="theory-text">El análisis de secuencias debe incluir <strong>aspectos cuantitativos, medibles y operativizables</strong>. Los parámetros nos permiten establecer una línea base antes de la intervención, evaluar si el tratamiento produce cambios, y comunicarnos con precisión entre profesionales.</div>
-        <div class="theory-text">Las conductas operantes varían en sus parámetros (frecuencia, intensidad y duración) debido a los estímulos consecuentes. Por eso, medir estos parámetros antes y después de modificar contingencias es la forma de demostrar cambio terapéutico.</div>
-      </div>
-    `,
-    questions: [
-      {
-        type: 'single',
-        text: 'Un terapeuta registra que su paciente ha tenido 12 episodios de llanto en la última semana. ¿Qué parámetro está midiendo?',
-        options: ['Ocurrencia', 'Frecuencia', 'Intensidad', 'Duración'],
-        correct: 1,
-        feedback_ok: '¡Correcto! Contar cuántas veces ocurre una conducta en un período de tiempo es medir su frecuencia. Es el parámetro más utilizado para establecer líneas base.',
-        feedback_fail: 'La respuesta correcta es Frecuencia. Registrar el número de episodios en un período de tiempo determinado es una medida de frecuencia.'
-      },
-      {
-        type: 'single',
-        text: 'Una madre reporta: "Cuando mi hijo hace berrinches, se tira al suelo y grita tan fuerte que los vecinos lo escuchan". ¿A qué parámetro se refiere "tan fuerte que los vecinos lo escuchan"?',
-        options: ['Ocurrencia', 'Frecuencia', 'Intensidad', 'Duración'],
-        correct: 2,
-        feedback_ok: '¡Exacto! La magnitud o fuerza del grito (que alcanza a ser escuchado por los vecinos) es una medida de intensidad. Nos habla de la fuerza con que se emite la conducta.',
-        feedback_fail: 'La respuesta correcta es Intensidad. La fuerza del grito, que incluso los vecinos escuchan, nos indica la magnitud o intensidad de la conducta.'
-      },
-      {
-        type: 'single',
-        text: '"El paciente dice que cuando empieza a rumiar sobre el trabajo, puede pasar hasta 2 horas sin poder parar." ¿Qué parámetro se describe aquí?',
-        options: ['Ocurrencia', 'Frecuencia', 'Intensidad', 'Duración'],
-        correct: 3,
-        feedback_ok: '¡Bien! Las 2 horas de rumia indican la duración de la conducta, es decir, cuánto tiempo se mantiene activa en cada episodio.',
-        feedback_fail: 'La respuesta correcta es Duración. El tiempo que la conducta se mantiene activa (2 horas rumiando) es una medida de duración.'
-      },
-      {
-        type: 'single',
-        text: '¿Cuál es la diferencia principal entre "ocurrencia" y "frecuencia"?',
-        options: [
-          'No hay diferencia, son sinónimos',
-          'La ocurrencia indica si la conducta se da o no; la frecuencia cuántas veces se da en un período',
-          'La ocurrencia se mide en tiempo; la frecuencia en número',
-          'La frecuencia es más importante clínicamente que la ocurrencia'
-        ],
-        correct: 1,
-        feedback_ok: '¡Perfecto! La ocurrencia es dicotómica (sí/no, se da o no se da), mientras que la frecuencia cuantifica cuántas veces aparece. Son parámetros complementarios.',
-        feedback_fail: 'La respuesta correcta es la B. La ocurrencia es el parámetro más básico: ¿se da la conducta? (sí/no). La frecuencia añade información cuantitativa: ¿cuántas veces?'
-      }
-    ]
-  },
-
-  4: {
-    title: "De la Etiqueta a la Operacionalización",
-    theory: `
-      <div class="theory-block">
-        <div class="theory-label">📖 El problema de las etiquetas</div>
-        <div class="theory-heading">Rechazar los rótulos, describir la conducta</div>
-        <div class="theory-text">Desde la Modificación de Conducta, las <strong>etiquetas diagnósticas</strong> y el modelo médico pierden valor explicativo. Los sistemas de clasificación basados en la morfología de las respuestas tienen poca utilidad para explicar los problemas. Decir que alguien "es agresivo" o "tiene depresión" no nos dice nada sobre las relaciones funcionales que mantienen esas conductas.</div>
-        <div class="theory-highlight">
-          <em>Operacionalizar</em> significa describir la conducta en términos <em>observables</em>, <em>medibles</em> y <em>cuantificables</em>, atendiendo al triple sistema de respuesta y a sus parámetros. La descripción debe permitir que dos observadores independientes puedan identificar la misma conducta.
-        </div>
-        <div class="theory-source">— Análisis Funcional de la Conducta</div>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">🔬 Esquema E-R-E</div>
-        <div class="theory-heading">Operacionalizar dentro de la secuencia funcional</div>
-        <div class="theory-text">Al identificar los problemas del cliente, hay que <strong>describirlos y operativizarlos</strong> tomando como secuencia básica el esquema <strong>E-R-E</strong> (Estímulo-Respuesta-Estímulo). Debemos prestar especial atención a los aspectos que hacen que esa conducta, para esa persona en concreto, resulte desadaptativa en el contexto y momento en el que tiene lugar.</div>
-        <div class="theory-example">
-          <div class="theory-example-label">Mal vs. Bien operacionalizado</div>
-          <p>❌ "El paciente es agresivo"</p>
-          <p>✅ "El paciente golpea la mesa con el puño (motor) cuando su jefe le asigna tareas nuevas (antecedente), acompañado de tensión mandibular y aumento de tasa cardíaca (fisiológico), pensando 'siempre me cargan a mí todo' (cognitivo). Frecuencia: 3-4 veces/semana."</p>
-        </div>
-      </div>
-    `,
-    questions: [
-      {
-        type: 'single',
-        text: '¿Cuál de las siguientes es la mejor operacionalización de "un niño con problemas de atención"?',
-        options: [
-          'El niño tiene TDAH y no puede concentrarse',
-          'El niño se distrae porque tiene un déficit en la función ejecutiva',
-          'El niño permanece mirando la tarea menos de 2 minutos antes de mirar hacia la ventana o hablar con un compañero, esto ocurre en 8 de cada 10 tareas asignadas',
-          'El niño es distraído y no presta atención a nada'
-        ],
-        correct: 2,
-        feedback_ok: '¡Excelente! Esta descripción es observable (mirar la tarea, mirar la ventana, hablar), medible (menos de 2 min, 8 de 10 tareas) y específica. Permite que cualquier observador identifique la misma conducta.',
-        feedback_fail: 'La respuesta correcta es la C. Es la única que describe la conducta en términos observables y medibles, con parámetros concretos (duración, frecuencia) que permiten evaluación objetiva.'
-      },
-      {
-        type: 'single',
-        text: '"La paciente se muestra dependiente emocionalmente." ¿Por qué esta descripción es inadecuada para un análisis funcional?',
-        options: [
-          'Porque "dependiente" es un término muy coloquial',
-          'Porque es una etiqueta que no describe conductas concretas, medibles ni observables, ni permite identificar relaciones funcionales',
-          'Porque las emociones no se incluyen en el análisis funcional',
-          'Porque falta el nombre del diagnóstico'
-        ],
-        correct: 1,
-        feedback_ok: '¡Correcto! "Dependiente emocionalmente" es una etiqueta descriptiva que no nos dice qué hace la persona concretamente, con qué frecuencia, ni en qué contextos. Sin operacionalizar, no podemos analizar relaciones funcionales.',
-        feedback_fail: 'La respuesta correcta es la B. Las etiquetas como "dependiente" no permiten identificar qué conductas concretas ocurren, en qué situaciones, ni qué las mantiene. Para un AF necesitamos conductas operacionalizadas.'
-      },
-      {
-        type: 'single',
-        text: '¿Cuál es la mejor operacionalización de "el paciente está deprimido"?',
-        options: [
-          'El paciente tiene un trastorno depresivo mayor según DSM-5',
-          'El paciente permanece en cama más de 14 horas diarias (motor), refiere pensamientos de inutilidad como "no sirvo para nada" varias veces al día (cognitivo), y presenta llanto espontáneo 3-4 veces/semana con duración de 10-15 min (motor/fisiológico)',
-          'El paciente se siente triste y sin ganas de nada',
-          'El paciente presenta ánimo bajo y apatía generalizada'
-        ],
-        correct: 1,
-        feedback_ok: '¡Perfecto! Describe conductas concretas en los tres sistemas de respuesta (motor, cognitivo, fisiológico) con parámetros específicos (horas, veces/día, veces/semana, duración). Esto sí permite hacer un análisis funcional.',
-        feedback_fail: 'La respuesta correcta es la B. Es la única que descompone la "depresión" en conductas concretas y medibles dentro del triple sistema de respuesta, con parámetros cuantificables.'
-      },
-      {
-        type: 'single',
-        text: 'Desde el Análisis Funcional, una buena operacionalización de la conducta-problema debe atender a:',
-        options: [
-          'Solo a la funcionalidad (RC u RO)',
-          'Solo a la morfología (motor, cognitivo, fisiológico)',
-          'Funcionalidad, topografía (parámetros) y morfología (triple sistema)',
-          'Al diagnóstico CIE-10 correspondiente'
-        ],
-        correct: 2,
-        feedback_ok: '¡Excelente! El Análisis Funcional indica que para describir la conducta-problema debemos atender a: su funcionalidad (RC vs RO), su topografía (parámetros de ocurrencia, frecuencia, intensidad, duración) y su morfología (componentes motor, cognitivo, fisiológico).',
-        feedback_fail: 'La respuesta correcta es la C. Desde el Análisis Funcional, la descripción completa de la conducta-problema incluye: funcionalidad (¿altera el organismo o actúa sobre el entorno?), topografía (parámetros), y morfología (triple sistema).'
-      }
-    ]
-  },
-
-  5: {
-    title: "Función vs. Morfología",
-    theory: `
-      <div class="theory-block">
-        <div class="theory-label">📖 El concepto de operante</div>
-        <div class="theory-heading">La función define la conducta, no su forma</div>
-        <div class="theory-text">Skinner definió la <strong>operante</strong> por su función (relación con sus consecuencias), no por su morfología o topografía. Una misma clase de respuestas puede tener formas muy distintas pero pertenecer a la misma operante si producen las mismas consecuencias.</div>
-        <div class="theory-highlight">
-          <em>Una misma topografía</em> de respuesta puede tener <em>distintas funciones</em>. Y <em>distintas topografías</em> pueden tener la <em>misma función</em>. Lo que importa al análisis funcional es la relación con antecedentes y consecuentes, no la forma.
-        </div>
-        <div class="theory-source">— Análisis Funcional de la Conducta; Procesos Psicológicos Básicos</div>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">⚠️ Error frecuente</div>
-        <div class="theory-heading">Confundir forma y función en clínica</div>
-        <div class="theory-text">Un error común es asumir que conductas que "se ven igual" tienen la misma función. Por ejemplo, un niño que llora puede estar buscando atención social (R+ social), escapando de una tarea aversiva (R-), o respondiendo a dolor físico (RC). La misma topografía — tres funciones completamente distintas que requieren intervenciones diferentes.</div>
-        <div class="theory-example">
-          <div class="theory-example-label">Ejemplo inverso</div>
-          <p>Tres personas con "el mismo problema" (evitación social): una no va a fiestas, otra habla constantemente para evitar silencios, y otra bebe alcohol antes de socializar. <strong>Tres topografías distintas, misma función:</strong> todas reducen la estimulación aversiva asociada al contacto social (reforzamiento negativo).</p>
-        </div>
-      </div>
-    `,
-    questions: [
-      {
-        type: 'single',
-        text: 'Un niño llora cuando su madre le dice que apague la tablet. La madre, para que pare de llorar, le deja seguir jugando. ¿Cuál es la función más probable del llanto en esta secuencia?',
-        options: [
-          'Expresar tristeza genuina por la pérdida',
-          'Respuesta condicionada de malestar (RC)',
-          'Operante mantenida por reforzamiento negativo (escape de la retirada de la tablet)',
-          'Operante mantenida por reforzamiento positivo (atención social de la madre)'
-        ],
-        correct: 2,
-        feedback_ok: '¡Correcto! El llanto funciona como operante de escape: su consecuencia es la retirada de la situación aversiva (que le quiten la tablet). La madre, al ceder, refuerza negativamente el llanto.',
-        feedback_fail: 'La respuesta correcta es la C. El llanto produce la consecuencia de que no le retiren la tablet (se elimina la situación aversiva). Es reforzamiento negativo: la conducta se mantiene porque elimina algo aversivo.'
-      },
-      {
-        type: 'single',
-        text: 'Dos pacientes llegan quejándose de "insomnio". El paciente A se queda en cama rumiando preocupaciones laborales. El paciente B se queda despierto porque mira el móvil hasta las 3am. ¿Qué ilustra este ejemplo?',
-        options: [
-          'Que el insomnio tiene diferentes causas biológicas',
-          'Que la misma etiqueta topográfica ("insomnio") puede tener funciones y secuencias funcionales completamente distintas',
-          'Que ambos necesitan la misma medicación',
-          'Que el diagnóstico de insomnio es incorrecto en uno de los dos'
-        ],
-        correct: 1,
-        feedback_ok: '¡Exacto! "No dormir" es la misma topografía, pero las cadenas funcionales son muy diferentes. En A, la rumia (conducta encubierta) es mantenida por R- parcial; en B, el uso del móvil es mantenido por R+ (estimulación). Intervenciones muy distintas.',
-        feedback_fail: 'La respuesta correcta es la B. Este ejemplo ilustra por qué las etiquetas topográficas son insuficientes: la misma "forma" de conducta puede tener relaciones funcionales completamente diferentes.'
-      },
-      {
-        type: 'single',
-        text: 'Un adolescente se autolesiona cortándose. En el análisis funcional se descubre que la autolesión reduce rápidamente una activación emocional intensa. ¿Qué tipo de reforzamiento mantiene esta conducta?',
-        options: [
-          'Reforzamiento positivo (obtiene atención)',
-          'Reforzamiento negativo (elimina estimulación aversiva)',
-          'Castigo positivo (se produce dolor)',
-          'No hay reforzamiento, es una conducta patológica'
-        ],
-        correct: 1,
-        feedback_ok: '¡Correcto! La autolesión se mantiene por reforzamiento negativo: la conducta elimina o reduce la activación emocional aversiva. El dolor físico queda subordinado a la función de escape del malestar emocional. Esto es clave para la intervención.',
-        feedback_fail: 'La respuesta correcta es reforzamiento negativo. La conducta se mantiene porque su consecuencia es la reducción de la estimulación aversiva (activación emocional intensa). La forma (cortarse) no define la función (escape).'
-      },
-      {
-        type: 'single',
-        text: '¿Por qué es un error diseñar la misma intervención para todas las personas que "evitan situaciones sociales"?',
-        options: [
-          'Porque algunos diagnósticos son más graves que otros',
-          'Porque la misma topografía (evitación) puede mantenerse por funciones distintas en cada persona, y la intervención debe dirigirse a la función, no a la forma',
-          'Porque cada persona tiene diferente personalidad',
-          'No es un error, la evitación social se trata siempre con exposición'
-        ],
-        correct: 1,
-        feedback_ok: '¡Perfecto! Este es el principio fundamental: la intervención se dirige a la función, no a la forma. Una persona puede evitar por R- (reducir ansiedad), otra por R+ (atención), otra por falta de habilidades. Cada función requiere una estrategia diferente.',
-        feedback_fail: 'La respuesta correcta es la B. Cada caso es único porque la misma topografía de evitación puede responder a diferentes relaciones funcionales. El AF analiza la función específica de cada caso para diseñar la intervención adecuada.'
-      }
-    ]
-  },
-
-  6: {
-    title: "Caso Clínico Integrador",
-    theory: `
-      <div class="case-vignette">
-        <div class="case-vignette-title">Caso clínico: Elena, 28 años</div>
-        <p>Elena acude a consulta porque "tiene mucha ansiedad en el trabajo". Trabaja como coordinadora de proyectos en una empresa de consultoría. Lleva 8 meses en el puesto.</p>
-        <p>Refiere que cuando su jefe le asigna presentaciones ante clientes, "se bloquea". Describe que la noche anterior a la presentación apenas duerme, y la mañana del día, siente "un nudo en el estómago" y le tiemblan las manos. Ha llegado a llamar diciendo que está enferma para no presentar (3 veces en los últimos 2 meses).</p>
-        <p>Cuando consigue ir, habla muy rápido, evita el contacto visual con la audiencia, y dice que piensa cosas como "van a notar que no estoy preparada" y "me van a despedir si lo hago mal". Después de la presentación, su jefe generalmente le dice "buen trabajo" pero ella piensa "solo lo dice por compromiso".</p>
-        <p>En cambio, cuando trabaja en su despacho preparando informes, se desempeña bien y recibe evaluaciones positivas.</p>
-      </div>
-      <div class="theory-block">
-        <div class="theory-label">🎯 Tu tarea</div>
-        <div class="theory-heading">Aplica lo aprendido en los 5 niveles</div>
-        <div class="theory-text">Vas a analizar el caso de Elena paso a paso: identificar conductas concretas, descomponerlas en el triple sistema, asignar parámetros y elegir la mejor operacionalización. Cada pregunta simula una decisión clínica real.</div>
-      </div>
-    `,
-    questions: [
-      {
-        type: 'single',
-        text: 'El terapeuta inicial registra: "Elena tiene ansiedad laboral". ¿Cuál es el primer paso para mejorar esta formulación?',
-        options: [
-          'Buscar el diagnóstico de trastorno de ansiedad generalizada en el DSM-5',
-          'Identificar las conductas concretas (motor, cognitivo, fisiológico) que Elena emite en las situaciones problemáticas',
-          'Investigar si Elena tuvo traumas en la infancia',
-          'Aplicar un cuestionario de ansiedad estandarizado'
-        ],
-        correct: 1,
-        feedback_ok: '¡Correcto! El primer paso es operacionalizar: convertir la etiqueta "ansiedad laboral" en conductas concretas y observables dentro del triple sistema de respuesta, situadas en sus contextos específicos.',
-        feedback_fail: 'La respuesta correcta es la B. Antes de cualquier otra cosa, necesitamos saber qué conductas concretas está emitiendo Elena. "Ansiedad laboral" es una etiqueta que no describe la interacción funcional.'
-      },
-      {
-        type: 'single',
-        text: 'Del caso de Elena, "le tiemblan las manos y siente un nudo en el estómago". ¿A qué componente del triple sistema pertenece?',
-        options: ['Motor', 'Cognitivo', 'Fisiológico', 'Todos a la vez'],
-        correct: 2,
-        feedback_ok: '¡Exacto! El temblor de manos y la sensación de nudo en el estómago son respuestas fisiológicas del organismo. Son respuestas condicionadas (RC) ante el estímulo condicionado aversivo (la presentación).',
-        feedback_fail: 'La respuesta correcta es Fisiológico. El temblor y las sensaciones viscerales son respuestas del organismo (componente fisiológico), probablemente RC ante el EC aversivo de la presentación.'
-      },
-      {
-        type: 'single',
-        text: 'Elena ha llamado diciendo que está enferma para no presentar, 3 veces en los últimos 2 meses. ¿Qué parámetro y qué tipo de conducta estamos describiendo?',
-        options: [
-          'Intensidad de una respuesta condicionada',
-          'Frecuencia de una conducta de evitación (operante)',
-          'Duración de un episodio de ansiedad',
-          'Ocurrencia de un síntoma depresivo'
-        ],
-        correct: 1,
-        feedback_ok: '¡Perfecto! "3 veces en 2 meses" es un dato de frecuencia. Llamar para no ir es una conducta de evitación (operante) que probablemente se mantiene por reforzamiento negativo: elimina la exposición al estímulo aversivo.',
-        feedback_fail: 'La respuesta correcta es la B. Contamos 3 episodios en 2 meses (frecuencia) de una conducta de evitación, que es operante mantenida por la consecuencia de no exponerse a la situación temida (R-).'
-      },
-      {
-        type: 'single',
-        text: '"Van a notar que no estoy preparada" y "me van a despedir si lo hago mal". ¿Qué función cumplen estos pensamientos en la secuencia funcional?',
-        options: [
-          'Son la causa de la ansiedad de Elena',
-          'Son respuestas cognitivas (verbalizaciones encubiertas) que funcionan como estímulos discriminativos para las conductas de evitación',
-          'Son síntomas del trastorno de ansiedad',
-          'Son irrelevantes para el análisis funcional'
-        ],
-        correct: 1,
-        feedback_ok: '¡Excelente! Los pensamientos anticipatorios son verbalizaciones encubiertas (componente cognitivo) que funcionan como Eᴰ (estímulos discriminativos) para las conductas de evitación. Discriminan la "disponibilidad" del reforzador negativo (si evito, no sufro).',
-        feedback_fail: 'La respuesta correcta es la B. Desde el análisis funcional, estos pensamientos son conductas verbales encubiertas que funcionan como estímulos discriminativos: señalan que evitar producirá alivio (R-).'
-      }
-    ]
-  }
+// ===== #16 SVG ICONS =====
+const ICO={
+back:'<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>',
+book:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+brain:'<svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5c0 .8-.2 1.5-.5 2.2A5 5 0 0 1 19 14a5 5 0 0 1-3 4.6V22h-4v-3.4A5 5 0 0 1 9 14a5 5 0 0 1 2.5-4.3A5 5 0 0 1 12 2z"/></svg>',
+check:'<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+clip:'<svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>',
+info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+flask:'<svg viewBox="0 0 24 24"><path d="M9 3h6v5l4 9H5l4-9V3z"/><line x1="9" y1="3" x2="15" y2="3"/></svg>',
+target:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+zap:'<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+dl:'<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+moon:'<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+sun:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+undo:'<svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',
+clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
 };
 
-// ===================================================================
-// APP STATE
-// ===================================================================
-let state = {
-  currentLevel: 0,
-  currentQuestion: 0,
-  answers: {},       // { levelId: [0,1,1,0...] } 1=correct
-  unlockedLevels: [1],
-  completedLevels: [],
-  selectedOption: null,
-  questionChecked: false
+// ===== #15 SVG DIAGRAMS =====
+const DIAGRAMS={
+triple:`<svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+<defs><filter id="gs"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity=".08"/></filter></defs>
+<rect x="110" y="10" width="140" height="40" rx="20" fill="var(--gold-g)" stroke="var(--gold)" stroke-width="1.5" filter="url(#gs)"/>
+<text x="180" y="35" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="700" fill="var(--bright)">CONDUCTA</text>
+<line x1="120" y1="50" x2="60" y2="100" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4"/>
+<line x1="180" y1="50" x2="180" y2="100" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4"/>
+<line x1="240" y1="50" x2="300" y2="100" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4"/>
+<rect x="5" y="100" width="110" height="90" rx="12" fill="var(--stA)" stroke="#0ea5e9" stroke-width="1.5" filter="url(#gs)"/>
+<text x="60" y="125" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="#0ea5e9">🏃 MOTOR</text>
+<text x="60" y="145" text-anchor="middle" font-size="10" fill="var(--text)">Acciones observables</text>
+<text x="60" y="160" text-anchor="middle" font-size="9" fill="var(--dim)">Gritar, evitar, golpear</text>
+<text x="60" y="175" text-anchor="middle" font-size="9" fill="var(--dim)">Llorar, correr, hablar</text>
+<rect x="125" y="100" width="110" height="90" rx="12" fill="var(--stB)" stroke="#f59e0b" stroke-width="1.5" filter="url(#gs)"/>
+<text x="180" y="125" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="#f59e0b">💭 COGNITIVO</text>
+<text x="180" y="145" text-anchor="middle" font-size="10" fill="var(--text)">Verbalizaciones</text>
+<text x="180" y="160" text-anchor="middle" font-size="9" fill="var(--dim)">encubiertas e imágenes</text>
+<text x="180" y="175" text-anchor="middle" font-size="9" fill="var(--dim)">"No puedo", "Va a salir mal"</text>
+<rect x="245" y="100" width="110" height="90" rx="12" fill="var(--stC)" stroke="#ec4899" stroke-width="1.5" filter="url(#gs)"/>
+<text x="300" y="125" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="#ec4899">🫀 FISIOLÓGICO</text>
+<text x="300" y="145" text-anchor="middle" font-size="10" fill="var(--text)">Respuestas corporales</text>
+<text x="300" y="160" text-anchor="middle" font-size="9" fill="var(--dim)">Taquicardia, sudor</text>
+<text x="300" y="175" text-anchor="middle" font-size="9" fill="var(--dim)">Tensión, temblor, náusea</text>
+</svg>`,
+ere:`<svg viewBox="0 0 380 120" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gold)"/></marker><filter id="gs2"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity=".06"/></filter></defs>
+<rect x="5" y="25" width="100" height="70" rx="12" fill="var(--teal-g)" stroke="var(--teal)" stroke-width="1.5" filter="url(#gs2)"/>
+<text x="55" y="52" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="var(--teal)">E →</text>
+<text x="55" y="68" text-anchor="middle" font-size="9.5" fill="var(--text)">Antecedente</text>
+<text x="55" y="82" text-anchor="middle" font-size="8.5" fill="var(--dim)">Eᴅ / EC</text>
+<line x1="110" y1="60" x2="138" y2="60" stroke="var(--gold)" stroke-width="2" marker-end="url(#arw)"/>
+<rect x="140" y="15" width="100" height="90" rx="12" fill="var(--gold-g)" stroke="var(--gold)" stroke-width="1.5" filter="url(#gs2)"/>
+<text x="190" y="42" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="var(--gold-d)">R</text>
+<text x="190" y="58" text-anchor="middle" font-size="9.5" fill="var(--text)">Respuesta</text>
+<text x="190" y="72" text-anchor="middle" font-size="8.5" fill="var(--dim)">Motor + Cogn +</text>
+<text x="190" y="84" text-anchor="middle" font-size="8.5" fill="var(--dim)">Fisiol</text>
+<line x1="245" y1="60" x2="273" y2="60" stroke="var(--gold)" stroke-width="2" marker-end="url(#arw)"/>
+<rect x="275" y="25" width="100" height="70" rx="12" fill="var(--purple-g)" stroke="var(--purple)" stroke-width="1.5" filter="url(#gs2)"/>
+<text x="325" y="52" text-anchor="middle" font-family="Space Mono,monospace" font-size="10" font-weight="700" fill="var(--purple)">→ E</text>
+<text x="325" y="68" text-anchor="middle" font-size="9.5" fill="var(--text)">Consecuente</text>
+<text x="325" y="82" text-anchor="middle" font-size="8.5" fill="var(--dim)">R+ R- C+ C-</text>
+</svg>`
 };
 
-// Try load from localStorage
-try {
-  const saved = localStorage.getItem('afc_mod1_state');
-  if (saved) {
-    const parsed = JSON.parse(saved);
-    state.unlockedLevels = parsed.unlockedLevels || [1];
-    state.completedLevels = parsed.completedLevels || [];
-    state.answers = parsed.answers || {};
+// ===== #6 DARK MODE =====
+function toggleDark(){
+const h=document.documentElement;
+const d=h.getAttribute('data-theme')==='dark'?'light':'dark';
+h.setAttribute('data-theme',d);
+localStorage.setItem('m1theme',d);
+document.querySelector('.top-dm').innerHTML=d==='dark'?ICO.sun:ICO.moon;
+}
+(function(){const t=localStorage.getItem('m1theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
+
+// ===== #18 FULL STATE PERSISTENCE =====
+const STORE_KEY='m1v2_state';
+let S={
+view:'home',level:null,stage:null,exIdx:0,seqIdx:0,
+scores:{},errors:{},answers:{},
+globalDone:0
+};
+function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S))}catch(e){}}
+function loadState(){try{const d=localStorage.getItem(STORE_KEY);if(d){const p=JSON.parse(d);Object.assign(S,p);S.view='home';S.answers={}}}catch(e){}}
+loadState();
+
+// ===== #2 CONFETTI =====
+function fireConfetti(){
+const w=document.getElementById('confWrap');
+const colors=['#22c55e','#f0b429','#0ea5e9','#ec4899','#8b5cf6','#f97316'];
+for(let i=0;i<24;i++){
+const c=document.createElement('div');c.className='confetti';
+c.style.left=Math.random()*100+'%';c.style.background=colors[i%colors.length];
+c.style.animationDelay=Math.random()*.4+'s';c.style.width=(Math.random()*6+4)+'px';
+c.style.height=(Math.random()*6+4)+'px';
+w.appendChild(c);setTimeout(()=>c.remove(),1600);
+}}
+
+// ===== LEVEL DATA =====
+const L={
+1:{title:"¿Qué es Conducta?",cheat:["Conducta = actividad del organismo en interacción con su entorno","Se expresa como VERBO, no como sustantivo","Las etiquetas (ansiedad, agresividad, depresión) NO explican la conducta","Conducta privada (pensar, sentir) opera bajo los mismos principios que la pública","La regla de oro: si dos observadores no pueden verificarlo, no está operacionalizado"],
+theory:[
+{icon:'📖',title:'¿Qué es conducta?',color:'gold',body:`<p class="th"><strong>Conducta</strong> es cualquier actividad del organismo en interacción con su entorno. No es sinónimo de "acción observable": incluye también eventos privados como pensamientos, imágenes y respuestas fisiológicas.</p><p class="th">Lo que diferencia la conducta de otros fenómenos biológicos es su <strong>relación funcional</strong> con el ambiente.</p>`},
+{icon:'🏷️',title:'Conducta ≠ Etiqueta',color:'teal',body:`<div class="hl"><em>Principio clave:</em> La conducta siempre se expresa como <em>verbo</em>. "Gritar" es conducta; "agresividad" es una etiqueta. "Evitar salir" es conducta; "agorafobia" es una categoría diagnóstica.</div><p class="th">Desde el Análisis Funcional, rechazamos las <strong>etiquetas diagnósticas</strong> como explicaciones: decir que alguien "es agresivo" o "tiene ansiedad" describe un rótulo, no una conducta.</p>`},
+{icon:'🔬',title:'Ejemplo práctico',color:'green',body:`<div class="ex-box"><div class="ex-label">De etiqueta a conducta</div><p><b>Etiqueta:</b> "Pedro es agresivo" → No es conducta<br><b>Conducta:</b> "Pedro golpea la mesa y grita cuando su jefe le corrige" → Observable, medible, en contexto</p></div>`}
+],
+stages:[
+{id:'A',title:'¿Es conducta o no?',sub:'Verdadero / Falso',typeLabel:'V/F rápido',instr:'Lee cada afirmación y decide: ¿es verdadera o falsa? Toca V o F.',exercises:[
+{type:'tf',s:'"Pensar «no voy a poder» antes de un examen es una conducta."',c:true,ok:'Pensar es verbalización encubierta — conducta privada que opera bajo los mismos principios de aprendizaje.',fail:'Pensar es conducta privada. Las verbalizaciones encubiertas son conducta.'},
+{type:'tf',s:'"María es una persona ansiosa" es una descripción conductual adecuada.',c:false,ok:'"Es ansiosa" es etiqueta de rasgo, no descripción conductual. No nos dice qué hace.',fail:'"Es ansiosa" es etiqueta. No especifica qué hace María, cuándo, ni en qué contexto.'},
+{type:'tf',s:'"Sentir taquicardia al entrar en el metro" describe una conducta.',c:true,ok:'La taquicardia es respuesta fisiológica condicionada — componente fisiológico de la conducta.',fail:'La taquicardia es conducta fisiológica en un contexto específico.'},
+{type:'tf',s:'"Juan tiene baja autoestima" describe una conducta.',c:false,ok:'"Baja autoestima" es etiqueta disposicional. La conducta sería lo que Juan HACE.',fail:'"Baja autoestima" es etiqueta. ¿Qué hace Juan? "Se dice que no vale", "rechaza invitaciones"...'},
+{type:'tf',s:'"Imaginarse fracasando en una entrevista" es una conducta.',c:true,ok:'Imaginar es conducta encubierta (cognitiva). Puede funcionar como estímulo antecedente.',fail:'Imaginar es conducta encubierta. Opera bajo principios de aprendizaje.'},
+{type:'tf',s:'"La personalidad extrovertida explica su comportamiento social."',c:false,ok:'"Personalidad" no explica conducta — es circular. Lo que explica son las contingencias.',fail:'La personalidad es constructo circular: "¿por qué habla mucho? Porque es extrovertida. ¿Cómo sabemos? Porque habla mucho."'},
+{type:'tf',s:'"Decirse repetidamente «soy un inútil» es una conducta."',c:true,ok:'Es verbalización encubierta con función de estímulo para otras respuestas.',fail:'Decirse algo es conducta verbal encubierta.'},
+{type:'tf',s:'"La depresión es una conducta."',c:false,ok:'"Depresión" es categoría diagnóstica que agrupa múltiples conductas (quedarse en cama, llorar, dejar actividades...).',fail:'"Depresión" agrupa diversas conductas que deben operacionalizarse por separado.'},
+{type:'tf',s:'"Evitar coger el ascensor cada vez" es una conducta.',c:true,ok:'Evitar es conducta operante observable, medible, mantenida por R-.',fail:'Evitar el ascensor es conducta operante mantenida por sus consecuencias.'},
+{type:'tf',s:'"Carlos tiene un problema de agresividad" describe una conducta.',c:false,ok:'Es etiqueta. La conducta: "Carlos golpea a compañeros en el recreo 3 veces/semana cuando le quitan el balón."',fail:'Es etiqueta. Necesitamos: ¿qué hace? ¿cuándo? ¿con qué frecuencia?'}
+]},
+{id:'B',title:'Observable vs. Encubierta',sub:'Clasificación',typeLabel:'Clasifica',instr:'Para cada descripción, ¿es conducta Observable (manifiesta, que vería una cámara) o Encubierta (privada)?',exercises:[
+{type:'classify',categories:['Observable','Encubierta'],items:[
+{text:'Gritar a su pareja durante una discusión',cat:'Observable'},
+{text:'Pensar "seguro que me sale mal"',cat:'Encubierta'},
+{text:'Salir corriendo del aula de examen',cat:'Observable'},
+{text:'Taquicardia al ver al ex en la calle',cat:'Encubierta'},
+{text:'Llamar por teléfono a su madre 5 veces al día',cat:'Observable'},
+{text:'Decirse "no valgo para nada"',cat:'Encubierta'},
+{text:'Quedarse en la cama hasta las 14h',cat:'Observable'},
+{text:'Nudo en el estómago antes de cada reunión',cat:'Encubierta'}
+]}
+]},
+{id:'C',title:'De etiqueta a conducta',sub:'Transformación',typeLabel:'Elige la mejor',instr:'Elige cuál es la MEJOR operacionalización conductual de cada etiqueta.',exercises:[
+{type:'single',text:'El paciente "es agresivo". ¿Mejor operacionalización?',opts:['Tiene un problema grave de agresividad','Golpea la mesa y grita insultos a sus compañeros 3 veces/semana','Su temperamento es violento por naturaleza','Presenta un trastorno explosivo intermitente'],c:1,ok:'Incluye conducta observable (golpear, gritar), medible (3 veces/semana) y contexto.',fail:'La mejor describe conducta observable, medible y contextualizada.'},
+{type:'single',text:'La paciente "tiene ansiedad". ¿Mejor operacionalización?',opts:['Padece un trastorno de ansiedad generalizada','Sudoración, temblor de manos y dice "me va a dar algo" al hablar en público','Su ansiedad le impide funcionar','Es muy nerviosa desde siempre'],c:1,ok:'Incluye fisiológico (sudoración, temblor), cognitivo ("me va a dar algo") y contexto.',fail:'La mejor describe componentes específicos y contexto.'},
+{type:'single',text:'"Es dependiente emocionalmente". ¿Mejor operacionalización?',opts:['Pide opinión a su pareja antes de cualquier decisión y llama 8 veces/día para saber dónde está','Tiene apego inseguro','No puede estar sola por miedo al abandono','Personalidad dependiente'],c:0,ok:'Conductas concretas con parámetros: pedir opinión (cualquier decisión), llamar (8 veces/día).',fail:'La mejor tiene conductas concretas y parámetros cuantificados.'},
+{type:'single',text:'"Tiene baja autoestima". ¿Mejor operacionalización?',opts:['Se valora negativamente','Rechaza invitaciones, evita opinar en reuniones y se dice "nadie quiere estar conmigo" a diario','Baja autoestima por experiencias infantiles','Necesita validación constante'],c:1,ok:'Triple sistema: motor (rechaza, evita), cognitivo ("nadie quiere...") con parámetro (a diario).',fail:'La mejor incluye motor, cognitivo y parámetros.'},
+{type:'single',text:'"El niño es hiperactivo". ¿Mejor operacionalización?',opts:['Se levanta del pupitre 12 veces/hora, habla sin turno, cambia de actividad cada 2-3 min','TDAH diagnosticado que explica inquietud','Nivel de actividad superior a otros','No puede concentrarse por hiperactividad'],c:0,ok:'Conductas medibles: 12 veces/hora, sin turno, cada 2-3 min. Observables y cuantificables.',fail:'La mejor describe conductas medibles con parámetros.'},
+{type:'single',text:'"Está deprimida". ¿Mejor operacionalización?',opts:['Depresión mayor en tratamiento','Permanece en cama 14h/día, dejó de quedar con amigas, llora 3-4 veces/día y dice "no merece la pena"','Tristeza crónica le impide funcionar','Estado deprimido persistente'],c:1,ok:'Motor (cama 14h, dejó de quedar), fisiológico-motor (llorar 3-4/día) y cognitivo ("no merece la pena").',fail:'La mejor incluye motor, fisiológico y cognitivo con parámetros.'}
+]},
+{id:'D',title:'Caso: Laura',sub:'Caso clínico',typeLabel:'Secuencia',instr:'Lee el caso y responde las preguntas en secuencia. Cada respuesta informa la siguiente.',exercises:[
+{type:'seq',patient:{name:'Laura',age:'32 años',gender:'f',initial:'L',badge:'Motivo: "Soy insegura"'},quote:'"Soy muy insegura, no valgo para nada, siempre me pasa lo mismo. Tengo un problema de autoestima."',questions:[
+{text:'¿Cuál de las expresiones de Laura describe una CONDUCTA y no una etiqueta?',opts:['"Soy muy insegura"','"No valgo para nada"','"Tengo un problema de autoestima"','Ninguna — todas son etiquetas'],c:3,fb:'Correcto. Todas son etiquetas o autoatribuciones globales. El terapeuta necesita desglosar esto en conductas concretas.',hint:'Piensa: ¿alguna de estas frases describe algo que una cámara podría grabar o que se pueda contar?'},
+{text:'El terapeuta pregunta: "¿Qué quieres decir con que no vales para nada?" Laura: "Cada vez que tengo que decidir algo, llamo a mi madre. Si no me dice qué hacer, me quedo bloqueada." ¿Qué logró el terapeuta?',opts:['Identificar la causa','Operacionalizar una etiqueta en conductas concretas','Hacer diagnóstico diferencial','Establecer relación terapéutica'],c:1,fb:'Correcto. Convirtió "no valgo para nada" en conductas: llamar a la madre, quedarse bloqueada. Ahora son datos observables.',hint:'El terapeuta transformó algo vago en algo que se puede observar y medir.'},
+{text:'¿Qué debería explorar PRIMERO ahora?',opts:['Traumas infantiles','Los parámetros: frecuencia, duración, intensidad','Si tiene trastorno de personalidad dependiente','La relación con la madre en profundidad'],c:1,fb:'Correcto. Siguiente paso: ¿cuántas veces/día llama? ¿cuánto dura el "bloqueo"? ¿ante qué decisiones? Los parámetros dan la línea base.',hint:'Ya tenemos TOPOGRAFÍA. ¿Qué falta para cuantificar?'},
+{text:'Laura: 4-5 llamadas/día, bloqueo de 20-40 min, ante cualquier decisión (qué cenar, qué ropa, si aceptar un plan). ¿Qué tipo de información es esta?',opts:['Etiología','Parámetros: frecuencia, duración y contexto','Hipótesis funcional','Diagnóstico provisional'],c:1,fb:'Correcto. Frecuencia (4-5/día), duración (20-40 min) y contextos. Línea base medible.',hint:'Estos datos son numéricos y cuantificables. ¿Qué nombre reciben?'}
+]}
+]}
+]},
+2:{title:"Triple Sistema de Respuesta",cheat:["Motor: acciones observables (gritar, evitar, llorar, llamar, quedarse quieto)","Cognitivo: verbalizaciones encubiertas e imágenes mentales","Fisiológico: respuestas corporales (taquicardia, sudor, temblor, tensión)","Las emociones = combinación de cognitivo + fisiológico","Un error común: confundir respuestas fisiológicas con motoras"],
+theory:[
+{icon:'🧩',title:'Los tres componentes',color:'gold',body:`<p class="th">Toda conducta se analiza según el <strong>triple sistema de respuesta</strong>: Motor (acciones observables), Cognitivo (pensamientos e imágenes), Fisiológico (respuestas corporales).</p>`},
+{icon:'📊',title:'Diagrama del Triple Sistema',color:'teal',body:`<div class="diagram">${DIAGRAMS.triple}<div class="diagram-label">Triple sistema de respuesta</div></div>`},
+{icon:'💡',title:'Las emociones',color:'green',body:`<div class="hl"><em>Las emociones</em> no son un cuarto componente — son la <em>combinación</em> de cognitivo + fisiológico. "Sentir ansiedad" = taquicardia + sudor + "me va a dar algo".</div><div class="ex-box"><div class="ex-label">Ejemplo: Fobia a arañas</div><p><b>Motor:</b> Salir corriendo, gritar<br><b>Cognitivo:</b> "Me va a picar"<br><b>Fisiológico:</b> Taquicardia, náuseas</p></div>`}
+],
+stages:[
+{id:'A',title:'Identifica el componente',sub:'Selección',typeLabel:'Componentes',instr:'¿A qué componente del triple sistema pertenece cada descripción?',exercises:[
+{type:'single',text:'"Cada vez que veo a mi jefe, el corazón se me acelera." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:2,ok:'Aceleración cardíaca = respuesta fisiológica.',fail:'Taquicardia = fisiológico.'},
+{type:'single',text:'"Me siento y me agarro a la silla." ¿Componente de sentarse/agarrarse?',opts:['Motor','Cognitivo','Fisiológico'],c:0,ok:'Acciones observables = motor.',fail:'Sentarse y agarrarse son observables = motor.'},
+{type:'single',text:'"Me repito: «mañana va a ser un desastre»." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:1,ok:'Verbalización encubierta repetitiva = cognitivo.',fail:'Repetirse una frase internamente = cognitivo.'},
+{type:'single',text:'"Nudo en el estómago toda la mañana." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:2,ok:'Sensación visceral = fisiológico.',fail:'Nudo gástrico = respuesta visceral = fisiológico.'},
+{type:'single',text:'"Me quedo mirando el móvil horas sin hacer nada." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:0,ok:'"Quedarse mirando" es acción observable = motor.',fail:'Aunque parece inacción, es conducta observable = motor.'},
+{type:'single',text:'"Pienso que nadie me hablará en la fiesta." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:1,ok:'Anticipación verbal encubierta = cognitivo.',fail:'Anticipación de consecuencias = cognitivo.'},
+{type:'single',text:'"Me tiemblan las manos al firmar delante de alguien." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:2,ok:'Temblor = respuesta del sistema nervioso = fisiológico.',fail:'Temblor = fisiológico.'},
+{type:'single',text:'"Llamo enferma al trabajo los lunes." ¿Componente?',opts:['Motor','Cognitivo','Fisiológico'],c:0,ok:'Llamar = acción observable y medible = motor.',fail:'Llamar es acción manifiesta = motor.'}
+]},
+{id:'B',title:'Descompón la descripción',sub:'Multi-selección',typeLabel:'Marca todos',instr:'Selecciona TODOS los componentes presentes en cada descripción. No añadas los que no estén descritos.',exercises:[
+{type:'multi',text:'"Cuando llego a la fiesta, me sudan las manos, pienso que todos me juzgan y me voy a los 10 minutos." Componentes presentes:',opts:['Motor: irse a los 10 min','Cognitivo: "todos me juzgan"','Fisiológico: sudoración palmar','Motor: no hablar con nadie'],c:[0,1,2],ok:'Motor (irse), cognitivo (juicio) y fisiológico (sudoración). No añadas lo no descrito.',fail:'Solo los descritos: irse (M), "me juzgan" (C), sudar (F).'},
+{type:'multi',text:'"Despierta en la cama, corazón acelerado, repasando todo lo que hice mal." Componentes:',opts:['Motor: quedarse despierta','Cognitivo: repasar lo que hizo mal','Fisiológico: taquicardia','Cognitivo: "soy un desastre"'],c:[0,1,2],ok:'Motor (despierta), cognitivo (repasar), fisiológico (taquicardia). El cuarto no está descrito.',fail:'Los descritos: despierta (M), repasar (C), taquicardia (F).'},
+{type:'multi',text:'"Cuando mi pareja llega tarde, grito, se me tensa el cuerpo y pienso «está con otra»." Componentes:',opts:['Motor: gritar','Fisiológico: tensión corporal','Cognitivo: "está con otra"','Motor: comprobar teléfono'],c:[0,1,2],ok:'Gritar (M), tensión (F), pensamiento (C). El cuarto no se menciona.',fail:'Los tres primeros están descritos.'},
+{type:'multi',text:'"Antes del examen, dolor de estómago, pienso que voy a suspender y me quedo en blanco." Componentes:',opts:['Fisiológico: dolor de estómago','Cognitivo: "voy a suspender"','Motor: quedarse en blanco','Fisiológico: sudoración'],c:[0,1,2],ok:'Dolor (F), anticipación (C), quedarse en blanco (M). El cuarto no está.',fail:'Los presentes: dolor (F), suspender (C), blanco (M).'},
+{type:'multi',text:'"Compruebo la puerta, siento alivio momentáneo, y vuelvo a pensar «¿y si no cerré?»" Componentes:',opts:['Motor: comprobar la puerta','Fisiológico: alivio (reducción activación)','Cognitivo: "¿y si no cerré?"','Motor: volver a casa'],c:[0,1,2],ok:'Comprobar (M), alivio (F: reducción activación), duda (C).',fail:'Presentes: comprobar (M), alivio (F), duda (C).'},
+{type:'multi',text:'"Suena el teléfono, taquicardia, pienso que son malas noticias, me quedo paralizada sin contestar." Componentes:',opts:['Fisiológico: taquicardia','Cognitivo: "malas noticias"','Motor: no contestar / paralizada','Motor: tirar el teléfono'],c:[0,1,2],ok:'Taquicardia (F), anticipación (C), no contestar (M).',fail:'Presentes: taquicardia (F), malas noticias (C), no contestar (M).'}
+]},
+{id:'C',title:'Detecta el error',sub:'Análisis crítico',typeLabel:'Encuentra el fallo',instr:'Cada clasificación tiene un error. ¿Cuál es?',exercises:[
+{type:'single',text:'"Tensión muscular (MOTOR) ante reuniones." ¿Error?',opts:['No hay error','Tensión muscular es FISIOLÓGICO, no motor','Debería decir cognitivo','Falta frecuencia'],c:1,ok:'Tensión muscular = fisiológico. Motor sería una acción observable.',fail:'Tensión muscular = fisiológico, no motor.'},
+{type:'single',text:'"Grita a su hijo (FISIOLÓGICO) cuando desobedece." ¿Error?',opts:['No hay error','Gritar es MOTOR, no fisiológico','Gritar es cognitivo','Falta contexto'],c:1,ok:'Gritar = acción observable = motor.',fail:'Gritar = motor.'},
+{type:'single',text:'"Siente miedo (COGNITIVO) al ver una araña." ¿Error?',opts:['No hay error','El miedo es EMOCIÓN = cognitivo + fisiológico combinados','Miedo es solo fisiológico','No es conducta'],c:1,ok:'Las emociones combinan cognitivo y fisiológico. No son solo un componente.',fail:'Emociones = cognitivo + fisiológico.'},
+{type:'single',text:'"Se dice «soy un fracasado» (FISIOLÓGICO) cada noche." ¿Error?',opts:['No hay error','Es motor','Es COGNITIVO — verbalización encubierta','Es emoción'],c:2,ok:'"Soy un fracasado" = verbalización encubierta = cognitivo.',fail:'Decirse algo = cognitivo.'},
+{type:'single',text:'"Evita ir al supermercado (COGNITIVO)." ¿Error?',opts:['No hay error','Evitar es MOTOR; el pensamiento sería el cognitivo','Evitar es fisiológico','Es emoción'],c:1,ok:'Evitar = acción = motor. "Piensa que le dará un ataque" sería el cognitivo.',fail:'Evitar = acción = motor.'},
+{type:'single',text:'"Llora (FISIOLÓGICO) durante las sesiones." ¿Error?',opts:['No hay error','Llorar es MOTOR — conducta observable','Llorar es cognitivo','No es conducta'],c:1,ok:'Llorar como conducta completa es motor (observable).',fail:'Llorar = observable = motor.'}
+]},
+{id:'D',title:'Caso: Pablo',sub:'Caso clínico',typeLabel:'Secuencia',instr:'Analiza el caso paso a paso.',exercises:[
+{type:'seq',patient:{name:'Pablo',age:'45 años',gender:'m',initial:'P',badge:'Motivo: "Estrés laboral"'},quote:'"No puedo más. Cada mañana antes de ir al trabajo me dan ganas de vomitar, me paso la noche pensando en todo lo que puede salir mal, y he empezado a llegar tarde a propósito para no coincidir con mi jefe."',questions:[
+{text:'¿Cuántos componentes del triple sistema identificas?',opts:['Solo motor','Solo fisiológico','Los tres: motor, cognitivo y fisiológico','Solo cognitivo y fisiológico'],c:2,fb:'Motor: llegar tarde, evitar. Cognitivo: pensar en lo que puede salir mal. Fisiológico: náuseas.',hint:'Busca: ¿qué HACE? ¿qué PIENSA? ¿qué SIENTE en el cuerpo?'},
+{text:'¿Cuál es el componente COGNITIVO?',opts:['Náuseas matutinas','Llegar tarde a propósito','Pensar por la noche en lo que puede salir mal','Evitar al jefe'],c:2,fb:'Pasar la noche pensando = verbalización encubierta anticipatoria = cognitivo.',hint:'El cognitivo es lo que piensa o se dice a sí mismo.'},
+{text:'Pablo añade: "Pienso que me van a despedir y se me cierra el pecho." ¿Componentes nuevos?',opts:['Solo cognitivo','Solo fisiológico','Ambos: cognitivo + fisiológico','Ninguno nuevo'],c:2,fb:'Pensamiento anticipatorio (C) + opresión torácica (F). Dos componentes nuevos.',hint:'Hay un pensamiento Y una sensación corporal nuevos.'},
+{text:'¿Qué pregunta sería MÁS útil ahora?',opts:['"¿Desde cuándo?"','"¿Qué más haces o dejas de hacer?"','"¿Tu jefe quiere despedirte?"','"¿Tomas medicación?"'],c:1,fb:'Ya tenemos C y F bien descritos. Falta ampliar el motor: ¿qué otras conductas cambió?',hint:'Ya tienes cognitivo y fisiológico. ¿Qué componente falta ampliar?'}
+]}
+]}
+]},
+3:{title:"Parámetros de la Conducta",cheat:["Ocurrencia: ¿se da o no? (presencia/ausencia)","Frecuencia: ¿cuántas veces? (3/día, 5/semana)","Duración: ¿cuánto dura? (20 min, 3 horas)","Intensidad: ¿con qué magnitud? (audible desde otra habitación)","Sin parámetros no hay línea base → no se puede evaluar cambio"],
+theory:[
+{icon:'📏',title:'Medir la conducta',color:'gold',body:`<p class="th">Para que una descripción sea operacional necesitamos <strong>cuantificar</strong>. La conducta se mide con cuatro parámetros: <strong>Ocurrencia</strong> (¿se da?), <strong>Frecuencia</strong> (¿cuántas veces?), <strong>Duración</strong> (¿cuánto tiempo?) e <strong>Intensidad</strong> (¿con qué magnitud?).</p>`},
+{icon:'📐',title:'Por qué importan',color:'teal',body:`<div class="hl"><em>Sin parámetros no hay línea base</em>, y sin línea base no podemos evaluar si la intervención funciona. Los parámetros son la herramienta de medida del terapeuta conductual.</div>`}
+],
+stages:[
+{id:'A',title:'¿Qué parámetro es?',sub:'Identificación',typeLabel:'Clasifica',instr:'¿Qué parámetro se está midiendo en cada descripción?',exercises:[
+{type:'single',text:'"Se lava las manos 15 veces al día." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:1,ok:'"15 veces/día" = frecuencia.',fail:'"15 veces/día" = frecuencia.'},
+{type:'single',text:'"Las crisis de llanto duran 20-40 minutos." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:2,ok:'"20-40 min" = duración.',fail:'"20-40 min" = duración.'},
+{type:'single',text:'"Los gritos son audibles desde el piso de abajo." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:3,ok:'Magnitud = intensidad.',fail:'Magnitud = intensidad.'},
+{type:'single',text:'"No presenta conductas de evitación." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:0,ok:'Presencia/ausencia = ocurrencia.',fail:'Presencia/ausencia = ocurrencia.'},
+{type:'single',text:'"Comprueba la cerradura 5 minutos cada vez." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:2,ok:'"5 min cada vez" = duración.',fail:'"5 min cada vez" = duración.'},
+{type:'single',text:'"Insomnio de inicio 5 noches/semana." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:1,ok:'"5 noches/semana" = frecuencia.',fail:'"5 noches/semana" = frecuencia.'},
+{type:'single',text:'"Temblor tan fuerte que no puede sostener un vaso." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:3,ok:'Magnitud funcional = intensidad.',fail:'Magnitud = intensidad.'},
+{type:'single',text:'"Rumiación 2 horas antes de dormir." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:2,ok:'"2 horas" = duración.',fail:'"2 horas" = duración.'}
+]},
+{id:'B',title:'¿Qué parámetros hay y faltan?',sub:'Multi-selección',typeLabel:'Detecta',instr:'Selecciona los parámetros PRESENTES y los que FALTAN.',exercises:[
+{type:'multi',text:'"Mi hijo pega en el recreo 3 veces/semana, 2 min cada episodio, golpes que dejan marcas." ¿Presentes?',opts:['Frecuencia (3/semana)','Duración (2 min)','Intensidad (dejan marcas)','Ocurrencia'],c:[0,1,2],ok:'Frecuencia, duración e intensidad presentes.',fail:'Frecuencia (3/semana), duración (2 min), intensidad (marcas).'},
+{type:'multi',text:'"Se autolesiona cortándose 2 veces al mes." ¿Qué hay y qué FALTA?',opts:['Presente: Frecuencia','Presente: Ocurrencia','Falta: Duración del episodio','Falta: Intensidad'],c:[0,1,2,3],ok:'Frecuencia y ocurrencia presentes. Falta duración e intensidad — crítico para evaluar riesgo.',fail:'Frecuencia y ocurrencia presentes, falta duración e intensidad.'},
+{type:'multi',text:'"Desde hace 3 meses no sale de casa." ¿Presentes?',opts:['Ocurrencia (sí se da)','Duración (3 meses)','Frecuencia (todos los días)','Intensidad (total)'],c:[0,1,2,3],ok:'Todos inferibles: ocurre, 3 meses, constante, total.',fail:'Todos los parámetros son inferibles aquí.'},
+{type:'multi',text:'"A veces Ana llora." ¿Presentes?',opts:['Ocurrencia (sí)','Frecuencia específica','Duración específica','Intensidad específica'],c:[0],ok:'Solo ocurrencia. "A veces" no es parámetro cuantificado.',fail:'Solo ocurrencia. "A veces" es vago.'}
+]},
+{id:'C',title:'Mejor forma de medir',sub:'Evaluación',typeLabel:'Decide',instr:'¿Cuál es la mejor estrategia de medición para cada caso?',exercises:[
+{type:'single',text:'"Ataques de ira". ¿Mejor forma de medir?',opts:['Cuestionario de ira','Registrar frecuencia, duración e indicadores de intensidad','Preguntar si es leve/moderada/severa','Pedir a familiares que califiquen 1-10'],c:1,ok:'Registro directo de parámetros = base de evaluación conductual.',fail:'El registro directo de parámetros es la mejor base.'},
+{type:'single',text:'¿Mejor indicador de INTENSIDAD para "crisis de ansiedad"?',opts:['Escala 1-10','Tasa cardíaca','Indicadores observables: temblor, llanto, necesidad de irse','Inventario estandarizado'],c:2,ok:'Indicadores observables son más fiables que escalas subjetivas.',fail:'Indicadores observables son más medibles y objetivos.'},
+{type:'single',text:'Paciente dice "siempre" está triste. ¿Mejor pregunta?',opts:['"¿Desde cuándo?"','"¿Cuántas horas/día el llanto o inactividad están presentes?"','"¿Es tristeza normal o patológica?"','"¿Te impide funcionar?"'],c:1,ok:'Convierte "siempre triste" en horas/día de conductas concretas.',fail:'Horas/día de conductas concretas = datos cuantificables.'},
+{type:'single',text:'Medir si la intervención reduce comprobación. ¿Parámetro prioritario?',opts:['Intensidad de ansiedad','Frecuencia diaria de comprobaciones','Duración del tratamiento','Si se siente mejor'],c:1,ok:'Frecuencia diaria = dato más directo y comparable.',fail:'Frecuencia diaria = comparación objetiva línea base vs. tratamiento.'},
+{type:'single',text:'¿Por qué NO basta medir solo frecuencia de "atracones"?',opts:['Frecuencia no es válida','También necesitamos duración e intensidad (cantidad ingerida)','Lo importante es el diagnóstico','Puede mentir'],c:1,ok:'Un atracón de 10 min ≠ uno de 2 horas. Necesitamos todos los parámetros.',fail:'Frecuencia sola no captura gravedad. Duración + intensidad completan.'}
+]},
+{id:'D',title:'Caso: Marcos',sub:'Caso clínico',typeLabel:'Secuencia',instr:'Analiza los parámetros del caso.',exercises:[
+{type:'seq',patient:{name:'Marcos',age:'28 años',gender:'m',initial:'M',badge:'Motivo: "Insomnio"'},quote:'"No duermo nada. Llevo así meses. Es insoportable."',questions:[
+{text:'¿Contiene parámetros cuantificados?',opts:['Sí — "meses" y "nada" son parámetros','No — son expresiones vagas'],c:1,fb:'"Nada" y "meses" son vagos. ¿Cuántas horas? ¿Cuántos meses? ¿Todas las noches?',hint:'¿"Nada" es cero horas literalmente? ¿"Meses" son 2 o 12?'},
+{text:'Tras preguntar: "Tardo 90 min en dormirme, despierto 2-3 veces, duermo 4-5h." ¿Parámetros?',opts:['Solo frecuencia','Duración de latencia + frecuencia despertares','Duración latencia + frecuencia despertares + duración total sueño','Solo intensidad'],c:2,fb:'Latencia 90min (duración), despertares 2-3/noche (frecuencia), sueño 4-5h (duración). Línea base medible.',hint:'Hay tres datos numéricos diferentes.'},
+{text:'¿Qué parámetro FALTA?',opts:['La causa','Intensidad: impacto en funcionamiento diurno','Diagnóstico','Medicación'],c:1,fb:'Falta intensidad: ¿impide trabajar? ¿se duerme conduciendo? Esto mide la magnitud del impacto.',hint:'Sabemos cuánto y cuándo. ¿Pero qué TAN grave es el impacto?'}
+]}
+]}
+]},
+4:{title:"Operacionalización Completa",cheat:["Operacionalizar = etiqueta → conducta concreta, observable, medible, contextualizada","Una buena operacionalización incluye: topografía + parámetros + contexto","Regla de oro: si dos observadores no se ponen de acuerdo, no está operacionalizado","El esquema E→R→E estructura la operacionalización completa","La calidad se mide: ¿puedo observar, contar, medir lo descrito?"],
+theory:[
+{icon:'🎯',title:'El arte de operacionalizar',color:'gold',body:`<p class="th"><strong>Operacionalizar</strong> = transformar etiquetas en conductas concretas, observables, medibles y contextualizadas dentro del esquema E→R→E.</p><p class="th">Una buena operacionalización: 1) Topografía (triple sistema), 2) Parámetros, 3) Contexto estimular.</p>`},
+{icon:'📐',title:'Esquema E→R→E',color:'teal',body:`<div class="diagram">${DIAGRAMS.ere}<div class="diagram-label">Secuencia funcional: Antecedente → Respuesta → Consecuente</div></div>`},
+{icon:'✅',title:'Regla de oro',color:'green',body:`<div class="hl"><em>Regla de oro:</em> Si dos observadores independientes no podrían ponerse de acuerdo en si la conducta ocurrió, la descripción NO está operacionalizada.</div>`}
+],
+stages:[
+{id:'A',title:'Detecta el error',sub:'Análisis crítico',typeLabel:'Errores',instr:'¿Qué falla en cada operacionalización?',exercises:[
+{type:'single',text:'"Conductas agresivas frecuentes." ¿Qué falla?',opts:['Está bien','Falta topografía concreta y "frecuentes" no es cuantificable','Solo falta contexto','Solo falta intensidad'],c:1,ok:'"Agresivas" es vago y "frecuentes" no es medible.',fail:'Falta topografía y cuantificación.'},
+{type:'single',text:'"Se lava manos 20 veces/día, 3 minutos." ¿Qué falta?',opts:['Nada','Contexto: ¿cuándo, ante qué estímulos?','Intensidad','Cognitivo'],c:1,ok:'Topografía y parámetros OK, pero falta contexto estimular.',fail:'Falta contexto: ¿después de qué? ¿dónde? ¿ante qué?'},
+{type:'single',text:'"Problemas de conducta en el colegio." ¿Cuántos errores?',opts:['Uno','Dos','Al menos tres: topografía + parámetros + contexto específico','Ninguno'],c:2,ok:'"Problemas de conducta" (vago) + sin parámetros + contexto insuficiente.',fail:'Tres errores: topografía vaga, sin parámetros, contexto insuficiente.'},
+{type:'single',text:'"Pedro grita a compañeros cuando le interrumpen, 2-3 veces/semana, audible desde sala contigua, 30 segundos." ¿Calidad?',opts:['Mala','Regular','Buena: topografía + parámetros + contexto','Excesiva'],c:2,ok:'Conducta + contexto + frecuencia + duración + intensidad. Excelente.',fail:'Tiene todo: topografía, contexto, frecuencia, duración, intensidad.'},
+{type:'single',text:'"Sintomatología ansiosa con componentes somáticos y cognitivos." ¿Calidad?',opts:['Buena','Mala — lenguaje técnico que no operacionaliza nada','Regular','Excelente'],c:1,ok:'Suena profesional pero no dice NADA concreto. Lenguaje vacío.',fail:'No operacionaliza nada: ¿qué somáticos? ¿qué cognitivos? ¿cuándo?'},
+{type:'single',text:'"Al ver un perro, cruza de acera, dice «me va a morder», tiemblan las piernas, 4-5 veces/semana." ¿Calidad?',opts:['Mala','Excelente: triple sistema + parámetros + contexto','Regular','Solo falta duración'],c:1,ok:'Triple sistema + frecuencia + contexto. Excelente operacionalización.',fail:'Tiene todo: motor + cognitivo + fisiológico + frecuencia + contexto.'}
+]},
+{id:'B',title:'Ordena la calidad',sub:'Ordenamiento',typeLabel:'Ordena',instr:'Ordena de PEOR a MEJOR operacionalización. Toca en orden. Puedes deshacer con el botón.',exercises:[
+{type:'order',items:['Es agresivo','Conductas agresivas frecuentes','Golpea a compañeros 3 veces/semana','Golpea puñetazos en recreo, 3/semana, cuando le quitan el balón, dejando marcas'],ok:'De etiqueta pura → operacionalización completa.',fail:'Orden correcto: etiqueta → etiqueta+adj → conducta+1 parámetro → completa.'},
+{type:'order',items:['Tiene ansiedad','Ansiedad moderada con síntomas somáticos','Suda y tiembla al hablar en público','Antes de presentaciones (2/mes), sudoración, temblor y "me va a dar algo", 5 min previos'],ok:'De etiqueta → descripción vacía → parcial → completa.',fail:'De peor a mejor: etiqueta → jerga → parcial → completa.'},
+{type:'order',items:['Está deprimida','Ánimo depresivo persistente','Llora todos los días y no sale de casa','En cama hasta las 15h (5/semana), llora 2-3/día (10-15 min), 0 salidas/mes vs 8 previas, dice "no merece la pena"'],ok:'La última incluye conductas + parámetros + línea base comparativa.',fail:'De etiqueta → jerga → conductas sin parámetros → completa con línea base.'}
+]},
+{id:'C',title:'Construye paso a paso',sub:'Producción guiada',typeLabel:'Construye',instr:'Guía al terapeuta paso a paso para construir la operacionalización.',exercises:[
+{type:'seq',patient:{name:'Paciente',age:'—',gender:'m',initial:'?',badge:'Queja: "Tengo ansiedad"'},quote:'"Tengo mucha ansiedad."',questions:[
+{text:'PASO 1 — ¿Primera pregunta?',opts:['"¿Desde cuándo?"','"¿Qué haces exactamente cuando dices que tienes ansiedad?"','"¿Has ido al médico?"','"¿Es normal o patológica?"'],c:1,fb:'Buscar TOPOGRAFÍA: ¿qué hace, piensa, siente? Convierte etiqueta en conductas.',hint:'Primer paso siempre: ¿QUÉ hace concretamente?'},
+{text:'Responde: "Me cuesta respirar, pienso que me voy a morir, me quedo paralizado." PASO 2:',opts:['"¿Con qué frecuencia? ¿Cuánto dura?"','"¿Qué lo causa?"','"¿Antecedentes familiares?"','"¿Has probado relajación?"'],c:0,fb:'Topografía OK. Ahora PARÁMETROS: ¿cuántas veces? ¿cuánto dura?',hint:'Ya tienes QUÉ. Ahora necesitas CUÁNTO.'},
+{text:'"3-4 veces/semana, 10-15 min." PASO 3:',opts:['"¿Qué situaciones lo provocan? ¿Dónde? ¿Qué pasa antes?"','"¿Qué edad cuando empezó?"','"¿Afecta al trabajo?"','"¿Qué haces para calmarte?"'],c:0,fb:'Necesitamos CONTEXTO: antecedentes E→. ¿Ante qué estímulos?',hint:'Ya tienes QUÉ y CUÁNTO. Necesitas CUÁNDO y DÓNDE.'},
+{text:'"Siempre en el trabajo, cuando el jefe pide algo urgente." PASO 4: ¿Qué falta?',opts:['Nada','Las CONSECUENCIAS: ¿qué ocurre después?','El diagnóstico','Historia de aprendizaje'],c:1,fb:'Falta →E: ¿qué pasa después? ¿se va? ¿alguien ayuda? ¿jefe deja de pedir? Las consecuencias determinan la función.',hint:'Tienes E→R. ¿Qué falta del esquema E→R→E?'}
+]},
+{type:'seq',patient:{name:'Madre',age:'—',gender:'f',initial:'M',badge:'Queja: "Mi hijo es rebelde"'},quote:'"Mi hijo de 8 años es muy rebelde. No hace caso nunca."',questions:[
+{text:'PASO 1 — ¿Mejor primera pregunta?',opts:['"¿Qué hace exactamente que usted llama rebeldía?"','"¿Cómo es la relación con el padre?"','"¿Ha consultado al pediatra?"','"¿Siempre ha sido así?"'],c:0,fb:'"Rebeldía" es etiqueta. Necesitamos topografía: ¿qué conductas concretas?',hint:'Convierte la etiqueta en conductas observables.'},
+{text:'"Grita, tira cosas y me dice «eres tonta»." ¿Siguiente?',opts:['"¿Con qué frecuencia? ¿Cuánto duran?"','"¿Lo castiga?"','"¿Qué notas saca?"','"¿Necesita medicación?"'],c:0,fb:'Topografía OK. Ahora parámetros: frecuencia, duración.',hint:'Ya tienes QUÉ hace. Ahora: ¿CUÁNTO?'}
+]}
+]},
+{id:'D',title:'Caso completo: Sofía',sub:'Integración',typeLabel:'Caso completo',instr:'Aplica todos los pasos a un caso real.',exercises:[
+{type:'seq',patient:{name:'Sofía',age:'25 años',gender:'f',initial:'S',badge:'Motivo: "Corazón roto"'},quote:'"Tengo el corazón roto. No puedo seguir así. Estoy destruida por dentro."',questions:[
+{text:'Sofía usa metáforas. ¿Primer paso?',opts:['Explorar la relación','"¿Qué haces, piensas o sientes concretamente?"','Validar antes de preguntar','Cuestionario de depresión'],c:1,fb:'Operacionalizar: ¿qué conductas hay detrás de "corazón roto"?',hint:'Antes de asumir nada, convierte las metáforas en conductas.'},
+{text:'Sofía: "No paro de llorar, no puedo comer, no duermo, todo el rato pienso en él." ¿Triple sistema?',opts:['Solo motor','Solo fisiológico','Motor (llorar, no comer) + fisiológico (insomnio) + cognitivo (rumiación)','Solo cognitivo'],c:2,fb:'Motor: llorar, no comer. Fisiológico: insomnio. Cognitivo: pensar en él.',hint:'Busca los tres componentes en lo que dice.'},
+{text:'¿Siguiente pregunta?',opts:['"¿Cuántas veces/día lloras? ¿Horas pensando en él? ¿Días sin dormir bien?"','"¿Cuándo terminó?"','"¿Podrías volver con él?"','"¿Pensamientos de hacerte daño?"'],c:0,fb:'Parámetros: frecuencia llanto, duración rumiación, cuantificación insomnio y restricción alimentaria.',hint:'Ya tienes topografía. Necesitas CUANTIFICAR.'},
+{text:'4-5 llantos/día (15-20 min), 6h/día pensando en él, no cena hace 2 semanas, 3-4h sueño/noche. ¿Qué falta?',opts:['Diagnóstico','Contexto antecedente + consecuencias','Historia de relaciones','Medicación'],c:1,fb:'Falta E→ (¿qué lo dispara? ¿ver redes? ¿estar sola?) y →E (¿qué pasa después?). Esto completaría E→R→E.',hint:'Tienes R con parámetros. Falta el contexto: ¿la E de cada lado?'}
+]}
+]}
+]},
+5:{title:"Función vs. Morfología",cheat:["La conducta se define por su FUNCIÓN, no por su forma","Misma topografía puede tener funciones distintas (llorar por atención vs. por escape)","Diferente topografía puede cumplir la misma función (equivalencia funcional)","R+: se añade algo → conducta aumenta. R-: se quita algo aversivo → conducta aumenta","C+: se añade algo aversivo → baja. C-: se quita algo deseado → baja","Si eliminamos una conducta sin abordar la función, aparecerá otra"],
+theory:[
+{icon:'🔄',title:'Función ≠ Forma',color:'gold',body:`<p class="th">Dos conductas pueden verse igual pero tener funciones distintas. Y conductas muy diferentes pueden cumplir la misma función.</p><div class="hl"><em>La operante se define por su función</em> — por los efectos que produce — no por su morfología.</div>`},
+{icon:'📊',title:'Esquema E→R→E',color:'teal',body:`<div class="diagram">${DIAGRAMS.ere}<div class="diagram-label">La función se determina por las CONSECUENCIAS</div></div>`},
+{icon:'💡',title:'Ejemplos clave',color:'green',body:`<div class="ex-box"><div class="ex-label">Misma topografía ≠ función</div><p>Niño llora: A) Madre se va → madre vuelve = <b>R+</b> | B) Le dan verdura → retiran plato = <b>R-</b></p></div><div class="ex-box"><div class="ex-label">≠ topografía = misma función</div><p>Adolescente ante deberes: dice "me duele la cabeza" / tira libros / llora → todos = <b>R- (escape)</b></p></div>`}
+],
+stages:[
+{id:'A',title:'Misma topografía ≠ función',sub:'Análisis',typeLabel:'Compara',instr:'Analiza por qué la misma conducta tiene diferente función según el contexto.',exercises:[
+{type:'single',text:'María grita: (A) Al hijo que no recoge → hijo recoge. (B) A pareja en discusión → pareja se calla. ¿Funciones?',opts:['Ambos igual','(A) R+ (obtiene obediencia) y (B) R- (elimina discusión)','María es agresiva','Ambos R+'],c:1,ok:'(A) produce obediencia = R+. (B) elimina discusión = R-. Misma topografía, distinta función.',fail:'(A) obtiene algo = R+. (B) elimina algo aversivo = R-.'},
+{type:'single',text:'Autolesión: (A) Siente "vacío", se corta, siente "algo". (B) Discute con pareja, se corta, pareja deja de enfadarse. ¿Funciones?',opts:['Ambas R+','(A) R+ (produce estimulación) y (B) R- (elimina enfado)','Ambas R-','Siempre igual'],c:1,ok:'(A) produce estimulación = R+. (B) elimina enfado = R-. Intervención distinta para cada caso.',fail:'(A) produce sensación = R+. (B) elimina enfado = R-.'},
+{type:'single',text:'Niño dice "me duele la tripa": (A) Antes del colegio → queda en casa. (B) Tras comer mucho → madre da medicina. ¿Funciones?',opts:['Ambas iguales','(A) posible R- (escape colegio) y (B) posible R+ (obtiene cuidados)','Tiene dolor real','No analizable'],c:1,ok:'(A) escape de colegio = R-. (B) obtiene cuidados = R+. Misma frase, distinta función.',fail:'(A) escape = R-. (B) obtiene atención = R+.'},
+{type:'single',text:'Adulto llora: (A) Solo en su habitación → se siente aliviado. (B) Con terapeuta → terapeuta le dedica más tiempo. ¿Funciones?',opts:['Ambas expresión emocional','(A) regulación (R-: reduce malestar) y (B) R+ (obtiene atención/tiempo)','Siempre R-','No analizable'],c:1,ok:'(A) reduce malestar = R-. (B) produce más tiempo = R+.',fail:'(A) R-. (B) R+. Misma conducta, diferente función.'}
+]},
+{id:'B',title:'Identifica la función',sub:'Análisis funcional',typeLabel:'R+ R- C+ C-',instr:'Determina qué tipo de contingencia mantiene la conducta.',exercises:[
+{type:'single',text:'Evita reuniones sociales → ansiedad baja. ¿Función?',opts:['R+','R-','C+','Extinción'],c:1,ok:'Elimina ansiedad = R-. Mantiene la evitación.',fail:'Evitar elimina algo aversivo = R-.'},
+{type:'single',text:'Niño hace berrinche → madre compra lo que pide. ¿Función?',opts:['R+: obtiene lo que quiere','R-','C+','Extinción'],c:0,ok:'Produce algo deseado = R+.',fail:'Se añade algo deseado = R+.'},
+{type:'single',text:'Estudia para evitar bronca de padres. ¿Función del estudio?',opts:['R+','R-: evita la bronca','C+','Sin función operante'],c:1,ok:'Previene estímulo aversivo = R-.',fail:'Evita la bronca = R-.'},
+{type:'single',text:'Publica selfies → recibe likes → publica más. ¿Función?',opts:['R+','R-','C-','Extinción'],c:0,ok:'Se añade algo positivo (likes) → conducta aumenta = R+.',fail:'Likes = estimulación positiva añadida = R+.'},
+{type:'single',text:'Niño toca plancha → quemadura → no vuelve a tocar. ¿Función?',opts:['R+','R-','C+: se añade aversivo → baja conducta','C-'],c:2,ok:'Se añade estímulo aversivo → conducta disminuye = C+.',fail:'Dolor añadido → conducta baja = C+.'},
+{type:'single',text:'Le quitan el móvil por llegar tarde → llega tarde menos. ¿Función?',opts:['R+','R-','C+','C-: se retira positivo → baja conducta'],c:3,ok:'Se retira algo deseado → conducta baja = C-.',fail:'Se retira el móvil (deseado) → conducta baja = C-.'}
+]},
+{id:'C',title:'Equivalencia funcional',sub:'Multi-selección',typeLabel:'Misma función',instr:'¿Qué conductas diferentes podrían cumplir la MISMA función?',exercises:[
+{type:'multi',text:'Adolescente quiere ESCAPAR de los deberes (R-). ¿Cuáles?',opts:['"Me duele la cabeza"','Pelea con hermano','Llorar hasta que mamá los hace','Sentarse a hacerlos','Tirar los libros'],c:[0,1,2,4],ok:'Todas excepto hacerlos = escape (R-). Diferentes topografías, misma función.',fail:'Todas excepto hacerlos son escape.'},
+{type:'multi',text:'Paciente busca ATENCIÓN de pareja (R+). ¿Cuáles?',opts:['Hablar de tema interesante','Quejarse de dolor','Discutir','Cocinar algo especial','Amenazar con autolesionarse'],c:[0,1,2,3,4],ok:'TODAS pueden obtener atención. Desde conductas "positivas" hasta "negativas".',fail:'Todas obtienen atención: misma función, topografías muy distintas.'},
+{type:'single',text:'¿Por qué es IMPORTANTE identificar equivalencia funcional?',opts:['Facilita el diagnóstico','Si eliminamos UNA topografía sin abordar la función, aparecerá otra','Todas las problemáticas tienen misma función','Misma técnica para todas'],c:1,ok:'Si la función no se aborda, la persona encontrará otra conducta que la cumpla.',fail:'Sin abordar la función, eliminar una conducta solo produce sustitución.'}
+]},
+{id:'D',title:'Caso: Daniel',sub:'Caso completo',typeLabel:'Caso',instr:'Análisis funcional completo de un caso infantil.',exercises:[
+{type:'seq',patient:{name:'Daniel',age:'10 años',gender:'c',initial:'D',badge:'Derivado: "Se porta mal"'},quote:'Profesora: "Interrumpe, se levanta del pupitre, a veces tira material al suelo."',questions:[
+{text:'La profesora dice "es un niño difícil". ¿Qué le dirías?',opts:['"Probablemente TDAH"','"Necesitamos operacionalizar: ¿qué, cuándo, con qué frecuencia, qué pasa después?"','"Es normal"','"Más disciplina"'],c:1,fb:'Operacionalizar: topografía + parámetros + antecedentes + consecuencias.',hint:'Las etiquetas no guían la intervención.'},
+{text:'Daniel interrumpe 12 veces/clase de mates, 8 veces se levanta. NO lo hace en educación física ni arte. ¿Qué indica?',opts:['Problema selectivo','CONTROL ESTIMULAR: ocurre ante estímulos específicos','Finge','Profesor malo'],c:1,fb:'La conducta solo ocurre en un contexto = control estimular. No es "rasgo" del niño.',hint:'Si fuera rasgo, ocurriría en todas las clases.'},
+{text:'Cuando interrumpe, la profesora dice "¡Daniel, siéntate!" Todos le miran. Daniel sonríe. ¿Función?',opts:['R- (escapa de mates)','R+ (obtiene atención de profesora y compañeros)','C+ (recibe regaño)','Impulsividad'],c:1,fb:'Reprimenda pública + miradas + sonrisa = R+. La "disciplina" está reforzando la conducta.',hint:'La sonrisa de Daniel es la pista clave.'},
+{text:'Si función = R+ (atención), ¿intervención?',opts:['Castigar más','Extinguir atención ante disrupción + reforzar diferencialmente participación adecuada','Medicar','Cambiar de clase'],c:1,fb:'Extinción de R+ + reforzamiento diferencial. La intervención se deriva del análisis funcional.',hint:'¿Cómo eliminas el R+ y lo rediriges a conducta adecuada?'}
+]}
+]}
+]},
+6:{title:"Caso Clínico Integrador",cheat:["Secuencia completa: queja → operacionalizar → cuantificar → contextualizar → consecuencias → hipótesis funcional","Cada caso es único: misma etiqueta ≠ misma función","El análisis funcional guía la intervención","La conducta se explica por función + parámetros + contingencias","Dos personas con 'depresión' pueden tener contingencias completamente distintas"],
+theory:[
+{icon:'🏆',title:'Integración final',color:'gold',body:`<p class="th">El proceso completo: 1) Recibir queja → 2) Operacionalizar (triple sistema) → 3) Cuantificar (parámetros) → 4) Contextualizar (E→) → 5) Consecuencias (→E) → 6) Hipótesis funcional.</p>`},
+{icon:'🔗',title:'Esquema completo',color:'teal',body:`<div class="diagram">${DIAGRAMS.ere}<div class="diagram-label">El análisis funcional completo guía la intervención</div></div>`}
+],
+stages:[
+{id:'A',title:'Elena: "Ansiedad laboral"',sub:'Caso adulto',typeLabel:'Caso completo',instr:'Análisis E→R→E completo.',exercises:[
+{type:'seq',patient:{name:'Elena',age:'28 años',gender:'f',initial:'E',badge:'Diseñadora gráfica'},quote:'"Tengo una ansiedad horrible en el trabajo. Creo que necesito medicación."',questions:[
+{text:'Elena: "Al presentar diseños al equipo, tiemblo, me sudan manos, hablo rápido y pienso que notarán que no estoy preparada." ¿Triple sistema?',opts:['Motor: temblar. Cognitivo: hablar rápido. Fisiológico: sudor.','Motor: hablar rápido. Cognitivo: "van a notar...". Fisiológico: temblor+sudor.','Todo fisiológico','Solo motor y fisiológico'],c:1,fb:'Motor: hablar rápido. Cognitivo: anticipación negativa. Fisiológico: temblor+sudor.',hint:'Hablar rápido es observable = motor. La frase que piensa = cognitivo.'},
+{text:'Presentaciones 2/semana. Temblor 30 min antes, dura 20 min. Ha faltado "enferma" 3 veces en 2 meses. ¿Parámetros?',opts:['Solo frecuencia','Frecuencia (2/sem + 3 ausencias), duración (30+20 min), intensidad (causa evitación)','Solo duración','No cuantificados'],c:1,fb:'Frecuencia de exposición y evitación, duración, e intensidad inferida (causa evitación).',hint:'Cuenta los números que aparecen en la descripción.'},
+{text:'¿Cuál es el estímulo antecedente?',opts:['El trabajo en general','Presentar diseños ante el equipo (evaluación social)','El jefe','Su personalidad'],c:1,fb:'Antecedente específico: evaluación social al presentar. No "el trabajo" en general.',hint:'Elena no tiene síntomas diseñando sola.'},
+{text:'Cuando llama enferma, ¿función de la evitación?',opts:['R+: día libre','R-: elimina ansiedad y exposición','C+: culpa','Extinción'],c:1,fb:'Evitar elimina ansiedad + exposición = R-. Mantiene el problema (no hay habituación).',hint:'¿Qué se ELIMINA cuando no va?'}
+]}
+]},
+{id:'B',title:'Miguel: "Es agresivo"',sub:'Caso infantil',typeLabel:'Caso completo',instr:'Análisis funcional de un caso infantil.',exercises:[
+{type:'seq',patient:{name:'Miguel',age:'6 años',gender:'c',initial:'M',badge:'Los padres consultan'},quote:'"Nuestro hijo es muy agresivo. Pega a otros niños."',questions:[
+{text:'¿"Pega a otros niños" está operacionalizado?',opts:['Sí','No — falta: ¿a quién? ¿frecuencia? ¿contextos? ¿antes/después?','Solo falta diagnóstico','Sí, para empezar a intervenir'],c:1,fb:'Insuficiente. Necesitamos topografía detallada, parámetros, antecedentes y consecuentes.',hint:'¿Podrían dos observadores estar de acuerdo en CUÁNDO y POR QUÉ pega?'},
+{text:'"En el parque, cuando le quitan un juguete, da puñetazos y patadas, 3-4 veces/semana." ¿Antecedente?',opts:['Ir al parque','Que le quiten un juguete (pérdida de reforzador)','Padres sin límites','Mucha energía'],c:1,fb:'Pérdida de reforzador = estímulo aversivo que dispara la agresión.',hint:'¿Qué ocurre JUSTO ANTES de que pegue?'},
+{text:'Cuando pega, el otro niño le devuelve el juguete. ¿Función?',opts:['R+ (obtiene lo que quiere)','R- (escapa de algo)','C+ (le pegan de vuelta)','Sin función'],c:0,fb:'Pegar → devuelven juguete = R+. La agresión produce lo deseado.',hint:'¿Qué OBTIENE tras pegar?'},
+{text:'Eᴅ (quitan juguete) → R (golpes, 3-4/sem) → E (devuelven juguete = R+). ¿Intervención?',opts:['Castigo físico','Enseñar alternativas (pedir, turnos) + que la agresión no produzca resultado','Retirar del parque','Medicar'],c:1,fb:'Extinguir R+ de agresión + reforzar alternativas funcionales. Del análisis funcional a la intervención.',hint:'¿Cómo cambias las contingencias?'}
+]}
+]},
+{id:'C',title:'Carmen: "Atracones"',sub:'Conducta compleja',typeLabel:'Caso completo',instr:'Análisis de una conducta compleja con múltiples funciones.',exercises:[
+{type:'seq',patient:{name:'Carmen',age:'35 años',gender:'f',initial:'C',badge:'Motivo: "No puedo parar"'},quote:'"No puedo parar de comer. Tengo atracones horribles. Soy adicta a la comida."',questions:[
+{text:'¿Qué operacionalizar primero?',opts:['Qué come, cuánto, duración, frecuencia','Criterios TCA','Si ha hecho dietas','Relación infantil con comida'],c:0,fb:'"Atracón" debe operacionalizarse: alimentos, cantidad, duración, frecuencia.',hint:'Convierte "atracón" en datos concretos y medibles.'},
+{text:'"Por la noche, sola, como galletas/chocolate/pan 40 min, 4 veces/semana. Después vomito." ¿Triple sistema + parámetros?',opts:['Motor: comer+vomitar. Cognitivo: "me siento horrible". Fisiológico: malestar. 4/sem, 40 min.','Solo motor','Solo parámetros','No analizable'],c:0,fb:'Motor: ingesta+vómito. Cognitivo: autoevaluación negativa. Fisiológico: malestar. F: 4/sem. D: 40 min.',hint:'Busca los tres componentes y los números.'},
+{text:'"Cuando estoy sola" + "después de día estresante". ¿Función del atracón?',opts:['R+: placer de comer','R-: reduce malestar/estrés','C+: se siente mal','Hábito sin función'],c:1,fb:'El atracón reduce malestar acumulado = R-. El alivio inmediato (temporal) mantiene la conducta.',hint:'¿Qué ELIMINA el atracón?'},
+{text:'¿Función del vómito posterior?',opts:['Sin función','R-: elimina malestar gástrico + culpa/ansiedad','C+: auto-castigo','R+: le gusta'],c:1,fb:'Doble R-: elimina (1) malestar gástrico y (2) culpa. Mantiene el ciclo atracón-purga.',hint:'¿Qué se ELIMINA tras vomitar?'}
+]}
+]},
+{id:'D',title:'Reflexión profesional',sub:'Síntesis final',typeLabel:'Integración',instr:'Preguntas de reflexión para consolidar todo lo aprendido.',exercises:[
+{type:'seq',patient:{name:'Reflexión',age:'—',gender:'m',initial:'💡',badge:'Síntesis del módulo'},quote:'Aplica todo lo aprendido a estas preguntas de integración.',questions:[
+{text:'Paciente dice "estoy mal". ¿Secuencia correcta de preguntas?',opts:['"¿Desde cuándo? ¿Por qué? ¿Qué sientes?"','"¿Qué haces/piensas/sientes? → ¿Frecuencia/duración? → ¿En qué situaciones? → ¿Qué pasa después?"','"¿Diagnóstico? ¿Medicación? ¿Antecedentes?"','"¿Cómo te sientes? ¿Quieres hablar? ¿Qué puedo hacer?"'],c:1,fb:'Topografía → Parámetros → Antecedentes → Consecuencias.',hint:'Piensa en el orden: QUÉ → CUÁNTO → CUÁNDO → QUÉ PASA.'},
+{text:'¿Por qué el análisis funcional supera a las etiquetas?',opts:['Es más moderno','Cada caso es único: misma etiqueta puede tener funciones distintas','Diagnósticos están mal','Es más rápido'],c:1,fb:'Dos personas "con depresión" pueden tener contingencias distintas. La intervención depende de la función.',hint:'¿Qué pasa si tratas dos "depresiones" exactamente igual?'},
+{text:'Supervisor dice: "TAG con componentes somáticos y cognitivos significativos." ¿Respuesta?',opts:['"Gracias, útil para el tratamiento"','"Necesitamos operacionalizar: ¿qué conductas, parámetros, estímulos, consecuencias?"','"¿Qué medicación?"','"¿Cumple DSM?"'],c:1,fb:'Lenguaje técnico vacío. Para intervenir necesitamos conductas concretas, medibles, funcionalmente analizadas.',hint:'¿Esa descripción te dice QUÉ hacer en terapia?'},
+{text:'Idea MÁS importante del módulo:',opts:['Las etiquetas son malas','La conducta se define por su FUNCIÓN, se mide por PARÁMETROS, se explica por CONTINGENCIAS','Todo se mide con números','El AF reemplaza la entrevista'],c:1,fb:'¡Exacto! Función + parámetros + contingencias = esencia del análisis funcional. Tienes la base.',hint:'¿Cuál es el resumen de todo en una frase?'}
+]}
+]}
+]}
+};
+
+// ===== RENDER ENGINE =====
+const $=id=>document.getElementById(id);
+const $app=$('app');
+
+function go(view,opts={}){
+  Object.assign(S,opts,{view});
+  if(view==='exercise'){S.answers={};S.seqIdx=0;}
+  saveState();render();
+}
+
+function render(){
+  const v=S.view;
+  if(v==='home')rHome();
+  else if(v==='theory')rTheory();
+  else if(v==='stages')rStages();
+  else if(v==='exercise')rExercise();
+  else if(v==='stage-sum')rStageSummary();
+  else if(v==='level-sum')rLevelSummary();
+  requestAnimationFrame(()=>{const c=$app.querySelector('.cnt');if(c)c.scrollTop=0;});
+}
+
+// ===== #16 SVG ICON HELPER =====
+function ico(name,cls=''){return `<span class="ico ${cls}" style="display:inline-flex;width:1em;height:1em;vertical-align:middle">${ICO[name]||''}</span>`}
+
+// ===== TOP BAR =====
+function topBar(title,sub,back,prog){
+  const dm=document.documentElement.getAttribute('data-theme')==='dark';
+  let p='';if(prog!==undefined)p=`<div class="top-prog"><div class="top-prog-bar"><div class="top-prog-fill" style="width:${prog}%"></div></div><div class="top-prog-txt">${Math.round(prog)}%</div></div>`;
+  return `<div class="top"><div class="top-back" onclick="${back}" tabindex="0" role="button" aria-label="Volver">${ICO.back}</div><div style="flex:1"><div class="top-t">${title}</div><div class="top-s">${sub}</div></div>${p}<div class="top-dm" onclick="toggleDark()" tabindex="0" role="button" aria-label="Modo oscuro">${dm?ICO.sun:ICO.moon}</div></div>`;
+}
+
+// ===== HOME =====
+function rHome(){
+  const total=6;let done=0;
+  for(let i=1;i<=6;i++)if(isLvDone(i))done++;
+  const pct=Math.round((done/total)*100);
+  
+  let lvs='';
+  for(let i=1;i<=total;i++){
+    const l=L[i];const d=isLvDone(i);const u=i===1||isLvDone(i-1);
+    const cls=d?'done':(!u?'locked':'');
+    const stars=d?'★★★':(u?'☆☆☆':'🔒');
+    lvs+=`<div class="lv-card ${cls}" onclick="${u?`go('theory',{level:${i},stage:0})`:'void(0)'}" tabindex="${u?0:-1}" role="button"><div class="lv-num">${d?'✓':i}</div><div style="flex:1"><div class="lv-name">${l.title}</div><div class="lv-sub"><span>${l.stages.length} etapas</span><span class="stars">${stars}</span></div></div><div class="lv-arrow">›</div></div>`;
   }
-} catch(e) {}
-
-function saveState() {
-  try {
-    localStorage.setItem('afc_mod1_state', JSON.stringify({
-      unlockedLevels: state.unlockedLevels,
-      completedLevels: state.completedLevels,
-      answers: state.answers
-    }));
-  } catch(e) {}
-}
-
-// ===================================================================
-// NAVIGATION
-// ===================================================================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active');
-    s.classList.remove('exit-left');
-  });
-  setTimeout(() => {
-    document.getElementById(id).classList.add('active');
-  }, 50);
-}
-
-function goToDashboard() {
-  // In real app, would navigate away. For now just show alert
-  alert('Volver al Dashboard (en la versión completa, navegaría al dashboard principal)');
-}
-
-function backToHome() {
-  updateHomeCards();
-  showScreen('screen-home');
-}
-
-function updateHomeCards() {
-  for (let i = 1; i <= 6; i++) {
-    const card = document.getElementById('lcard-' + i);
-    if (!card) continue;
-    card.classList.remove('locked', 'completed');
-    if (state.completedLevels.includes(i)) {
-      card.classList.add('completed');
-      card.querySelector('.level-arrow').innerHTML = '✓';
-      card.querySelector('.level-arrow').style.color = 'var(--green)';
-    } else if (!state.unlockedLevels.includes(i)) {
-      card.classList.add('locked');
-    }
-  }
-  // Level 1 card doesn't have id lcard-1, it's always unlocked
-}
-
-// ===================================================================
-// LEVEL RENDERING
-// ===================================================================
-function startLevel(levelId) {
-  if (!state.unlockedLevels.includes(levelId) && !state.completedLevels.includes(levelId)) return;
   
-  state.currentLevel = levelId;
-  state.currentQuestion = 0;
-  state.selectedOption = null;
-  state.questionChecked = false;
-  state.answers[levelId] = [];
-
-  const level = LEVELS[levelId];
-  
-  document.getElementById('level-topbar-title').textContent = 'Nivel ' + levelId;
-  document.getElementById('level-topbar-sub').textContent = level.title;
-  updateProgress(0, level.questions.length);
-  
-  renderLevelContent(levelId);
-  showScreen('screen-level');
-}
-
-function renderLevelContent(levelId) {
-  const level = LEVELS[levelId];
-  const content = document.getElementById('level-content');
-  const qIdx = state.currentQuestion;
-  
-  // Show theory only before first question
-  if (qIdx === 0) {
-    content.innerHTML = level.theory;
-    document.getElementById('btn-check').textContent = 'Comenzar ejercicios ›';
-    document.getElementById('btn-check').disabled = false;
-    document.getElementById('btn-check').onclick = () => showQuestion(levelId);
-    content.scrollTop = 0;
-    return;
-  }
-  
-  showQuestion(levelId);
-}
-
-function showQuestion(levelId) {
-  const level = LEVELS[levelId];
-  const qIdx = state.currentQuestion;
-  
-  if (qIdx >= level.questions.length) {
-    showSummary(levelId);
-    return;
-  }
-  
-  const q = level.questions[qIdx];
-  const content = document.getElementById('level-content');
-  
-  updateProgress(qIdx, level.questions.length);
-  
-  let html = `
-    <div class="question-card animate-in">
-      <div class="question-number">Pregunta ${qIdx + 1} de ${level.questions.length}</div>
-      <div class="question-text">${q.text}</div>
-      ${q.context ? `<div class="question-context">${q.context}</div>` : ''}
-      <div id="options-container">
-  `;
-  
-  const letters = ['A', 'B', 'C', 'D'];
-  q.options.forEach((opt, i) => {
-    html += `
-      <div class="option" id="opt-${i}" onclick="selectOption(${i})">
-        <div class="option-marker">${letters[i]}</div>
-        <div class="option-text">${opt}</div>
-      </div>
-    `;
-  });
-  
-  html += `
-      </div>
-      <div class="feedback" id="feedback-box"></div>
+  $app.innerHTML=`${topBar('Fase 1 · Fundamentos','Módulo 1 de 3',"history.back()")}
+  <div class="cnt">
+    <div class="home-header anim">
+      <div class="home-icon">${ICO.clip}</div>
+      <div class="home-title">Operacionalización de la Conducta</div>
+      <div class="home-desc">Aprende a definir conductas de forma observable, medible y funcional.</div>
     </div>
-  `;
-  
-  content.innerHTML = html;
-  content.scrollTop = 0;
-  
-  state.selectedOption = null;
-  state.questionChecked = false;
-  
-  const btn = document.getElementById('btn-check');
-  btn.textContent = 'Comprobar';
-  btn.disabled = true;
-  btn.className = 'btn btn-primary';
-  btn.onclick = () => checkCurrentQuestion();
-}
-
-function selectOption(idx) {
-  if (state.questionChecked) return;
-  
-  state.selectedOption = idx;
-  
-  document.querySelectorAll('.option').forEach((el, i) => {
-    el.classList.remove('selected');
-    if (i === idx) el.classList.add('selected');
-  });
-  
-  document.getElementById('btn-check').disabled = false;
-}
-
-function checkCurrentQuestion() {
-  if (state.selectedOption === null || state.questionChecked) return;
-  
-  state.questionChecked = true;
-  const levelId = state.currentLevel;
-  const level = LEVELS[levelId];
-  const q = level.questions[state.currentQuestion];
-  const correct = state.selectedOption === q.correct;
-  
-  if (!state.answers[levelId]) state.answers[levelId] = [];
-  state.answers[levelId].push(correct ? 1 : 0);
-  
-  // Style options
-  document.querySelectorAll('.option').forEach((el, i) => {
-    el.classList.add('disabled');
-    if (i === q.correct) {
-      el.classList.remove('selected');
-      el.classList.add('correct');
-    } else if (i === state.selectedOption && !correct) {
-      el.classList.add('incorrect');
-    } else {
-      el.classList.add('dimmed');
-    }
-  });
-  
-  // Show feedback
-  const fb = document.getElementById('feedback-box');
-  fb.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
-  fb.innerHTML = correct 
-    ? `<strong>✓ ¡Correcto!</strong><br>${q.feedback_ok}`
-    : `<strong>✗ No exactamente</strong><br>${q.feedback_fail}`;
-  
-  // Scroll to feedback
-  setTimeout(() => fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-  
-  // Change button
-  const btn = document.getElementById('btn-check');
-  const isLast = state.currentQuestion >= level.questions.length - 1;
-  btn.textContent = isLast ? 'Ver resumen ›' : 'Siguiente pregunta ›';
-  btn.className = 'btn ' + (correct ? 'btn-success' : 'btn-primary');
-  btn.onclick = () => {
-    state.currentQuestion++;
-    showQuestion(levelId);
-  };
-}
-
-function updateProgress(current, total) {
-  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
-  document.getElementById('level-progress-fill').style.width = pct + '%';
-  document.getElementById('level-progress-text').textContent = pct + '%';
-}
-
-// ===================================================================
-// SUMMARY
-// ===================================================================
-function showSummary(levelId) {
-  const level = LEVELS[levelId];
-  const answers = state.answers[levelId] || [];
-  const correct = answers.filter(a => a === 1).length;
-  const total = answers.length;
-  const pct = Math.round((correct / total) * 100);
-  const passed = pct >= 75;
-  
-  document.getElementById('summary-level-name').textContent = level.title;
-  
-  let msg, sub;
-  if (pct === 100) { msg = '¡Perfecto!'; sub = 'Dominas este nivel por completo.'; }
-  else if (pct >= 75) { msg = '¡Muy bien!'; sub = 'Has superado el nivel. ¡Sigue así!'; }
-  else if (pct >= 50) { msg = 'Casi lo tienes'; sub = 'Necesitas al menos 75% para avanzar. Revisa la teoría e inténtalo de nuevo.'; }
-  else { msg = 'Sigue practicando'; sub = 'Revisa bien la teoría antes de intentarlo otra vez.'; }
-  
-  let breakdownHtml = '';
-  level.questions.forEach((q, i) => {
-    const ok = answers[i] === 1;
-    breakdownHtml += `
-      <div class="summary-item">
-        <div class="summary-item-icon">${ok ? '✅' : '❌'}</div>
-        <div class="summary-item-text">Pregunta ${i + 1}</div>
-        <div class="summary-item-result ${ok ? 'ok' : 'fail'}">${ok ? 'Correcta' : 'Incorrecta'}</div>
-      </div>
-    `;
-  });
-  
-  document.getElementById('summary-content').innerHTML = `
-    <div class="summary-circle" style="border-color: ${passed ? 'var(--green)' : 'var(--gold)'}">
-      <div class="summary-score">${correct}</div>
-      <div class="summary-total">de ${total}</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:20px" class="anim d1">
+      <div class="prog-ring"><svg width="80" height="80"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" stroke-width="6"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--gold)" stroke-width="6" stroke-dasharray="${2*Math.PI*34}" stroke-dashoffset="${2*Math.PI*34*(1-pct/100)}" stroke-linecap="round"/></svg><div class="prog-ring-txt">${pct}%</div></div>
+      <div class="home-stats" style="margin:0;flex-direction:column;gap:6px"><div class="home-stat"><b>${done}/${total}</b><span>Niveles</span></div><div class="home-stat"><b>~130</b><span>Ejercicios</span></div></div>
     </div>
-    <div class="summary-message">${msg}</div>
-    <div class="summary-sub">${sub}</div>
-    <div class="summary-breakdown">
-      ${breakdownHtml}
+    <div class="ws-banner anim d2" onclick="window.open('modulo-1/talleropera.html','_blank')">
+      <div class="ws-icon">${ICO.flask}</div><div style="flex:1"><div style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--gold-d);margin-bottom:2px">⭐ Herramienta práctica</div><div style="font-weight:600;font-size:15px;color:var(--bright)">Taller de Operacionalización</div><div style="font-size:12px;color:var(--dim)">Practica con casos abiertos</div></div><div style="font-size:18px;color:var(--gold)">›</div>
     </div>
-    ${!passed ? '<div style="text-align:center;margin-top:12px;"><button class="btn btn-primary" style="display:inline-block;flex:none;padding:12px 28px;" onclick="startLevel('+levelId+')">Reintentar nivel</button></div>' : ''}
-  `;
+    <div class="sec-title anim d3">Niveles del módulo</div>
+    ${lvs}
+  </div>`;
+}
+
+function isLvDone(n){const l=L[n];if(!l)return false;return l.stages.every(s=>S.scores[`${n}-${s.id}`]!==undefined);}
+
+// ===== #4 THEORY WITH ACCORDIONS =====
+function rTheory(){
+  const l=L[S.level];
+  let acc='';
+  l.theory.forEach((t,i)=>{
+    acc+=`<div class="accord ${i===0?'open':''}" onclick="this.classList.toggle('open')">
+      <div class="accord-head"><div class="accord-icon" style="background:var(--${t.color}-g)">${t.icon}</div><div class="accord-title">${t.title}</div><div class="accord-arrow">▼</div></div>
+      <div class="accord-body"><div class="accord-inner">${t.body}</div></div></div>`;
+  });
+  $app.innerHTML=`${topBar(`Nivel ${S.level}`,l.title,"go('home')")}
+  <div class="cnt"><div class="anim"><div class="card"><div class="tag gold">${ico('book')} Fundamento teórico</div><div class="card-title">${l.title}</div><div class="card-desc">Expande cada sección para leer la teoría.</div></div>${acc}</div></div>
+  <div class="bot"><button class="btn btn-gold" onclick="go('stages')">Ir a los ejercicios ›</button></div>`;
+}
+
+// ===== #7 STAGES WITH INTENSITY CARDS =====
+function rStages(){
+  const l=L[S.level];
+  let cards='';
+  l.stages.forEach((s,i)=>{
+    const done=S.scores[`${S.level}-${s.id}`]!==undefined;
+    const active=i===S.stage;
+    const unlocked=i===0||S.scores[`${S.level}-${l.stages[i-1].id}`]!==undefined;
+    const cls=(active?'active':'')+(done?' done':'')+(!unlocked?' locked':'');
+    cards+=`<div class="st-card ${cls}" data-stage="${s.id}" onclick="${unlocked?`go('stages',{stage:${i}})`:'void(0)'}"><div class="st-check">✓</div><div class="st-label">Etapa ${s.id}</div><div class="st-name">${s.sub}</div><div class="st-sub">${s.typeLabel}</div></div>`;
+  });
+  const s=l.stages[S.stage];
+  $app.innerHTML=`${topBar(`Nivel ${S.level} · Etapa ${s.id}`,s.title,"go('theory')")}
+  <div class="cnt">
+    <div class="stage-scroll anim">${cards}</div>
+    <div class="card anim d1">
+      <div class="tag ${['teal','gold','purple','purple'][S.stage]}">${ico('target')} ${s.typeLabel}</div>
+      <div class="card-title">${s.title}</div>
+      <div class="card-desc">${s.instr}</div>
+    </div>
+  </div>
+  <div class="bot"><button class="btn btn-gold" onclick="startStage()">Comenzar ›</button></div>`;
+}
+
+function startStage(){S.exIdx=0;S.seqIdx=0;S.answers={};go('exercise');}
+
+// ===== EXERCISE RENDERER =====
+function rExercise(){
+  const l=L[S.level],s=l.stages[S.stage],ex=s.exercises[S.exIdx];
+  const total=getTotalQ(s),current=getCurrentQ(s);
   
-  // If passed, unlock next level
-  if (passed) {
-    if (!state.completedLevels.includes(levelId)) {
-      state.completedLevels.push(levelId);
-    }
-    const next = levelId + 1;
-    if (next <= 6 && !state.unlockedLevels.includes(next)) {
-      state.unlockedLevels.push(next);
-    }
-    saveState();
-    
-    const nextBtn = document.getElementById('btn-next-level');
-    if (levelId >= 6) {
-      nextBtn.textContent = '¡Módulo completado! 🎉';
-      nextBtn.onclick = () => backToHome();
-    } else {
-      nextBtn.textContent = 'Siguiente nivel ›';
-      nextBtn.onclick = () => goNextLevel();
-    }
-    nextBtn.style.display = '';
-  } else {
-    document.getElementById('btn-next-level').style.display = 'none';
+  let pips='<div class="ex-prog" role="progressbar" aria-valuenow="'+current+'" aria-valuemax="'+total+'">';
+  for(let i=0;i<total;i++){
+    const k=ansKey(i);const ans=S.answers[k];
+    let cls=i===current?'current':(ans===true?'done':(ans===false?'fail':''));
+    pips+=`<div class="ex-pip ${cls}"></div>`;
+  }
+  pips+='</div>';
+  
+  let body='';
+  if(ex.type==='tf')body=mkTF(ex);
+  else if(ex.type==='single')body=mkSingle(ex);
+  else if(ex.type==='multi')body=mkMulti(ex);
+  else if(ex.type==='classify')body=mkClassify(ex);
+  else if(ex.type==='order')body=mkOrder(ex);
+  else if(ex.type==='seq')body=mkSeq(ex);
+  
+  const prog=total?Math.round((current/total)*100):0;
+  $app.innerHTML=`${topBar(`Nivel ${S.level} · Etapa ${s.id}`,s.title,"go('stages')",prog)}
+  <div class="cnt">${pips}<div class="ex-wrap anim" id="exWrap">${body}</div></div>
+  <div class="bot" id="botBar"></div>`;
+}
+
+function getTotalQ(s){let n=0;s.exercises.forEach(e=>{if(e.type==='seq')n+=e.questions.length;else if(e.type==='classify')n+=e.items.length;else n++});return n;}
+function getCurrentQ(s){let n=0;for(let i=0;i<S.exIdx;i++){const e=s.exercises[i];if(e.type==='seq')n+=e.questions.length;else if(e.type==='classify')n+=e.items.length;else n++}const e=s.exercises[S.exIdx];if(e){if(e.type==='seq'||e.type==='classify')n+=S.seqIdx;}return n;}
+function ansKey(globalIdx){return `g${globalIdx}`;}
+function curAnsKey(){return ansKey(getCurrentQ(L[S.level].stages[S.stage]));}
+
+// ===== TF =====
+function mkTF(ex){
+  return `<div class="card"><div class="q-num">${ico('zap')} Verdadero o Falso</div><div class="q-text">${ex.s}</div>
+  <div class="tf-wrap"><div class="tf-btn" id="tfV" onclick="chkTF(true)" tabindex="0" role="button">✓ Verdadero</div><div class="tf-btn" id="tfF" onclick="chkTF(false)" tabindex="0" role="button">✗ Falso</div></div>
+  <div class="fb" id="fb"></div></div>`;
+}
+function chkTF(v){
+  const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+  const ok=v===ex.c;
+  $('tf'+(v?'V':'F')).classList.add(ok?'correct':'wrong','disabled');
+  $('tf'+(v?'F':'V')).classList.add('disabled');
+  if(!ok)$(ex.c?'tfV':'tfF').classList.add('correct');
+  showFB(ok,ok?ex.ok:ex.fail,ex.hint);
+  record(ok);
+}
+
+// ===== SINGLE =====
+function mkSingle(ex){
+  let opts='';ex.opts.forEach((o,i)=>{opts+=`<div class="opt" id="so${i}" onclick="chkSingle(${i})" tabindex="0" role="button"><div class="opt-mark">${String.fromCharCode(65+i)}</div><div class="opt-txt">${o}</div></div>`});
+  return `<div class="card"><div class="q-num">${ico('target')} Pregunta</div><div class="q-text">${ex.text}</div>${opts}<div class="fb" id="fb"></div></div>`;
+}
+function chkSingle(i){
+  const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+  const ok=i===ex.c;
+  document.querySelectorAll('.opt').forEach((o,j)=>{o.classList.add('disabled');if(j===i)o.classList.add(ok?'correct':'wrong');if(j===ex.c&&!ok)o.classList.add('reveal')});
+  showFB(ok,ok?ex.ok:ex.fail,ex.hint);record(ok);
+}
+
+// ===== MULTI =====
+let _ms=[];
+function mkMulti(ex){
+  _ms=[];
+  let opts='';ex.opts.forEach((o,i)=>{opts+=`<div class="opt" id="mo${i}" onclick="togMulti(${i})" tabindex="0" role="button"><div class="opt-mark chk">☐</div><div class="opt-txt">${o}</div></div>`});
+  return `<div class="card"><div class="q-num">${ico('check')} Selecciona TODAS las correctas</div><div class="q-text">${ex.text}</div>${opts}<div class="fb" id="fb"></div></div>
+  <div style="text-align:center;margin-top:8px"><button class="btn btn-gold btn-sm" onclick="chkMulti()">Comprobar</button></div>`;
+}
+function togMulti(i){
+  const el=$('mo'+i);if(el.classList.contains('disabled'))return;
+  const idx=_ms.indexOf(i);
+  if(idx===-1){_ms.push(i);el.classList.add('picked');el.querySelector('.opt-mark').textContent='☑'}
+  else{_ms.splice(idx,1);el.classList.remove('picked');el.querySelector('.opt-mark').textContent='☐'}
+}
+function chkMulti(){
+  const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+  const ok=JSON.stringify(_ms.sort())===JSON.stringify([...ex.c].sort());
+  document.querySelectorAll('.opt').forEach((o,i)=>{o.classList.add('disabled');if(ex.c.includes(i))o.classList.add('correct');else if(_ms.includes(i))o.classList.add('wrong')});
+  showFB(ok,ok?ex.ok:ex.fail,ex.hint);record(ok);_ms=[];
+}
+
+// ===== CLASSIFY =====
+function mkClassify(ex){
+  const e=ex.exercises?ex:ex;const item=e.items[S.seqIdx];
+  let cats='';e.categories.forEach(c=>{cats+=`<div class="cl-cat" onclick="chkCl('${c}')" tabindex="0" role="button">${c}</div>`});
+  return `<div class="card"><div class="q-num">${ico('target')} Clasifica ${S.seqIdx+1} de ${e.items.length}</div><div class="q-text">"${item.text}"</div><div class="cl-cats">${cats}</div><div class="fb" id="fb"></div></div>`;
+}
+function chkCl(cat){
+  const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+  const item=ex.items[S.seqIdx];const ok=cat===item.cat;
+  document.querySelectorAll('.cl-cat').forEach(c=>{c.classList.add('disabled');if(c.textContent===item.cat)c.classList.add('correct');else if(c.textContent===cat&&!ok)c.classList.add('wrong')});
+  const fb=ok?`Correcto. "${item.text}" → ${item.cat}.`:`Incorrecto. "${item.text}" → ${item.cat}, no ${cat}.`;
+  showFB(ok,fb);
+  S.answers[curAnsKey()]=ok;
+  if(!ok)logError(item.text,item.cat);
+  setTimeout(()=>{if(S.seqIdx<ex.items.length-1){S.seqIdx++;render()}else{S.seqIdx=0;nextEx()}},1800);
+}
+
+// ===== #11 ORDER WITH UNDO =====
+let _os=[];
+function mkOrder(ex){
+  _os=[];
+  const sh=[...ex.items].map((t,i)=>({t,i})).sort(()=>Math.random()-.5);
+  let pool='';sh.forEach((s,i)=>{pool+=`<div class="ord-item" id="oi${i}" data-text="${s.t}" onclick="pickOrd(${i})" tabindex="0">${s.t}</div>`});
+  return `<div class="card"><div class="q-num">${ico('target')} Ordena de peor a mejor</div>
+  <div class="ord-seq" id="ordSeq"></div>
+  <div style="display:flex;align-items:center;margin-bottom:8px"><div class="ord-undo" id="ordUndo" onclick="undoOrd()" tabindex="0">${ICO.undo} Deshacer</div></div>
+  <div class="ord-pool" id="ordPool">${pool}</div>
+  <div class="fb" id="fb"></div></div>`;
+}
+function pickOrd(i){
+  const el=$('oi'+i);if(el.classList.contains('placed'))return;
+  el.classList.add('placed');_os.push({i,text:el.dataset.text});
+  updOrdSeq();
+  const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+  if(_os.length===ex.items.length){
+    const ok=_os.every((o,j)=>o.text===ex.items[j]);
+    document.querySelectorAll('.ord-placed').forEach((p,j)=>p.classList.add(_os[j].text===ex.items[j]?'correct':'wrong'));
+    document.querySelectorAll('.ord-item,.ord-undo').forEach(e=>e.style.pointerEvents='none');
+    showFB(ok,ok?ex.ok:ex.fail);record(ok);
+  }
+}
+function undoOrd(){
+  if(!_os.length)return;
+  const last=_os.pop();$('oi'+last.i).classList.remove('placed');
+  updOrdSeq();
+}
+function updOrdSeq(){
+  const seq=$('ordSeq');
+  seq.innerHTML=_os.map((o,i)=>`<div class="ord-placed"><span class="ord-n">${i+1}.</span> ${o.text}</div>`).join('');
+  const u=$('ordUndo');if(u)u.classList.toggle('show',_os.length>0);
+}
+
+// ===== #5 SEQ WITH PATIENT CARDS =====
+function mkSeq(ex){
+  const q=ex.questions[S.seqIdx];
+  let opts='';q.opts.forEach((o,i)=>{opts+=`<div class="opt" id="sq${i}" onclick="chkSeq(${i})" tabindex="0" role="button"><div class="opt-mark">${String.fromCharCode(65+i)}</div><div class="opt-txt">${o}</div></div>`});
+  
+  let patientHtml='';
+  if(ex.patient){
+    const p=ex.patient;
+    patientHtml=`<div class="patient"><div class="patient-head"><div class="patient-avatar ${p.gender}">${p.initial}</div><div class="patient-meta"><div class="patient-name">${p.name}</div><div class="patient-age">${p.age}</div></div><div class="patient-badge">${p.badge}</div></div><div class="patient-quote">${ex.quote}</div></div>`;
   }
   
-  showScreen('screen-summary');
+  return `${patientHtml}<div class="card"><div class="q-num">${ico('target')} Pregunta ${S.seqIdx+1} de ${ex.questions.length}</div><div class="q-text">${q.text}</div>${opts}<div class="fb" id="fb"></div></div>`;
+}
+function chkSeq(i){
+  const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+  const q=ex.questions[S.seqIdx];const ok=i===q.c;
+  document.querySelectorAll('.opt').forEach((o,j)=>{o.classList.add('disabled');if(j===i)o.classList.add(ok?'correct':'wrong');if(j===q.c&&!ok)o.classList.add('reveal')});
+  showFB(ok,q.fb,q.hint);
+  S.answers[curAnsKey()]=ok;
+  if(!ok)logError(q.text,q.opts[q.c]);
+  setTimeout(()=>{if(S.seqIdx<ex.questions.length-1){S.seqIdx++;render()}else{S.seqIdx=0;nextEx()}},2500);
 }
 
-function goNextLevel() {
-  const next = state.currentLevel + 1;
-  if (next <= 6) startLevel(next);
-  else backToHome();
+// ===== #2 FEEDBACK =====
+function showFB(ok,text,hint){
+  const fb=$('fb');
+  fb.className=`fb show ${ok?'ok':'fail'}`;
+  let h='';if(!ok&&hint)h=`<div class="fb-hint show">💡 Pista: ${hint}</div>`;
+  fb.innerHTML=`<b>${ok?'✓ ¡Correcto!':'✗ Incorrecto'}</b>${text}${h}`;
+  if(ok){fireConfetti();fb.classList.add('pulse-ok');}
+  else{const w=$('exWrap');if(w){w.classList.add('shake');setTimeout(()=>w.classList.remove('shake'),500)}}
 }
 
-// ===================================================================
-// INIT
-// ===================================================================
-updateHomeCards();
+// ===== #19 ERROR LOG =====
+function logError(q,correct){
+  if(!S.errors[S.level])S.errors[S.level]={};
+  const k=`${S.stage}-${S.exIdx}-${S.seqIdx}`;
+  S.errors[S.level][k]={q:q.substring(0,80),a:typeof correct==='string'?correct.substring(0,80):correct};
+  saveState();
+}
+
+// ===== NAVIGATION =====
+function record(ok){
+  S.answers[curAnsKey()]=ok;
+  if(!ok){
+    const ex=L[S.level].stages[S.stage].exercises[S.exIdx];
+    const q=ex.text||ex.s||(ex.questions?ex.questions[S.seqIdx]?.text:'');
+    const c=ex.c!==undefined?(typeof ex.c==='number'?ex.opts?.[ex.c]:''):'';
+    if(q&&c)logError(q,c);
+  }
+  const bot=$('botBar');
+  bot.innerHTML=`<button class="btn btn-gold" onclick="nextEx()">Siguiente ›</button>`;
+}
+
+function nextEx(){
+  const s=L[S.level].stages[S.stage];
+  // #20 Smooth transition
+  const w=$('exWrap');
+  if(w){w.classList.add('exit');setTimeout(()=>{advanceEx(s)},250)}
+  else advanceEx(s);
+}
+function advanceEx(s){
+  if(S.exIdx<s.exercises.length-1){S.exIdx++;S.seqIdx=0;render()}
+  else{
+    let c=0,t=0;for(const[k,v]of Object.entries(S.answers)){if(typeof v==='boolean'){t++;if(v)c++}}
+    S.scores[`${S.level}-${s.id}`]={correct:c,total:t};
+    saveState();go('stage-sum');
+  }
+}
+
+// ===== STAGE SUMMARY =====
+function rStageSummary(){
+  const l=L[S.level],s=l.stages[S.stage],sc=S.scores[`${S.level}-${s.id}`];
+  const pct=sc.total?Math.round((sc.correct/sc.total)*100):0;
+  const cls=pct>=80?'great':(pct>=50?'ok':'low');
+  const msg=pct>=80?'¡Excelente!':(pct>=50?'Buen progreso':'Necesitas repasar');
+  
+  const hasNext=S.stage<l.stages.length-1;
+  let nextBtn=hasNext
+    ?`<button class="btn btn-gold" onclick="go('stages',{stage:${S.stage+1}})">Etapa ${l.stages[S.stage+1].id} ›</button>`
+    :`<button class="btn btn-green" onclick="go('level-sum')">Resumen del nivel ›</button>`;
+  
+  // #19 Error review
+  let errs='';
+  const lvErrs=S.errors[S.level]||{};
+  const stageErrs=Object.entries(lvErrs).filter(([k])=>k.startsWith(`${S.stage}-`));
+  if(stageErrs.length){
+    errs=`<div class="sec-title" style="margin-top:16px">❌ Preguntas que revisar</div>`;
+    stageErrs.forEach(([k,v])=>{errs+=`<div class="review-card"><div class="review-q">${v.q}...</div><div class="review-a">✓ ${v.a}</div></div>`});
+  }
+  
+  $app.innerHTML=`${topBar(`Nivel ${S.level} · Etapa ${s.id}`,'Resultados',"go('stages')")}
+  <div class="cnt" style="text-align:center">
+    <div class="sum-circle ${cls} anim"><div class="sum-score">${sc.correct}</div><div class="sum-total">de ${sc.total}</div></div>
+    <div class="sum-msg anim d1">${msg}</div>
+    <div class="sum-sub anim d2">Etapa ${s.id}: ${s.title} — ${pct}%</div>
+    ${errs}
+  </div>
+  <div class="bot">
+    <button class="btn btn-ghost btn-icon" onclick="S.exIdx=0;S.seqIdx=0;S.answers={};delete S.scores[\`${S.level}-${s.id}\`];saveState();go('exercise')" aria-label="Repetir">🔄</button>
+    ${nextBtn}
+  </div>`;
+}
+
+// ===== #13 LEVEL SUMMARY WITH CHEATSHEET =====
+function rLevelSummary(){
+  const l=L[S.level];
+  let tc=0,tt=0,items='';
+  l.stages.forEach(s=>{
+    const sc=S.scores[`${S.level}-${s.id}`];
+    if(sc){tc+=sc.correct;tt+=sc.total;
+      const p=Math.round((sc.correct/sc.total)*100);
+      items+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border2)"><span style="font-size:16px">${p>=80?'✅':(p>=50?'🟡':'🔴')}</span><span style="flex:1;font-size:14px">Etapa ${s.id}: ${s.title}</span><span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:${p>=80?'var(--green)':(p>=50?'var(--gold-d)':'var(--red)')}">${p}%</span></div>`}
+  });
+  const pct=tt?Math.round((tc/tt)*100):0;
+  const cls=pct>=80?'great':(pct>=50?'ok':'low');
+  
+  // #13 Cheatsheet
+  let cheat='';
+  if(l.cheat){
+    cheat=`<div class="cheat"><div class="cheat-title">${ico('dl')} Conceptos clave — Nivel ${S.level}</div>`;
+    l.cheat.forEach(c=>{cheat+=`<div class="cheat-item">• ${c}</div>`});
+    cheat+='</div>';
+  }
+  
+  $app.innerHTML=`${topBar(`Nivel ${S.level}`,'Resumen final',"go('home')")}
+  <div class="cnt" style="text-align:center">
+    <div class="anim"><div style="font-size:44px;margin-bottom:6px">${pct>=75?'🎉':'💪'}</div>
+    <div class="sum-circle ${cls}"><div class="sum-score">${tc}</div><div class="sum-total">de ${tt}</div></div>
+    <div class="sum-msg">${pct>=75?'¡Nivel completado!':'Sigue practicando'}</div>
+    <div class="sum-sub">${l.title} — ${pct}%</div></div>
+    <div class="card anim d1" style="text-align:left">${items}</div>
+    <div class="anim d2" style="text-align:left">${cheat}</div>
+  </div>
+  <div class="bot"><button class="btn btn-ghost" onclick="go('home')">← Módulo</button>${S.level<6?`<button class="btn btn-gold" onclick="go('theory',{level:${S.level+1},stage:0})">Nivel ${S.level+1} ›</button>`:''}</div>`;
+}
+
+// ===== #24 KEYBOARD NAVIGATION =====
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.activeElement){document.activeElement.click()}
+});
+
+// ===== INIT =====
+render();
 </script>
-
 </body>
 </html>
