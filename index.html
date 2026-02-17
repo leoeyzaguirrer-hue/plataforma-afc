@@ -505,7 +505,7 @@ PHS.forEach(ph=>{
 const mods=MODS.filter(m=>m.ph===ph.n);
 let cards='';
 mods.forEach(m=>{
-const avail=m.id==='m1';
+const avail=m.id==='m1'||m.id==='m2';
 const cls=avail?'':'locked';
 cards+=`<div class="mcard ${cls}" onclick="${avail?`enterMod('${m.id}')`:'void(0)'}"><div class="mcard-icon" style="background:linear-gradient(135deg,${m.color},${m.cB})">${m.icon}</div><div class="mcard-name">${m.title}</div><div class="mcard-prog none">${avail?'Disponible':'Próximamente'}</div></div>`;
 });
@@ -523,6 +523,7 @@ $a.innerHTML=`<div class="top"><div style="flex:1"><div class="top-t">AFC Praxis
 
 function enterMod(id){
 if(id==='m1'){MOD=M1;S.mod='m1';loadP();go('home')}
+else if(id==='m2'){window.location.href='modulo-2/index.html'}
 }
 
 // ===== MODULE HOME =====
