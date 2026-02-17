@@ -1,414 +1,161 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma AFC - Análisis Funcional de la Conducta</title>
-    <link rel="stylesheet" href="/plataforma-afc/css/landing.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>AFC Praxis — Entrenamiento en Análisis Funcional</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/platform.css">
+<style>
+  /* Confetti animation */
+  @keyframes confDrop{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(50vh) rotate(720deg);opacity:0}}
+</style>
 </head>
 <body>
-    <!-- Partículas de fondo -->
-    <div class="particles" id="particles"></div>
+<div class="app" id="app"></div>
+<div id="confWrap" style="position:fixed;top:0;left:0;right:0;height:50vh;pointer-events:none;z-index:999;overflow:hidden"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar-landing">
-        <div class="nav-content">
-            <div class="logo">🧠 Plataforma AFC</div>
-            <a href="/plataforma-afc/login.html" class="btn-login">Iniciar Sesión</a>
-        </div>
-    </nav>
+<script src="js/engine.js"></script>
+<script>
+// ===== MODULE REGISTRY =====
+const MODULES = [
+  // PHASE 1 — Fundamentos Conductuales
+  { id:'m1', phase:1, title:'Operacionalización de la Conducta', desc:'Conducta vs etiqueta, triple sistema, parámetros, E→R→E', icon:'🎯', color:'#2563eb', colorB:'#3b82f6', path:'modulo-1/', exercises:40 },
+  { id:'m2', phase:1, title:'Tipos de Conducta', desc:'Respondiente vs operante, pública vs privada, conducta como interacción', icon:'🔬', color:'#0891b2', colorB:'#22d3ee', path:'modulo-2/', exercises:40 },
+  // PHASE 2 — Componentes de la Interacción
+  { id:'m3', phase:2, title:'El Estímulo', desc:'Externo, interno, sustituto. Funciones: EI, EC, Eᴅ, EΔ', icon:'⚡', color:'#d97706', colorB:'#f59e0b', path:'modulo-3/', exercises:40 },
+  { id:'m4', phase:2, title:'Condicionamiento Clásico', desc:'E-R respondiente, adquisición, extinción, emociones como RC', icon:'🔗', color:'#b45309', colorB:'#d97706', path:'modulo-4/', exercises:38 },
+  { id:'m5', phase:2, title:'Condicionamiento Operante', desc:'Contingencia 3 términos, R+, R-, C+, C-, extinción operante', icon:'⚙️', color:'#ea580c', colorB:'#f97316', path:'modulo-5/', exercises:42 },
+  // PHASE 3 — Relaciones Funcionales
+  { id:'m6', phase:3, title:'Control de Estímulos', desc:'Discriminación, generalización, equivalencia funcional', icon:'🎛️', color:'#7c3aed', colorB:'#a78bfa', path:'modulo-6/', exercises:38 },
+  { id:'m7', phase:3, title:'Secuencias Funcionales', desc:'Simple, operante, compuesta bifactorial, encadenamiento', icon:'🔄', color:'#9333ea', colorB:'#a855f7', path:'modulo-7/', exercises:40 },
+  { id:'m8', phase:3, title:'Variables Disposicionales', desc:'Historia, estado del organismo, contexto, refuerzo prioritario', icon:'📊', color:'#6d28d9', colorB:'#8b5cf6', path:'modulo-8/', exercises:36 },
+  // PHASE 4 — Análisis Funcional Aplicado
+  { id:'m9', phase:4, title:'Evaluación Funcional', desc:'Observación, entrevista, identificación de secuencias', icon:'🔍', color:'#059669', colorB:'#10b981', path:'modulo-9/', exercises:38 },
+  { id:'m10', phase:4, title:'Formulación de Hipótesis', desc:'De los datos a la hipótesis, coherencia funcional', icon:'💡', color:'#047857', colorB:'#059669', path:'modulo-10/', exercises:36 },
+  { id:'m11', phase:4, title:'Construcción del AF e Intervención', desc:'Explicación al cliente, objetivos, plan de tratamiento', icon:'🏗️', color:'#065f46', colorB:'#047857', path:'modulo-11/', exercises:40 },
+  // PHASE 5 — Temas Avanzados
+  { id:'m12', phase:5, title:'Conducta Verbal y Gobernada por Reglas', desc:'Reglas como estímulos, insensibilidad a contingencias', icon:'📝', color:'#db2777', colorB:'#ec4899', path:'modulo-12/', exercises:36 },
+  { id:'m13', phase:5, title:'Conducta Relacional', desc:'Marcos relacionales, transformación de funciones', icon:'🧬', color:'#be185d', colorB:'#db2777', path:'modulo-13/', exercises:34 },
+];
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content fade-in">
-            <h1 class="hero-title">Desarrollo de Habilidades Terapéuticas</h1>
-            <p class="hero-subtitle">Domina el Análisis Funcional de la Conducta</p>
-            <p class="hero-description">
-                Una plataforma completa para psicólogos en formación y profesionales que buscan 
-                desarrollar competencias sólidas en análisis conductual y diseño de intervenciones.
-            </p>
-            <div class="hero-buttons">
-                <a href="/plataforma-afc/login.html" class="btn-primary-hero">
-                    🚀 Empezar desde Cero
-                </a>
-                <a href="/plataforma-afc/login.html" class="btn-secondary-hero">
-                    ⚡ Acceder a mi Cuenta
-                </a>
-            </div>
-        </div>
-    </section>
+const PHASES = [
+  { num:1, title:'Fundamentos Conductuales', sub:'¿Qué es conducta y cómo se describe?', cls:'p1' },
+  { num:2, title:'Componentes de la Interacción', sub:'Estímulos, respuestas y sus relaciones', cls:'p2' },
+  { num:3, title:'Relaciones Funcionales', sub:'Cómo se organizan las secuencias complejas', cls:'p3' },
+  { num:4, title:'Análisis Funcional Aplicado', sub:'De los datos al caso clínico', cls:'p4' },
+  { num:5, title:'Temas Avanzados', sub:'Conceptos que complejizan el análisis', cls:'p5' },
+];
 
-    <!-- Estadísticas -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid-landing">
-                <div class="stat-box">
-                    <div class="stat-number" data-target="14">0</div>
-                    <div class="stat-text">Módulos Disponibles</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" data-target="4">0</div>
-                    <div class="stat-text">Fases Progresivas</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" data-target="42">0</div>
-                    <div class="stat-text">Niveles de Aprendizaje</div>
-                </div>
-            </div>
-        </div>
-    </section>
+// ===== RENDER LANDING =====
+function renderLanding(){
+  const app = document.getElementById('app');
+  const global = AFC.loadGlobal();
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
-    <!-- Flexibilidad de Aprendizaje -->
-    <section class="learning-paths">
-        <div class="container">
-            <h2 class="section-title">Aprende a tu Ritmo</h2>
-            <div class="paths-grid">
-                <div class="path-card">
-                    <div class="path-icon">📚</div>
-                    <h3>Ruta Guiada</h3>
-                    <p>Sigue un camino estructurado desde los fundamentos hasta temas avanzados</p>
-                </div>
-                <div class="path-card">
-                    <div class="path-icon">🎯</div>
-                    <h3>Acceso Libre</h3>
-                    <p>Salta directamente a los módulos que más te interesan o necesitas</p>
-                </div>
-                <div class="path-card">
-                    <div class="path-icon">⏰</div>
-                    <h3>Tu Propio Ritmo</h3>
-                    <p>Aprende cuando y donde quieras, con seguimiento automático de progreso</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  // Stats
+  let totalDone = 0, totalMods = MODULES.length;
+  MODULES.forEach(m => {
+    const mData = global[m.id];
+    if(mData){
+      // Check if all 5 levels done at 80%+
+      let allDone = true;
+      for(let i=0;i<5;i++){
+        const sc = mData[`lvl${i}`];
+        if(!sc || (sc.correct/sc.total) < AFC.MASTERY_THRESHOLD) allDone = false;
+      }
+      if(allDone) totalDone++;
+    }
+  });
+  const globalPct = Math.round((totalDone/totalMods)*100);
 
-    <!-- Metodología de 3 Niveles -->
-    <section class="methodology">
-        <div class="container">
-            <h2 class="section-title">Metodología de 3 Niveles</h2>
-            <p class="section-subtitle">Cada módulo está diseñado con una progresión pedagógica clara</p>
-            <div class="levels-grid">
-                <div class="level-card">
-                    <div class="level-badge">Nivel 1</div>
-                    <h3>🎓 Fundamentos</h3>
-                    <p>Comprende los principios teóricos básicos y la conceptualización</p>
-                </div>
-                <div class="level-card">
-                    <div class="level-badge">Nivel 2</div>
-                    <h3>💪 Práctica</h3>
-                    <p>Desarrolla habilidades con ejercicios progresivos y casos aplicados</p>
-                </div>
-                <div class="level-card">
-                    <div class="level-badge">Nivel 3</div>
-                    <h3>🏥 Aplicación Clínica</h3>
-                    <p>Integra conocimientos en situaciones terapéuticas reales y complejas</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  // Build phases
+  let phasesHtml = '';
+  PHASES.forEach(ph => {
+    const mods = MODULES.filter(m => m.phase === ph.num);
+    let modsHtml = '';
+    mods.forEach((m, idx) => {
+      const mData = global[m.id] || {};
+      let lvlsDone = 0;
+      for(let i=0;i<5;i++){
+        const sc = mData[`lvl${i}`];
+        if(sc && (sc.correct/sc.total) >= AFC.MASTERY_THRESHOLD) lvlsDone++;
+      }
+      const isDone = lvlsDone >= 5;
+      const isStarted = lvlsDone > 0;
+      // Module is unlocked if it's first OR previous module is done
+      const globalIdx = MODULES.indexOf(m);
+      const unlocked = globalIdx === 0 || isModDone(MODULES[globalIdx-1].id, global);
+      const cls = isDone ? 'done' : (!unlocked ? 'locked' : '');
 
-    <!-- Fases y Módulos -->
-    <section class="modules-section">
-        <div class="container">
-            <h2 class="section-title">Explora los Módulos</h2>
-            <p class="section-subtitle">14 módulos organizados en 4 fases progresivas</p>
+      let masteryHtml = '';
+      if(isStarted && !isDone){
+        const mPct = Math.round((lvlsDone/5)*100);
+        masteryHtml = `<span class="mod-mastery ${mPct>=60?'mid':'low'}">${lvlsDone}/5</span>`;
+      } else if(isDone){
+        masteryHtml = `<span class="mod-mastery high">✓</span>`;
+      }
 
-            <!-- Fase 1 -->
-            <div class="phase-container">
-                <div class="phase-header">
-                    <h3 class="phase-title">📘 FASE 1: Fundamentos de la Conducta</h3>
-                    <p class="phase-description">Conceptos esenciales para comprender el comportamiento</p>
-                </div>
-                <div class="modules-grid-landing">
-                    <!-- Módulo 1 -->
-                    <div class="module-card-landing" data-module="1">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">📝</div>
-                        <h4>Operacionalización de la Conducta</h4>
-                        <p class="module-preview">Aprende a definir conductas de forma medible y observable</p>
-                        <div class="module-info">
-                            <span>⏱️ 45-60 min/nivel</span>
-                            <span>🎯 15 actividades</span>
-                        </div>
-                    </div>
+      modsHtml += `<a class="mod-card ${cls}" href="${unlocked?m.path:'#'}" onclick="${!unlocked?'event.preventDefault()':''}">
+        <div class="mod-num" style="background:linear-gradient(135deg,${m.color},${m.colorB})">${isDone?'✓':m.icon}</div>
+        <div style="flex:1"><div class="mod-name">${m.title}</div><div class="mod-desc">${m.desc}</div></div>
+        ${masteryHtml}
+        <div class="mod-arrow">›</div></a>`;
+    });
 
-                    <!-- Módulo 2 - Sin nombre -->
-                    <div class="module-card-landing locked" data-module="2">
-                        <div class="module-badge upcoming">🔒 Próximamente</div>
-                        <div class="module-icon-landing">🎯</div>
-                        <h4>Módulo 2</h4>
-                        <p class="module-preview">En desarrollo</p>
-                    </div>
+    phasesHtml += `<div class="phase"><div class="phase-head"><div class="phase-num ${ph.cls}">${ph.num}</div><div style="flex:1"><div class="phase-title">${ph.title}</div><div class="phase-sub">${ph.sub}</div></div></div>${modsHtml}</div>`;
+  });
 
-                    <!-- Módulo 3 -->
-                    <div class="module-card-landing" data-module="3">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🔍</div>
-                        <h4>Identificación de Estímulos</h4>
-                        <p class="module-preview">Reconoce y clasifica eventos ambientales</p>
-                        <div class="module-info">
-                            <span>⏱️ 45-60 min/nivel</span>
-                            <span>🎯 12 actividades</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 2 -->
-            <div class="phase-container">
-                <div class="phase-header">
-                    <h3 class="phase-title">🔬 FASE 2: Procesos de Condicionamiento</h3>
-                    <p class="phase-description">Domina los mecanismos de aprendizaje conductual</p>
-                </div>
-                <div class="modules-grid-landing">
-                    <!-- Módulo 4 -->
-                    <div class="module-card-landing" data-module="4">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🧪</div>
-                        <h4>Condicionamiento Clásico</h4>
-                        <p class="module-preview">Comprende y aplica principios del CC</p>
-                        <div class="module-info">
-                            <span>⏱️ 50-65 min/nivel</span>
-                            <span>🎯 18 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 5 -->
-                    <div class="module-card-landing" data-module="5">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">⚡</div>
-                        <h4>Condicionamiento Operante - Reforzamiento</h4>
-                        <p class="module-preview">Domina los principios del reforzamiento</p>
-                        <div class="module-info">
-                            <span>⏱️ 50-65 min/nivel</span>
-                            <span>🎯 20 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 6 -->
-                    <div class="module-card-landing" data-module="6">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🛑</div>
-                        <h4>Castigo y Extinción</h4>
-                        <p class="module-preview">Procedimientos de reducción conductual</p>
-                        <div class="module-info">
-                            <span>⏱️ 45-55 min/nivel</span>
-                            <span>🎯 16 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 7 -->
-                    <div class="module-card-landing" data-module="7">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🎛️</div>
-                        <h4>Control de Estímulos</h4>
-                        <p class="module-preview">Control discriminativo y contextual</p>
-                        <div class="module-info">
-                            <span>⏱️ 50-60 min/nivel</span>
-                            <span>🎯 17 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 8 -->
-                    <div class="module-card-landing" data-module="8">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">📊</div>
-                        <h4>Programas de Reforzamiento</h4>
-                        <p class="module-preview">Efectos de diferentes programas</p>
-                        <div class="module-info">
-                            <span>⏱️ 55-70 min/nivel</span>
-                            <span>🎯 22 actividades</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 3 -->
-            <div class="phase-container">
-                <div class="phase-header">
-                    <h3 class="phase-title">🎯 FASE 3: Análisis Funcional Básico</h3>
-                    <p class="phase-description">Integra componentes en análisis completos</p>
-                </div>
-                <div class="modules-grid-landing">
-                    <!-- Módulo 9 -->
-                    <div class="module-card-landing" data-module="9">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🔗</div>
-                        <h4>Contingencia de Tres Términos</h4>
-                        <p class="module-preview">Integra antecedentes, respuesta y consecuentes</p>
-                        <div class="module-info">
-                            <span>⏱️ 50-65 min/nivel</span>
-                            <span>🎯 19 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 10 -->
-                    <div class="module-card-landing" data-module="10">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">💡</div>
-                        <h4>Formulación de Hipótesis Funcionales</h4>
-                        <p class="module-preview">Genera explicaciones funcionales</p>
-                        <div class="module-info">
-                            <span>⏱️ 55-70 min/nivel</span>
-                            <span>🎯 21 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 11 -->
-                    <div class="module-card-landing" data-module="11">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">📋</div>
-                        <h4>Evaluación Funcional</h4>
-                        <p class="module-preview">Recopila información para análisis funcional</p>
-                        <div class="module-info">
-                            <span>⏱️ 60-75 min/nivel</span>
-                            <span>🎯 24 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 12 -->
-                    <div class="module-card-landing" data-module="12">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🏗️</div>
-                        <h4>Construcción del Análisis Funcional</h4>
-                        <p class="module-preview">Integra toda la información en un AF completo</p>
-                        <div class="module-info">
-                            <span>⏱️ 60-80 min/nivel</span>
-                            <span>🎯 25 actividades</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fase 4 -->
-            <div class="phase-container">
-                <div class="phase-header">
-                    <h3 class="phase-title">🚀 FASE 4: Análisis Funcional Avanzado</h3>
-                    <p class="phase-description">Aprendizaje complejo y aplicaciones avanzadas</p>
-                </div>
-                <div class="modules-grid-landing">
-                    <!-- Módulo 13 -->
-                    <div class="module-card-landing" data-module="13">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">🧩</div>
-                        <h4>Equivalencia y Conducta Relacional</h4>
-                        <p class="module-preview">Aprendizaje complejo y relacional</p>
-                        <div class="module-info">
-                            <span>⏱️ 65-85 min/nivel</span>
-                            <span>🎯 28 actividades</span>
-                        </div>
-                    </div>
-
-                    <!-- Módulo 14 -->
-                    <div class="module-card-landing" data-module="14">
-                        <div class="module-badge available">🔓 Disponible</div>
-                        <div class="module-icon-landing">💬</div>
-                        <h4>Conducta Gobernada por Reglas</h4>
-                        <p class="module-preview">Analiza el control verbal sobre la conducta</p>
-                        <div class="module-info">
-                            <span>⏱️ 60-75 min/nivel</span>
-                            <span>🎯 26 actividades</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Para quién -->
-    <section class="audience">
-        <div class="container">
-            <h2 class="section-title">¿Para Quién es esta Plataforma?</h2>
-            <div class="audience-grid">
-                <div class="audience-card">
-                    <div class="audience-icon">🎓</div>
-                    <h3>Estudiantes de Posgrado</h3>
-                    <p>Desarrolla competencias sólidas en análisis funcional durante tu formación especializada</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">👥</div>
-                    <h3>Profesionales en Supervisión</h3>
-                    <p>Perfecciona tus habilidades clínicas con casos prácticos y retroalimentación estructurada</p>
-                </div>
-                <div class="audience-card">
-                    <div class="audience-icon">💼</div>
-                    <h3>Terapeutas Conductuales</h3>
-                    <p>Actualiza y fortalece tu práctica con fundamentos teóricos y aplicaciones avanzadas</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Final -->
-    <section class="cta-final">
-        <div class="container">
-            <h2>Comienza tu Desarrollo Profesional</h2>
-            <p>Únete a la plataforma y domina el análisis funcional de la conducta</p>
-            <div class="cta-buttons">
-                <a href="/plataforma-afc/login.html" class="btn-cta-primary">🚀 Crear mi Cuenta Gratis</a>
-                <a href="/plataforma-afc/login.html" class="btn-cta-secondary">⚡ Ya tengo cuenta</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer-landing">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>🧠 Plataforma AFC</h4>
-                    <p>Desarrollo de habilidades terapéuticas en análisis funcional de la conducta</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Proyecto</h4>
-                    <p>🇪🇸 Proyecto educativo para España</p>
-                    <p>Formación en análisis conductual</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Soporte</h4>
-                    <p>Reporta problemas en GitHub</p>
-                    <p>Sugerencias bienvenidas</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Plataforma AFC. Proyecto educativo de código abierto.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal de Módulo -->
-    <div class="modal" id="moduleModal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <div class="modal-header">
-                <div class="modal-icon" id="modalIcon">📝</div>
-                <h2 id="modalTitle">Título del Módulo</h2>
-            </div>
-            <div class="modal-body">
-                <p class="modal-description" id="modalDescription">Descripción</p>
-                <div class="modal-levels">
-                    <h3>Niveles de este módulo:</h3>
-                    <div class="level-list" id="modalLevels">
-                        <!-- Se llenará dinámicamente -->
-                    </div>
-                </div>
-                <div class="modal-stats">
-                    <div class="modal-stat">
-                        <strong>⏱️ Duración:</strong>
-                        <span id="modalDuration">--</span>
-                    </div>
-                    <div class="modal-stat">
-                        <strong>🎯 Actividades:</strong>
-                        <span id="modalActivities">--</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="/plataforma-afc/login.html" class="btn-modal-primary">Empezar ahora</a>
-            </div>
-        </div>
+  app.innerHTML = `
+  <div class="topbar">
+    <div class="topbar-info" style="flex:1"><div class="topbar-title">AFC Praxis</div><div class="topbar-sub">Entrenamiento en Análisis Funcional</div></div>
+    <div class="topbar-actions">
+      <div class="topbar-btn" onclick="toggleThemeLanding()" title="Tema">${isDark?AFC.ICO.sun:AFC.ICO.moon}</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="landing-hero anim">
+      <div class="landing-logo">${AFC.ICO.brain}</div>
+      <div class="landing-title">AFC Praxis</div>
+      <div class="landing-sub">Plataforma de entrenamiento progresivo en habilidades clínicas de Análisis Funcional de la Conducta</div>
     </div>
 
-    <script src="/plataforma-afc/js/landing.js"></script>
+    <div class="dash-grid anim d1">
+      <div class="dash-stat"><b>${totalDone}</b><span>Módulos</span></div>
+      <div class="dash-stat"><b>${totalMods}</b><span>Total</span></div>
+      <div class="dash-stat"><b>${globalPct}%</b><span>Progreso</span></div>
+      <div class="dash-stat"><b>520</b><span>Ejercicios</span></div>
+    </div>
+
+    <div class="callout anim d2" style="margin:14px 0">
+      <em>Criterio de dominio:</em> Cada nivel requiere ≥80% de aciertos para desbloquearse. Los ejercicios se aleatorizan en cada intento.
+    </div>
+
+    <div class="anim d3">${phasesHtml}</div>
+
+    <div style="text-align:center;padding:20px 0;font-size:12px;color:var(--muted)">
+      AFC Praxis · Basado en el Manual de ITEMA · Análisis Funcional de la Conducta
+    </div>
+  </div>`;
+}
+
+function isModDone(modId, global){
+  const mData = global[modId];
+  if(!mData) return false;
+  for(let i=0;i<5;i++){
+    const sc = mData[`lvl${i}`];
+    if(!sc || (sc.correct/sc.total) < AFC.MASTERY_THRESHOLD) return false;
+  }
+  return true;
+}
+
+function toggleThemeLanding(){
+  AFC.toggleTheme();
+  renderLanding(); // Re-render to update icon
+}
+
+// Init
+renderLanding();
+</script>
 </body>
 </html>
