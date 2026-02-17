@@ -5,157 +5,633 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>AFC Praxis — Entrenamiento en Análisis Funcional</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/platform.css">
 <style>
-  /* Confetti animation */
-  @keyframes confDrop{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(50vh) rotate(720deg);opacity:0}}
+:root,[data-theme="light"]{
+--bg:#f0f4f8;--bg2:#f7f9fc;--card:#fff;--card2:#f4f7fa;
+--text:#334155;--dim:#64748b;--bright:#0f172a;--muted:#94a3b8;
+--accent:#2563eb;--accent-b:#3b82f6;--accent-g:rgba(37,99,235,0.06);--accent-l:#dbeafe;
+--gold:#d97706;--gold-b:#f59e0b;--gold-g:rgba(217,119,6,0.06);
+--green:#059669;--green-b:#10b981;--green-g:rgba(5,150,105,0.06);
+--red:#dc2626;--red-b:#ef4444;--red-g:rgba(220,38,38,0.05);
+--purple:#7c3aed;--purple-g:rgba(124,58,237,0.05);
+--border:rgba(15,23,42,0.08);--border2:rgba(15,23,42,0.04);
+--shadow:0 2px 8px rgba(0,0,0,0.06);--shadow-lg:0 8px 30px rgba(0,0,0,0.08);
+--overlay:rgba(255,255,255,0.92);--r:14px;--rs:10px;
+}
+[data-theme="dark"]{
+--bg:#0f172a;--bg2:#1e293b;--card:#1e293b;--card2:#334155;
+--text:#cbd5e1;--dim:#94a3b8;--bright:#f1f5f9;--muted:#64748b;
+--accent:#60a5fa;--accent-b:#93c5fd;--accent-g:rgba(96,165,250,0.1);--accent-l:#1e3a5f;
+--gold:#fbbf24;--gold-b:#fcd34d;--gold-g:rgba(251,191,36,0.08);
+--green:#34d399;--green-b:#6ee7b7;--green-g:rgba(52,211,153,0.08);
+--red:#f87171;--red-b:#fca5a5;--red-g:rgba(248,113,113,0.08);
+--purple:#a78bfa;--purple-g:rgba(167,139,250,0.08);
+--border:rgba(148,163,184,0.12);--border2:rgba(148,163,184,0.06);
+--shadow:0 2px 8px rgba(0,0,0,0.2);--shadow-lg:0 8px 30px rgba(0,0,0,0.3);
+--overlay:rgba(15,23,42,0.95);--r:14px;--rs:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:18px;line-height:1.65;transition:background .3s,color .3s}
+.app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+
+/* TOPBAR */
+.top{display:flex;align-items:center;gap:10px;padding:10px 16px;height:56px;background:var(--overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:20}
+.top-back{width:38px;height:38px;border-radius:10px;background:var(--bg);border:1px solid var(--border);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.top-back:hover{background:var(--accent-g);border-color:var(--accent)}
+.top-back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.top-t{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--bright);line-height:1.2}
+.top-s{font-size:12px;color:var(--dim)}
+.top-prog{margin-left:auto;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.top-prog-bar{width:52px;height:5px;border-radius:3px;background:var(--border);overflow:hidden}
+.top-prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
+.top-prog-pct{font-family:'Space Mono',monospace;font-size:11px;color:var(--dim)}
+.top-acts{display:flex;gap:4px;flex-shrink:0}
+.top-btn{width:36px;height:36px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--dim);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.top-btn:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-g)}
+.top-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* CONTENT */
+.cnt{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 16px 110px;-webkit-overflow-scrolling:touch}
+.cnt::-webkit-scrollbar{width:3px}.cnt::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.bot{position:fixed;bottom:0;left:0;right:0;padding:10px 16px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:var(--overlay);backdrop-filter:blur(12px);border-top:1px solid var(--border2);z-index:20;display:flex;gap:8px}
+
+/* BUTTONS */
+.btn{flex:1;padding:14px 20px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:scale(0.97)}
+.btn-p{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(37,99,235,0.2)}
+.btn-p:disabled{opacity:.35;pointer-events:none}
+.btn-g{background:var(--green);color:#fff}
+.btn-o{background:var(--card);color:var(--text);border:1px solid var(--border);flex:none}
+.btn-w{background:var(--gold);color:#fff}
+.btn-sm{flex:none;padding:10px 16px;font-size:14px}
+.btn-icon{flex:none;width:44px;padding:0}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
+.tag{font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1px;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;margin-bottom:10px}
+.tag-b{color:var(--accent);background:var(--accent-g)}.tag-g{color:var(--gold);background:var(--gold-g)}.tag-gr{color:var(--green);background:var(--green-g)}.tag-p{color:var(--purple);background:var(--purple-g)}
+.card-t{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--bright);line-height:1.3;margin-bottom:6px}
+.card-d{font-size:16px;color:var(--dim);line-height:1.6}
+
+/* PROSE */
+.prose{font-size:16px;color:var(--text);line-height:1.75}.prose p{margin-bottom:10px}.prose b,.prose strong{color:var(--bright)}
+.callout{background:var(--accent-g);border-left:3px solid var(--accent);padding:14px 16px;border-radius:0 var(--rs) var(--rs) 0;margin:12px 0;font-size:15px;color:var(--bright);line-height:1.65}
+.callout em{color:var(--accent);font-style:normal;font-weight:600}
+.callout-g{background:var(--gold-g);border-color:var(--gold)}.callout-g em{color:var(--gold)}
+.ex-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px;margin:12px 0}
+.ex-box-l{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.ex-box p{font-size:15px;color:var(--text);margin:0;line-height:1.6}
+
+/* ACCORDION */
+.acc{border:1px solid var(--border);border-radius:var(--rs);margin-bottom:8px;overflow:hidden;background:var(--card)}
+.acc-h{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none}
+.acc-i{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.acc-l{font-weight:600;font-size:16px;color:var(--bright);flex:1}
+.acc-a{font-size:10px;color:var(--muted);transition:transform .3s}
+.acc.open .acc-a{transform:rotate(180deg)}
+.acc-b{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.acc.open .acc-b{max-height:2000px}
+.acc-in{padding:0 16px 16px}
+
+/* THEORY PANEL */
+.tp-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:25;display:none}
+.tp-overlay.open{display:block}
+.tp{position:fixed;top:56px;right:-100%;bottom:0;width:88%;max-width:420px;background:var(--card);border-left:1px solid var(--border);z-index:30;overflow-y:auto;padding:20px;transition:right .3s ease;box-shadow:-4px 0 20px rgba(0,0,0,0.1)}
+.tp.open{right:0}
+.tp-close{position:absolute;top:12px;right:12px;cursor:pointer;font-size:22px;color:var(--dim);background:none;border:none}
+
+/* ===== LANDING: MODULE GRID (not list!) ===== */
+.hero{text-align:center;padding:24px 0 16px}
+.hero-logo{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 6px 24px rgba(37,99,235,0.2);font-size:34px}
+.hero-t{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--bright);margin-bottom:4px}
+.hero-d{font-size:15px;color:var(--dim);max-width:360px;margin:0 auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:12px;text-align:center}
+.stat b{font-family:'Space Mono',monospace;font-size:24px;color:var(--bright);display:block}
+.stat span{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+/* Phase badge */
+.ph{margin:20px 0 10px}
+.ph-h{display:flex;align-items:center;gap:10px;padding:8px 0;margin-bottom:6px}
+.ph-n{font-size:20px}
+.ph-t{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--bright)}
+.ph-s{font-size:12px;color:var(--dim)}
+/* MODULE CARDS — visual grid, not boring list */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 14px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px}
+.mcard:hover{border-color:rgba(37,99,235,0.2);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.mcard:active{transform:scale(0.97)}
+.mcard.locked{opacity:.35;pointer-events:none}
+.mcard.done{border-color:rgba(5,150,105,0.25)}
+.mcard.done::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--green)}
+.mcard-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0}
+.mcard-name{font-weight:600;font-size:14px;color:var(--bright);line-height:1.3}
+.mcard-prog{font-family:'Space Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px;margin-top:auto}
+.mcard-prog.high{color:var(--green);background:var(--green-g)}.mcard-prog.mid{color:var(--gold);background:var(--gold-g)}.mcard-prog.none{color:var(--muted);background:var(--bg2)}
+
+/* ===== MODULE HOME: Levels ===== */
+.lcard{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.lcard:hover:not(.locked){border-color:rgba(37,99,235,0.2);box-shadow:var(--shadow-lg)}
+.lcard:active:not(.locked){transform:scale(0.98)}
+.lcard.locked{opacity:.35;pointer-events:none}
+.lcard.done{border-color:rgba(5,150,105,0.2)}
+.lcard-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.lcard.done .lcard-icon{background:var(--green-g)!important}
+.lcard-name{font-weight:600;font-size:16px;color:var(--bright);margin-bottom:2px}
+.lcard-sub{font-size:13px;color:var(--dim)}
+.lcard-arrow{color:var(--muted);margin-left:auto;font-size:20px}
+/* Mastery bar */
+.lbar{width:100%;height:4px;border-radius:2px;background:var(--border);margin-top:6px;overflow:hidden}
+.lbar-f{height:100%;border-radius:2px;transition:width .4s}
+
+/* ===== EXERCISE ELEMENTS ===== */
+.pips{display:flex;align-items:center;gap:3px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.pip{width:18px;height:5px;border-radius:3px;background:var(--border);transition:all .3s}
+.pip.ok{background:var(--green)}.pip.fail{background:var(--red)}.pip.cur{background:var(--accent);width:26px}
+
+.q-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.q-type{font-size:22px}
+.q-tag{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);padding:3px 8px;background:var(--accent-g);border-radius:4px}
+.q-n{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto}
+.q-text{font-size:18px;font-weight:500;color:var(--bright);margin-bottom:16px;line-height:1.55}
+.q-ctx{font-size:15px;color:var(--dim);font-style:italic;margin-bottom:14px;padding:12px 14px;background:var(--bg2);border-radius:var(--rs);border-left:3px solid var(--border)}
+
+/* OPTIONS */
+.opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--rs);margin-bottom:7px;cursor:pointer;transition:all .2s;user-select:none}
+.opt:active{transform:scale(0.98)}
+.opt:hover:not(.dis){background:var(--bg2)}
+.opt.pick{border-color:var(--accent);background:var(--accent-g)}
+.opt.ok{border-color:var(--green);background:var(--green-g)}
+.opt.bad{border-color:var(--red);background:var(--red-g)}
+.opt.rev{border-color:var(--green);background:var(--green-g);opacity:.5}
+.opt.dis{pointer-events:none}
+.opt-m{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:700;color:var(--muted);transition:all .2s}
+.opt.pick .opt-m{border-color:var(--accent);color:var(--accent);background:var(--accent-g)}
+.opt.ok .opt-m{border-color:var(--green);color:#fff;background:var(--green)}
+.opt.bad .opt-m{border-color:var(--red);color:#fff;background:var(--red)}
+.opt-m.chk{border-radius:6px}
+.opt-t{font-size:16px;color:var(--text);line-height:1.5;flex:1}
+
+/* TF */
+.tf{display:flex;gap:10px;margin-bottom:8px}
+.tf-b{flex:1;padding:18px;border:2px solid var(--border);border-radius:var(--rs);font-size:18px;font-weight:600;text-align:center;cursor:pointer;transition:all .15s;background:var(--card);color:var(--text)}
+.tf-b:active{transform:scale(0.97)}
+.tf-b:hover:not(.dis){border-color:var(--accent);background:var(--accent-g)}
+.tf-b.ok{border-color:var(--green);background:var(--green-g);color:var(--green)}
+.tf-b.bad{border-color:var(--red);background:var(--red-g);color:var(--red)}
+.tf-b.dis{pointer-events:none}
+
+/* CLASSIFY */
+.cl-cats{display:flex;gap:8px;flex-wrap:wrap}
+.cl-c{padding:10px 18px;border-radius:8px;font-size:15px;font-weight:500;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .15s}
+.cl-c:active{transform:scale(0.96)}.cl-c.ok{border-color:var(--green);background:var(--green-g);color:var(--green)}.cl-c.bad{border-color:var(--red);background:var(--red-g);color:var(--red)}.cl-c.dis{pointer-events:none}
+
+/* ORDER */
+.ord-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.ord-i{padding:10px 16px;border-radius:8px;font-size:14px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .15s}
+.ord-i:active{transform:scale(0.96)}.ord-i.placed{opacity:.15;pointer-events:none}
+.ord-s{min-height:48px;border:2px dashed var(--border);border-radius:var(--rs);padding:10px;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.ord-p{padding:8px 14px;border-radius:8px;font-size:13px;background:var(--accent-g);border:1px solid rgba(37,99,235,0.12);color:var(--accent);display:flex;align-items:center;gap:5px;cursor:pointer}
+.ord-p .n{font-family:'Space Mono',monospace;font-size:11px;font-weight:700}
+.ord-p.ok{background:var(--green-g);color:var(--green)}.ord-p.bad{background:var(--red-g);color:var(--red)}
+.ord-u{font-size:12px;color:var(--dim);cursor:pointer;padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:var(--card);display:none;align-items:center;gap:4px}
+.ord-u.show{display:inline-flex}
+
+/* BUILD */
+.bld-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.bld-slot{display:flex;align-items:center;gap:10px;padding:12px;border:2px dashed var(--border);border-radius:var(--rs);background:var(--bg2);min-height:50px}
+.bld-lbl{font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);flex-shrink:0;width:90px}
+.bld-val{flex:1;font-size:14px;color:var(--bright);font-weight:500;padding:6px 12px;background:var(--accent-g);border-radius:6px;border:1px solid rgba(37,99,235,0.12);display:none}
+.bld-slot.filled .bld-val{display:block}.bld-slot.filled{border-style:solid;border-color:rgba(37,99,235,0.15)}
+.bld-slot.ok{border-color:var(--green);background:var(--green-g)}.bld-slot.bad{border-color:var(--red);background:var(--red-g)}
+.bld-pool{display:flex;flex-wrap:wrap;gap:6px}
+.bld-pc{padding:9px 16px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .15s}
+.bld-pc:active{transform:scale(0.95)}.bld-pc.used{opacity:.15;pointer-events:none}
+
+/* MATCH */
+.mat-w{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.mat-c{flex:1;display:flex;flex-direction:column;gap:6px}
+.mat-i{padding:12px;border-radius:var(--rs);font-size:14px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .15s;text-align:center}
+.mat-i:hover:not(.dis){border-color:var(--accent)}
+.mat-i.sel{border-color:var(--accent);background:var(--accent-g);color:var(--accent)}
+.mat-i.ok{border-color:var(--green);background:var(--green-g);color:var(--green)}.mat-i.bad{border-color:var(--red);background:var(--red-g);color:var(--red)}.mat-i.dis{pointer-events:none}
+
+/* FIB */
+.fib-t{font-size:16px;color:var(--text);line-height:2.2;margin-bottom:10px}
+.fib-bl{display:inline-block;min-width:110px;padding:3px 10px;border-bottom:2px dashed var(--accent);color:var(--accent);font-weight:600;cursor:pointer;background:var(--accent-g);border-radius:4px 4px 0 0;font-size:14px}
+.fib-bl.filled{border-bottom-style:solid;background:var(--bg2);color:var(--bright)}
+.fib-bl.ok{border-color:var(--green);color:var(--green);background:var(--green-g)}.fib-bl.bad{border-color:var(--red);color:var(--red);background:var(--red-g)}
+.fib-bk{display:flex;flex-wrap:wrap;gap:6px;padding:12px;background:var(--bg2);border-radius:var(--rs);margin-bottom:10px}
+.fib-o{padding:8px 14px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}.fib-o:active{transform:scale(0.95)}.fib-o.used{opacity:.2;pointer-events:none}
+
+/* PATIENT */
+.pat{background:var(--card);border:1.5px solid rgba(217,119,6,0.15);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(217,119,6,0.04)}
+.pat-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.pat-av{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0}
+.pat-av.f{background:linear-gradient(135deg,#db2777,#f472b6)}.pat-av.m{background:linear-gradient(135deg,#2563eb,#60a5fa)}.pat-av.c{background:linear-gradient(135deg,#d97706,#fbbf24)}
+.pat-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--bright)}
+.pat-age{font-size:12px;color:var(--dim)}
+.pat-badge{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.8px;padding:3px 8px;border-radius:4px;background:var(--gold-g);color:var(--gold);border:1px solid rgba(217,119,6,0.12);margin-left:auto}
+.pat-q{font-size:16px;font-style:italic;color:var(--text);line-height:1.65;padding:12px 14px;background:var(--bg2);border-radius:var(--rs);border-left:3px solid var(--gold)}
+
+/* FEEDBACK */
+.fb{padding:14px 16px;border-radius:var(--rs);margin-top:12px;font-size:15px;line-height:1.6;display:none}
+.fb.show{display:block;animation:fbIn .3s ease}
+@keyframes fbIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fb.fbok{background:var(--green-g);border:1px solid rgba(5,150,105,0.15);color:var(--green)}
+.fb.fbfail{background:var(--red-g);border:1px solid rgba(220,38,38,0.1);color:var(--red)}
+[data-theme="dark"] .fb.fbok{color:var(--green-b)}[data-theme="dark"] .fb.fbfail{color:var(--red-b)}
+.fb strong{display:block;margin-bottom:3px;font-size:14px}
+.fb-hint{margin-top:6px;padding:6px 10px;background:var(--purple-g);border-radius:4px;font-size:13px;color:var(--purple);display:none}.fb-hint.show{display:block}
+
+/* GATE */
+.gate{text-align:center;padding:20px}
+.gate-ic{font-size:52px;margin-bottom:10px}
+.gate-t{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--bright);margin-bottom:6px}
+.gate-d{font-size:15px;color:var(--dim);margin-bottom:16px;max-width:320px;margin-left:auto;margin-right:auto}
+.gate-bar{width:200px;height:8px;border-radius:4px;background:var(--border);margin:0 auto 8px;overflow:hidden}
+.gate-bar-f{height:100%;border-radius:4px}
+.gate-sc{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;margin-bottom:16px}
+
+/* SUMMARY */
+.sum-c{width:130px;height:130px;border-radius:50%;border:5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:16px auto}
+.sum-c.great{border-color:var(--green)}.sum-c.mid{border-color:var(--gold)}.sum-c.low{border-color:var(--red)}
+.sum-n{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:var(--bright)}
+.sum-t{font-size:13px;color:var(--dim)}
+.sum-msg{text-align:center;font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--bright);margin:10px 0 4px}
+.sum-sub{text-align:center;font-size:14px;color:var(--dim);margin-bottom:14px}
+/* Skills */
+.sk-grid{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.sk-r{display:flex;align-items:center;gap:8px;font-size:14px}
+.sk-name{flex:1;color:var(--text)}.sk-bar{width:80px;height:5px;border-radius:3px;background:var(--border);overflow:hidden}
+.sk-bar-f{height:100%;border-radius:3px}.sk-pct{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;width:36px;text-align:right}
+/* Review */
+.rev{background:var(--red-g);border:1px solid rgba(220,38,38,0.08);border-radius:var(--rs);padding:10px 12px;margin-bottom:6px}
+.rev-q{font-size:14px;color:var(--bright);margin-bottom:3px}.rev-a{font-size:13px;color:var(--green)}
+/* Cheat */
+.cheat{background:var(--card);border:1.5px solid var(--accent);border-radius:var(--r);padding:18px;margin-top:14px}
+.cheat-t{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.cheat-i{font-size:14px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border2)}
+
+/* Progress ring */
+.ring{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.ring svg{transform:rotate(-90deg)}.ring-v{position:absolute;font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--bright)}
+
+/* ANIMATIONS */
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:up .35s ease forwards}.d1{animation-delay:.06s;opacity:0}.d2{animation-delay:.12s;opacity:0}.d3{animation-delay:.18s;opacity:0}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}.shake{animation:shake .35s ease}
+@keyframes confDrop{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(50vh) rotate(720deg);opacity:0}}
+
+/* RESPONSIVE */
+@media(min-width:640px){body{font-size:18px}.cnt{padding:24px 24px 100px}.card{padding:24px 28px}}
+@media(min-width:768px){.app{max-width:700px;margin:0 auto;left:50%;transform:translateX(-50%);right:auto;width:100%;border-left:1px solid var(--border2);border-right:1px solid var(--border2)}.top,.bot{max-width:700px;left:50%;transform:translateX(-50%);right:auto;width:100%}.cnt{padding:28px 32px 110px}.mgrid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.app{max-width:780px}.top,.bot{max-width:780px}body{font-size:19px}}
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
 <div id="confWrap" style="position:fixed;top:0;left:0;right:0;height:50vh;pointer-events:none;z-index:999;overflow:hidden"></div>
 
-<script src="js/engine.js"></script>
 <script>
-// ===== MODULE REGISTRY =====
-const MODULES = [
-  // PHASE 1 — Fundamentos Conductuales
-  { id:'m1', phase:1, title:'Operacionalización de la Conducta', desc:'Conducta vs etiqueta, triple sistema, parámetros, E→R→E', icon:'🎯', color:'#2563eb', colorB:'#3b82f6', path:'modulo-1/', exercises:40 },
-  { id:'m2', phase:1, title:'Tipos de Conducta', desc:'Respondiente vs operante, pública vs privada, conducta como interacción', icon:'🔬', color:'#0891b2', colorB:'#22d3ee', path:'modulo-2/', exercises:40 },
-  // PHASE 2 — Componentes de la Interacción
-  { id:'m3', phase:2, title:'El Estímulo', desc:'Externo, interno, sustituto. Funciones: EI, EC, Eᴅ, EΔ', icon:'⚡', color:'#d97706', colorB:'#f59e0b', path:'modulo-3/', exercises:40 },
-  { id:'m4', phase:2, title:'Condicionamiento Clásico', desc:'E-R respondiente, adquisición, extinción, emociones como RC', icon:'🔗', color:'#b45309', colorB:'#d97706', path:'modulo-4/', exercises:38 },
-  { id:'m5', phase:2, title:'Condicionamiento Operante', desc:'Contingencia 3 términos, R+, R-, C+, C-, extinción operante', icon:'⚙️', color:'#ea580c', colorB:'#f97316', path:'modulo-5/', exercises:42 },
-  // PHASE 3 — Relaciones Funcionales
-  { id:'m6', phase:3, title:'Control de Estímulos', desc:'Discriminación, generalización, equivalencia funcional', icon:'🎛️', color:'#7c3aed', colorB:'#a78bfa', path:'modulo-6/', exercises:38 },
-  { id:'m7', phase:3, title:'Secuencias Funcionales', desc:'Simple, operante, compuesta bifactorial, encadenamiento', icon:'🔄', color:'#9333ea', colorB:'#a855f7', path:'modulo-7/', exercises:40 },
-  { id:'m8', phase:3, title:'Variables Disposicionales', desc:'Historia, estado del organismo, contexto, refuerzo prioritario', icon:'📊', color:'#6d28d9', colorB:'#8b5cf6', path:'modulo-8/', exercises:36 },
-  // PHASE 4 — Análisis Funcional Aplicado
-  { id:'m9', phase:4, title:'Evaluación Funcional', desc:'Observación, entrevista, identificación de secuencias', icon:'🔍', color:'#059669', colorB:'#10b981', path:'modulo-9/', exercises:38 },
-  { id:'m10', phase:4, title:'Formulación de Hipótesis', desc:'De los datos a la hipótesis, coherencia funcional', icon:'💡', color:'#047857', colorB:'#059669', path:'modulo-10/', exercises:36 },
-  { id:'m11', phase:4, title:'Construcción del AF e Intervención', desc:'Explicación al cliente, objetivos, plan de tratamiento', icon:'🏗️', color:'#065f46', colorB:'#047857', path:'modulo-11/', exercises:40 },
-  // PHASE 5 — Temas Avanzados
-  { id:'m12', phase:5, title:'Conducta Verbal y Gobernada por Reglas', desc:'Reglas como estímulos, insensibilidad a contingencias', icon:'📝', color:'#db2777', colorB:'#ec4899', path:'modulo-12/', exercises:36 },
-  { id:'m13', phase:5, title:'Conducta Relacional', desc:'Marcos relacionales, transformación de funciones', icon:'🧬', color:'#be185d', colorB:'#db2777', path:'modulo-13/', exercises:34 },
+// ===== ICONS =====
+const IC={back:'<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>',book:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',check:'<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',moon:'<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',sun:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',undo:'<svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',x:'<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',refresh:'<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>'};
+
+// ===== CONSTANTS =====
+const MASTERY=0.8, SKEY='afcp_', LVL_N=['Discriminación','Transformación','Micro-situaciones','Integración','Simulación'], LVL_E=['🎯','🔄','💬','🧩','🏥'], LVL_C=['var(--accent)','var(--gold)','#db2777','var(--purple)','var(--green)'];
+
+// ===== STATE =====
+let MOD=null, $a=null;
+let S={view:'landing',mod:null,level:0,exIdx:0,seqIdx:0,pool:[],answers:{},tpOpen:false};
+let P={};
+
+function sKey(){return SKEY+(S.mod||'g')}
+function loadP(){try{const d=localStorage.getItem(sKey());if(d)P=JSON.parse(d)}catch(e){}if(!P.scores)P.scores={};if(!P.errors)P.errors={};if(!P.skills)P.skills={}}
+function saveP(){try{localStorage.setItem(sKey(),JSON.stringify(P))}catch(e){}}
+function loadG(){try{const d=localStorage.getItem(SKEY+'g');return d?JSON.parse(d):{}}catch(e){return{}}}
+function saveG(d){try{localStorage.setItem(SKEY+'g',JSON.stringify(d))}catch(e){}}
+function isDk(){return document.documentElement.getAttribute('data-theme')==='dark'}
+function togDk(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',d);localStorage.setItem(SKEY+'theme',d);render()}
+(function(){const t=localStorage.getItem(SKEY+'theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
+
+const $=id=>document.getElementById(id);
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+function fireConfetti(){const w=$('confWrap');const cols=['#059669','#2563eb','#d97706','#db2777','#7c3aed'];for(let i=0;i<20;i++){const c=document.createElement('div');c.style.cssText=`position:absolute;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;left:${Math.random()*100}%;background:${cols[i%5]};border-radius:2px;animation:confDrop 1.2s ease-out ${Math.random()*0.3}s forwards;opacity:0;`;w.appendChild(c);setTimeout(()=>c.remove(),1600)}}
+
+// ===== MODULES REGISTRY =====
+const MODS=[
+{id:'m1',ph:1,title:'Operacionalización',icon:'🎯',color:'#2563eb',cB:'#3b82f6'},
+{id:'m2',ph:1,title:'Tipos de Conducta',icon:'🔬',color:'#0891b2',cB:'#22d3ee'},
+{id:'m3',ph:2,title:'El Estímulo',icon:'⚡',color:'#d97706',cB:'#f59e0b'},
+{id:'m4',ph:2,title:'Cond. Clásico',icon:'🔗',color:'#b45309',cB:'#d97706'},
+{id:'m5',ph:2,title:'Cond. Operante',icon:'⚙️',color:'#ea580c',cB:'#f97316'},
+{id:'m6',ph:3,title:'Control Estimular',icon:'🎛️',color:'#7c3aed',cB:'#a78bfa'},
+{id:'m7',ph:3,title:'Secuencias Funcionales',icon:'🔄',color:'#9333ea',cB:'#a855f7'},
+{id:'m8',ph:3,title:'Variables Disposicionales',icon:'📊',color:'#6d28d9',cB:'#8b5cf6'},
+{id:'m9',ph:4,title:'Evaluación Funcional',icon:'🔍',color:'#059669',cB:'#10b981'},
+{id:'m10',ph:4,title:'Formulación Hipótesis',icon:'💡',color:'#047857',cB:'#059669'},
+{id:'m11',ph:4,title:'Construcción del AF',icon:'🏗️',color:'#065f46',cB:'#047857'},
+{id:'m12',ph:5,title:'Conducta Verbal',icon:'📝',color:'#db2777',cB:'#ec4899'},
+{id:'m13',ph:5,title:'Conducta Relacional',icon:'🧬',color:'#be185d',cB:'#db2777'}
 ];
+const PHS=[{n:1,t:'Fundamentos Conductuales',e:'📚'},{n:2,t:'Componentes de la Interacción',e:'🧪'},{n:3,t:'Relaciones Funcionales',e:'🔗'},{n:4,t:'AF Aplicado',e:'🏥'},{n:5,t:'Temas Avanzados',e:'🧠'}];
 
-const PHASES = [
-  { num:1, title:'Fundamentos Conductuales', sub:'¿Qué es conducta y cómo se describe?', cls:'p1' },
-  { num:2, title:'Componentes de la Interacción', sub:'Estímulos, respuestas y sus relaciones', cls:'p2' },
-  { num:3, title:'Relaciones Funcionales', sub:'Cómo se organizan las secuencias complejas', cls:'p3' },
-  { num:4, title:'Análisis Funcional Aplicado', sub:'De los datos al caso clínico', cls:'p4' },
-  { num:5, title:'Temas Avanzados', sub:'Conceptos que complejizan el análisis', cls:'p5' },
-];
+// ===== MODULE 1 DATA =====
+const M1={
+id:'m1',phase:'Fase 1 · Fundamentos',title:'Operacionalización de la Conducta',
+description:'De la etiqueta a la descripción conductual: observable, medible y funcional.',
+icon:'🎯',color:'#2563eb',colorB:'#3b82f6',
+levels:[
+// NIVEL 1
+{title:'¿Qué es conducta?',description:'Discrimina conductas reales de etiquetas mentalistas.',showCount:12,
+cheat:['Conducta = actividad del organismo en interacción con su entorno','Se expresa como VERBO, no como sustantivo','Las etiquetas NO explican la conducta','Conducta privada opera bajo los mismos principios','Si dos observadores no verifican → no está operacionalizado'],
+theory:[
+{icon:'📖',title:'¿Qué es conducta?',color:'accent',body:'<p>La <strong>conducta</strong> es cualquier actividad del organismo en interacción con su entorno. Incluye eventos privados como pensamientos, imágenes y respuestas fisiológicas.</p><p>Lo que la diferencia es su <strong>relación funcional</strong> con el ambiente.</p>'},
+{icon:'🏷️',title:'Conducta ≠ Etiqueta',color:'gold',body:'<div class="callout callout-g"><em>Principio clave:</em> La conducta se expresa como verbo. "Gritar" es conducta; "agresividad" es etiqueta.</div><p>Las <strong>etiquetas diagnósticas</strong> no explican conducta: "es agresivo" describe un rótulo, no lo que hace.</p>'},
+{icon:'🔬',title:'Ejemplo práctico',color:'green',body:'<div class="ex-box"><div class="ex-box-l">De etiqueta a conducta</div><p><b>Etiqueta:</b> "Pedro es agresivo" → No es conducta<br><b>Conducta:</b> "Pedro golpea la mesa y grita cuando su jefe le corrige" → Observable, medible, en contexto</p></div>'}
+],
+exercises:[
+{type:'tf',skill:'discriminacion',s:'"Pensar «no voy a poder» antes de un examen es una conducta."',c:true,ok:'Pensar es verbalización encubierta — conducta privada bajo los mismos principios de aprendizaje.',fail:'Pensar es conducta privada. Las verbalizaciones encubiertas son conducta.'},
+{type:'tf',skill:'discriminacion',s:'"María es una persona ansiosa" es una descripción conductual adecuada.',c:false,ok:'"Es ansiosa" es etiqueta de rasgo. No dice qué hace.',fail:'"Es ansiosa" es etiqueta. No dice qué, cuándo ni en qué contexto.'},
+{type:'tf',skill:'discriminacion',s:'"Sentir taquicardia al entrar en el metro" describe una conducta.',c:true,ok:'Taquicardia es respuesta fisiológica condicionada — componente fisiológico.',fail:'Taquicardia es conducta fisiológica en contexto.'},
+{type:'tf',skill:'discriminacion',s:'"Juan tiene baja autoestima" describe una conducta.',c:false,ok:'"Baja autoestima" es etiqueta. La conducta sería lo que Juan HACE.',fail:'"Baja autoestima" es etiqueta. ¿Qué hace Juan?'},
+{type:'tf',skill:'discriminacion',s:'"Imaginarse fracasando en una entrevista" es una conducta.',c:true,ok:'Imaginar es conducta encubierta (cognitiva).',fail:'Imaginar es conducta encubierta.'},
+{type:'tf',skill:'discriminacion',s:'"La personalidad extrovertida explica su comportamiento social."',c:false,ok:'"Personalidad" no explica conducta — es circular.',fail:'Personalidad es constructo circular.'},
+{type:'tf',skill:'discriminacion',s:'"Decirse «soy un inútil» repetidamente es una conducta."',c:true,ok:'Verbalización encubierta con función de estímulo.',fail:'Decirse algo es conducta verbal encubierta.'},
+{type:'tf',skill:'discriminacion',s:'"La depresión es una conducta."',c:false,ok:'"Depresión" es categoría diagnóstica que agrupa conductas.',fail:'"Depresión" agrupa conductas que deben operacionalizarse.'},
+{type:'tf',skill:'discriminacion',s:'"Evitar coger el ascensor cada vez" es una conducta.',c:true,ok:'Evitar es operante observable, medible, mantenida por R-.',fail:'Evitar es conducta operante.'},
+{type:'tf',skill:'discriminacion',s:'"Carlos tiene un problema de agresividad" describe una conducta.',c:false,ok:'Es etiqueta. La conducta: "golpea a compañeros 3 veces/semana."',fail:'Es etiqueta. Necesitamos: ¿qué, cuándo, con qué frecuencia?'},
+{type:'classify',skill:'discriminacion',categories:['🔵 Observable','🟠 Encubierta'],items:[
+{text:'Gritar a su pareja durante una discusión',cat:'🔵 Observable'},
+{text:'Pensar "seguro que me sale mal"',cat:'🟠 Encubierta'},
+{text:'Salir corriendo del aula de examen',cat:'🔵 Observable'},
+{text:'Taquicardia al ver al ex en la calle',cat:'🟠 Encubierta'},
+{text:'Llamar por teléfono a su madre 5 veces al día',cat:'🔵 Observable'},
+{text:'Decirse "no valgo para nada"',cat:'🟠 Encubierta'},
+{text:'Quedarse en la cama hasta las 14h',cat:'🔵 Observable'},
+{text:'Nudo en el estómago antes de cada reunión',cat:'🟠 Encubierta'}
+]},
+{type:'match',skill:'discriminacion',text:'Empareja cada etiqueta con su operacionalización:',
+pairs:[{left:'Es agresivo',right:'Golpea la mesa 3/semana'},{left:'Tiene ansiedad',right:'Sudor y temblor al hablar en público'},{left:'Es dependiente',right:'Llama 8 veces/día a su pareja'},{left:'Baja autoestima',right:'Se dice "nadie me quiere" a diario'}],
+ok:'Cada etiqueta se traduce en conductas observables y medibles.'}
+]},
+// NIVEL 2
+{title:'Triple sistema y parámetros',description:'Identifica componentes y cuantifica la conducta.',showCount:10,
+cheat:['Motor: acciones observables','Cognitivo: verbalizaciones encubiertas e imágenes','Fisiológico: respuestas corporales','Emociones = cognitivo + fisiológico','Parámetros: ocurrencia, frecuencia, duración, intensidad'],
+theory:[
+{icon:'🧩',title:'Triple sistema de respuesta',color:'accent',body:'<p>Toda conducta se analiza en: <strong>Motor</strong> (acciones observables), <strong>Cognitivo</strong> (pensamientos), <strong>Fisiológico</strong> (corporales).</p><div class="callout"><em>Las emociones</em> = combinación de cognitivo + fisiológico.</div>'},
+{icon:'📏',title:'Parámetros de medida',color:'gold',body:'<p>Cuantificar con: <strong>Ocurrencia</strong> (¿se da?), <strong>Frecuencia</strong> (¿cuántas veces?), <strong>Duración</strong> (¿cuánto?), <strong>Intensidad</strong> (¿con qué magnitud?).</p><div class="callout callout-g"><em>Sin parámetros no hay línea base</em>, y sin línea base no podemos evaluar cambio.</div>'}
+],
+exercises:[
+{type:'single',skill:'triple_sistema',text:'🫀 "Cada vez que veo a mi jefe, el corazón se me acelera." ¿Componente?',opts:['🏃 Motor','💭 Cognitivo','🫀 Fisiológico'],c:2,ok:'Aceleración cardíaca = fisiológico.',fail:'Taquicardia = fisiológico.'},
+{type:'single',skill:'triple_sistema',text:'💭 "Me repito: «mañana va a ser un desastre»." ¿Componente?',opts:['🏃 Motor','💭 Cognitivo','🫀 Fisiológico'],c:1,ok:'Verbalización encubierta = cognitivo.',fail:'Repetirse una frase = cognitivo.'},
+{type:'single',skill:'triple_sistema',text:'📱 "Me quedo mirando el móvil horas sin hacer nada." ¿Componente?',opts:['🏃 Motor','💭 Cognitivo','🫀 Fisiológico'],c:0,ok:'"Quedarse mirando" es acción observable = motor.',fail:'Aunque parece inacción, es observable = motor.'},
+{type:'single',skill:'triple_sistema',text:'📞 "Llamo enferma al trabajo los lunes." ¿Componente?',opts:['🏃 Motor','💭 Cognitivo','🫀 Fisiológico'],c:0,ok:'Llamar = acción observable = motor.',fail:'Llamar = acción manifiesta = motor.'},
+{type:'single',skill:'triple_sistema',text:'✋ "Me tiemblan las manos al firmar delante de alguien." ¿Componente?',opts:['🏃 Motor','💭 Cognitivo','🫀 Fisiológico'],c:2,ok:'Temblor = respuesta fisiológica.',fail:'Temblor = fisiológico.'},
+{type:'multi',skill:'triple_sistema',text:'🎭 "Cuando llego a la fiesta, me sudan las manos, pienso que todos me juzgan y me voy a los 10 min." Componentes presentes:',opts:['🏃 Motor: irse','💭 Cognitivo: "me juzgan"','🫀 Fisiológico: sudoración','🏃 Motor: no hablar'],c:[0,1,2],ok:'Motor (irse) + cognitivo (juicio) + fisiológico (sudoración). El cuarto no se describe.',fail:'Solo los descritos: irse (M), "me juzgan" (C), sudar (F).'},
+{type:'single',skill:'parametros',text:'🧮 "Se lava las manos 15 veces al día." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:1,ok:'"15 veces/día" = frecuencia.',fail:'"15 veces/día" = frecuencia.'},
+{type:'single',skill:'parametros',text:'⏱️ "Las crisis de llanto duran 20-40 minutos." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:2,ok:'"20-40 min" = duración.',fail:'"20-40 min" = duración.'},
+{type:'single',skill:'parametros',text:'🔊 "Los gritos son audibles desde el piso de abajo." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:3,ok:'Magnitud = intensidad.',fail:'Magnitud = intensidad.'},
+{type:'single',skill:'parametros',text:'💪 "Temblor tan fuerte que no puede sostener un vaso." ¿Parámetro?',opts:['Ocurrencia','Frecuencia','Duración','Intensidad'],c:3,ok:'Magnitud funcional = intensidad.',fail:'Magnitud = intensidad.'},
+{type:'fib',skill:'operacionalizacion',text:'La conducta tiene tres componentes: {0}, {1} y {2}. Las emociones son combinación de {3}.',blanks:[
+{placeholder:'___',correct:['Motor'],options:['Motor','Causal','Diagnóstico']},
+{placeholder:'___',correct:['Cognitivo'],options:['Cognitivo','Emocional','Inconsciente']},
+{placeholder:'___',correct:['Fisiológico'],options:['Fisiológico','Neurológico','Mental']},
+{placeholder:'___',correct:['cognitivo + fisiológico'],options:['cognitivo + fisiológico','motor + cognitivo','los tres sistemas']}
+],ok:'Triple sistema: motor, cognitivo y fisiológico. Emociones = cognitivo + fisiológico.',fail:'Motor, Cognitivo, Fisiológico. Emociones = cognitivo + fisiológico.'}
+]},
+// NIVEL 3
+{title:'De etiqueta a operacionalización',description:'Transforma descripciones vagas en formulaciones concretas.',showCount:7,
+cheat:['Operacionalizar = etiqueta → conducta concreta, observable, medible','Buena operacionalización = topografía + parámetros + contexto','Regla de oro: si dos observadores no se ponen de acuerdo → no operacionalizado'],
+theory:[
+{icon:'🎯',title:'El arte de operacionalizar',color:'accent',body:'<p><strong>Operacionalizar</strong> = transformar etiquetas en conductas concretas, observables, medibles y contextualizadas.</p><p>Incluye: 1) Topografía, 2) Parámetros, 3) Contexto estimular.</p>'},
+{icon:'✅',title:'Regla de oro',color:'green',body:'<div class="callout"><em>Regla de oro:</em> Si dos observadores independientes no podrían ponerse de acuerdo → NO está operacionalizada.</div>'}
+],
+exercises:[
+{type:'single',skill:'operacionalizacion',text:'👊 "Es agresivo". ¿Mejor operacionalización?',opts:['Problema grave de agresividad','Golpea la mesa y grita 3 veces/semana','Temperamento violento','Trastorno explosivo'],c:1,ok:'Observable, medible, contextualizada.',fail:'La mejor describe conducta observable, medible y contextualizada.'},
+{type:'single',skill:'operacionalizacion',text:'📎 "Es dependiente emocionalmente". ¿Mejor operacionalización?',opts:['Pide opinión antes de cualquier decisión y llama 8 veces/día','Apego inseguro','No puede estar sola','Personalidad dependiente'],c:0,ok:'Conductas concretas con parámetros cuantificados.',fail:'La mejor tiene conductas y parámetros.'},
+{type:'single',skill:'operacionalizacion',text:'⚠️ "Conductas agresivas frecuentes." ¿Qué falla?',opts:['Está bien','Falta topografía y "frecuentes" no es cuantificable','Solo falta contexto','Solo falta intensidad'],c:1,ok:'"Agresivas" es vago y "frecuentes" no es medible.',fail:'Falta topografía y cuantificación.'},
+{type:'single',skill:'operacionalizacion',text:'🤔 "Sintomatología ansiosa con componentes somáticos." ¿Calidad?',opts:['Buena','Mala — lenguaje técnico vacío','Regular','Excelente'],c:1,ok:'Suena profesional pero no dice NADA concreto.',fail:'No operacionaliza nada.'},
+{type:'order',skill:'operacionalizacion',prompt:'📊 Ordena de PEOR a MEJOR:',items:['Es agresivo','Conductas agresivas frecuentes','Golpea a compañeros 3/semana','Puñetazos en recreo, 3/sem, cuando le quitan balón, dejan marcas'],ok:'De etiqueta pura → operacionalización completa.',fail:'Etiqueta → etiqueta+adj → conducta+parámetro → completa.'},
+{type:'build',skill:'operacionalizacion',text:'🏗️ Construye la operacionalización de "es agresivo":',
+slots:[{label:'Topografía',correct:['Golpea puñetazos y grita insultos']},{label:'Parámetro',correct:['3 veces/semana, 30 segundos']},{label:'Contexto',correct:['En recreo, cuando le quitan el balón']},{label:'Intensidad',correct:['Golpes que dejan marcas']}],
+pieces:['Golpea puñetazos y grita insultos','3 veces/semana, 30 segundos','En recreo, cuando le quitan el balón','Golpes que dejan marcas','Es violento por naturaleza','Tiene problemas de conducta'],
+ok:'Topografía + parámetro + contexto + intensidad = completa.',fail:'Cada slot necesita datos concretos, no etiquetas.'},
+{type:'order',skill:'operacionalizacion',prompt:'📊 Ordena de PEOR a MEJOR:',items:['Tiene ansiedad','Ansiedad moderada','Suda y tiembla al hablar en público','Sudoración+temblor+"me va a dar algo" 2/mes, 5 min antes de presentaciones'],ok:'De etiqueta → jerga → parcial → completa.',fail:'De peor a mejor.'}
+]},
+// NIVEL 4
+{title:'Función vs. Morfología',description:'La conducta se define por sus efectos, no por su forma.',showCount:6,
+cheat:['La conducta se define por su FUNCIÓN','Misma topografía puede tener funciones distintas','Diferente topografía puede cumplir misma función','R+: añade algo → sube. R-: quita aversivo → sube','C+: añade aversivo → baja. C-: quita deseado → baja'],
+theory:[
+{icon:'🔄',title:'Función ≠ Forma',color:'accent',body:'<div class="callout"><em>La operante se define por su función</em> — por los efectos que produce — no por su morfología.</div>'},
+{icon:'💡',title:'Ejemplos clave',color:'gold',body:'<div class="ex-box"><div class="ex-box-l">Misma topografía ≠ función</div><p>Niño llora: A) Madre se va → vuelve = <b>R+</b> | B) Le dan verdura → retiran plato = <b>R-</b></p></div><div class="ex-box"><div class="ex-box-l">≠ topografía = misma función</div><p>Ante deberes: "me duele la cabeza" / tira libros / llora → todos = <b>R- (escape)</b></p></div>'}
+],
+exercises:[
+{type:'single',skill:'funcion',text:'🔊 María grita: (A) Al hijo → recoge. (B) A pareja → se calla. ¿Funciones?',opts:['Ambos igual','(A) R+ y (B) R-','María es agresiva','Ambos R+'],c:1,ok:'(A) produce obediencia = R+. (B) elimina discusión = R-.',fail:'(A) R+. (B) R-.'},
+{type:'single',skill:'funcion',text:'🚪 Evita reuniones → ansiedad baja. ¿Función?',opts:['R+','R-','C+','Extinción'],c:1,ok:'Elimina ansiedad = R-.',fail:'Evitar elimina aversivo = R-.'},
+{type:'single',skill:'funcion',text:'😤 Niño berrinche → madre compra. ¿Función?',opts:['R+: obtiene lo que quiere','R-','C+','Extinción'],c:0,ok:'Produce algo deseado = R+.',fail:'Añade deseado = R+.'},
+{type:'single',skill:'funcion',text:'🔥 Toca plancha → quemadura → no toca más. ¿Función?',opts:['R+','R-','C+: aversivo → baja','C-'],c:2,ok:'Aversivo añadido → baja = C+.',fail:'Dolor → baja = C+.'},
+{type:'multi',skill:'funcion',text:'📚 Adolescente quiere ESCAPAR deberes (R-). ¿Cuáles?',opts:['"Me duele la cabeza"','Pelea con hermano','Llorar','Sentarse a hacerlos','Tirar libros'],c:[0,1,2,4],ok:'Todas excepto hacerlos = escape (R-).',fail:'Todas excepto hacerlos son escape.'},
+{type:'single',skill:'funcion',text:'📱 Quitan móvil por llegar tarde → llega tarde menos. ¿Función?',opts:['R+','R-','C+','C-: retiran deseado → baja'],c:3,ok:'Retiran deseado → baja = C-.',fail:'Retiran móvil = C-.'},
+{type:'single',skill:'funcion',text:'❓ ¿Por qué importa la equivalencia funcional?',opts:['Facilita diagnóstico','Si eliminamos UNA conducta sin abordar función, aparece otra','Misma función siempre','Misma técnica'],c:1,ok:'Sin abordar función → sustitución.',fail:'La función no atendida genera sustitución.'},
+{type:'single',skill:'funcion',text:'📸 Publica selfies → likes → publica más. ¿Función?',opts:['R+','R-','C-','Extinción'],c:0,ok:'Añade positivo (likes) → sube = R+.',fail:'Likes = R+.'}
+]},
+// NIVEL 5
+{title:'Casos clínicos integradores',description:'Aplica todo: operacionalización, triple sistema, parámetros, análisis funcional.',showCount:3,
+cheat:['Secuencia: queja → operacionalizar → cuantificar → contextualizar → consecuencias → hipótesis','Cada caso es único: misma etiqueta ≠ misma función','El AF guía la intervención'],
+theory:[{icon:'🏆',title:'Integración',color:'accent',body:'<p>Proceso completo: 1) Queja → 2) Operacionalizar → 3) Cuantificar → 4) Contextualizar → 5) Consecuencias → 6) Hipótesis funcional.</p>'}],
+exercises:[
+{type:'seq',skill:'caso_clinico',patient:{name:'Laura',age:'32 años',gender:'f',initial:'L',badge:'Motivo: "Soy insegura"'},quote:'"Soy muy insegura, no valgo para nada. Tengo un problema de autoestima."',questions:[
+{text:'¿Alguna expresión de Laura describe una CONDUCTA?',opts:['"Soy insegura"','"No valgo para nada"','"Problema de autoestima"','Ninguna — todas son etiquetas'],c:3,fb:'Todas son etiquetas. El terapeuta necesita desglosarlas.',hint:'¿Alguna describe algo que una cámara podría grabar?'},
+{text:'Laura: "Cada vez que decido algo, llamo a mi madre. Si no, me quedo bloqueada." ¿Qué logró el terapeuta?',opts:['Identificar causa','Operacionalizar en conductas','Diagnóstico','Relación terapéutica'],c:1,fb:'Convirtió "no valgo" en: llamar a la madre, quedarse bloqueada.'},
+{text:'¿Qué explorar PRIMERO ahora?',opts:['Traumas','Parámetros: frecuencia, duración','Personalidad dependiente','Relación con madre'],c:1,fb:'¿Cuántas veces/día? ¿Cuánto dura? ¿Ante qué decisiones?'},
+{text:'4-5 llamadas/día, bloqueo 20-40 min, cualquier decisión. ¿Tipo de información?',opts:['Etiología','Parámetros: frecuencia, duración, contexto','Hipótesis funcional','Diagnóstico'],c:1,fb:'Frecuencia + duración + contexto = línea base medible.'}]},
+{type:'seq',skill:'caso_clinico',patient:{name:'Daniel',age:'10 años',gender:'c',initial:'D',badge:'"Se porta mal"'},quote:'Profesora: "Interrumpe, se levanta, a veces tira cosas."',questions:[
+{text:'"Es un niño difícil." ¿Respuesta?',opts:['"TDAH"','"Necesitamos: ¿qué, cuándo, frecuencia, qué pasa después?"','"Es normal"','"Más disciplina"'],c:1,fb:'Operacionalizar: topografía + parámetros + antecedentes + consecuencias.'},
+{text:'12 interrupciones/clase de mates. NO en ed. física ni arte. ¿Qué indica?',opts:['Problema selectivo','CONTROL ESTIMULAR','Finge','Profesor malo'],c:1,fb:'Solo ocurre en un contexto = control estimular.'},
+{text:'Al interrumpir, profesora dice "¡siéntate!" Todos miran. Daniel sonríe. ¿Función?',opts:['R- (escapa)','R+ (obtiene atención)','C+ (regaño)','Impulsividad'],c:1,fb:'Reprimenda + miradas + sonrisa = R+. La "disciplina" refuerza.'},
+{text:'Función = R+ (atención). ¿Intervención?',opts:['Castigar más','Extinguir atención + reforzar participación','Medicar','Cambiar de clase'],c:1,fb:'Extinción de R+ + reforzamiento diferencial.'}]},
+{type:'seq',skill:'caso_clinico',patient:{name:'Carmen',age:'35 años',gender:'f',initial:'C',badge:'"No puedo parar"'},quote:'"No puedo parar de comer. Tengo atracones. Soy adicta."',questions:[
+{text:'¿Qué operacionalizar primero?',opts:['Qué come, cuánto, duración, frecuencia','Criterios TCA','Si hizo dietas','Relación con comida infantil'],c:0,fb:'"Atracón" debe operacionalizarse: alimentos, cantidad, duración, frecuencia.'},
+{text:'"Noche, sola, galletas/chocolate 40min, 4/semana. Después vomito." ¿Triple sistema?',opts:['Motor: comer+vomitar. Cognitivo: "horrible". Fisiológico: malestar. 4/sem 40min','Solo motor','Solo parámetros','No analizable'],c:0,fb:'Motor + cognitivo + fisiológico con parámetros.'},
+{text:'"Sola" + "después de día estresante". ¿Función del atracón?',opts:['R+ placer','R-: reduce malestar','C+','Hábito'],c:1,fb:'Reduce malestar = R-. El alivio temporal mantiene la conducta.'},
+{text:'¿Función del vómito posterior?',opts:['Sin función','R-: elimina malestar gástrico + culpa','C+','R+'],c:1,fb:'Doble R-: malestar gástrico + culpa. Mantiene el ciclo.'}]}
+]}
+]};
 
-// ===== RENDER LANDING =====
-function renderLanding(){
-  const app = document.getElementById('app');
-  const global = AFC.loadGlobal();
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+// ===== RENDER ENGINE =====
+$a=document.getElementById('app');
 
-  // Stats
-  let totalDone = 0, totalMods = MODULES.length;
-  MODULES.forEach(m => {
-    const mData = global[m.id];
-    if(mData){
-      // Check if all 5 levels done at 80%+
-      let allDone = true;
-      for(let i=0;i<5;i++){
-        const sc = mData[`lvl${i}`];
-        if(!sc || (sc.correct/sc.total) < AFC.MASTERY_THRESHOLD) allDone = false;
-      }
-      if(allDone) totalDone++;
-    }
-  });
-  const globalPct = Math.round((totalDone/totalMods)*100);
+function go(v,o){Object.assign(S,o||{},{view:v});if(v==='exercise'){S.answers={};S.seqIdx=0;const l=MOD.levels[S.level];S.pool=shuffle([...Array(l.exercises.length).keys()]).slice(0,l.showCount||l.exercises.length);S.exIdx=0}S.tpOpen=false;saveP();render()}
+function render(){const v=S.view;if(v==='landing')rLanding();else if(v==='home')rHome();else if(v==='theory')rTheory();else if(v==='exercise')rEx();else if(v==='gate')rGate();else if(v==='level-sum')rLSum();else if(v==='mod-sum')rMSum();requestAnimationFrame(()=>{const c=$a.querySelector('.cnt');if(c)c.scrollTop=0})}
 
-  // Build phases
-  let phasesHtml = '';
-  PHASES.forEach(ph => {
-    const mods = MODULES.filter(m => m.phase === ph.num);
-    let modsHtml = '';
-    mods.forEach((m, idx) => {
-      const mData = global[m.id] || {};
-      let lvlsDone = 0;
-      for(let i=0;i<5;i++){
-        const sc = mData[`lvl${i}`];
-        if(sc && (sc.correct/sc.total) >= AFC.MASTERY_THRESHOLD) lvlsDone++;
-      }
-      const isDone = lvlsDone >= 5;
-      const isStarted = lvlsDone > 0;
-      // Module is unlocked if it's first OR previous module is done
-      const globalIdx = MODULES.indexOf(m);
-      const unlocked = globalIdx === 0 || isModDone(MODULES[globalIdx-1].id, global);
-      const cls = isDone ? 'done' : (!unlocked ? 'locked' : '');
+function topH(t,s,back,prog){
+let p='';if(prog!==undefined)p=`<div class="top-prog"><div class="top-prog-bar"><div class="top-prog-fill" style="width:${prog}%"></div></div><div class="top-prog-pct">${Math.round(prog)}%</div></div>`;
+const tb=S.view==='exercise'?`<div class="top-btn" onclick="togTP()" title="Teoría">${IC.book}</div>`:'';
+return `<div class="top"><div class="top-back" onclick="${back}" tabindex="0">${IC.back}</div><div style="flex:1;min-width:0"><div class="top-t">${t}</div><div class="top-s">${s}</div></div>${p}<div class="top-acts">${tb}<div class="top-btn" onclick="togDk()">${isDk()?IC.sun:IC.moon}</div></div></div>`}
 
-      let masteryHtml = '';
-      if(isStarted && !isDone){
-        const mPct = Math.round((lvlsDone/5)*100);
-        masteryHtml = `<span class="mod-mastery ${mPct>=60?'mid':'low'}">${lvlsDone}/5</span>`;
-      } else if(isDone){
-        masteryHtml = `<span class="mod-mastery high">✓</span>`;
-      }
+// THEORY PANEL
+function tpHTML(){if(!MOD||!MOD.levels[S.level])return '';const l=MOD.levels[S.level];let items='';(l.theory||[]).forEach(t=>{items+=`<div class="acc open"><div class="acc-h" onclick="this.parentElement.classList.toggle('open')"><div class="acc-i" style="background:var(--accent-g)">${t.icon||'📖'}</div><div class="acc-l">${t.title}</div><div class="acc-a">▼</div></div><div class="acc-b"><div class="acc-in prose">${t.body}</div></div></div>`});
+return `<div class="tp-overlay${S.tpOpen?' open':''}" onclick="togTP()"></div><div class="tp${S.tpOpen?' open':''}"><button class="tp-close" onclick="togTP()">${IC.x}</button><div class="tag tag-b" style="margin-bottom:12px">📖 Referencia teórica</div>${items}</div>`}
+function togTP(){S.tpOpen=!S.tpOpen;const p=$a.querySelector('.tp'),o=$a.querySelector('.tp-overlay');if(p)p.classList.toggle('open',S.tpOpen);if(o)o.classList.toggle('open',S.tpOpen)}
 
-      modsHtml += `<a class="mod-card ${cls}" href="${unlocked?m.path:'#'}" onclick="${!unlocked?'event.preventDefault()':''}">
-        <div class="mod-num" style="background:linear-gradient(135deg,${m.color},${m.colorB})">${isDone?'✓':m.icon}</div>
-        <div style="flex:1"><div class="mod-name">${m.title}</div><div class="mod-desc">${m.desc}</div></div>
-        ${masteryHtml}
-        <div class="mod-arrow">›</div></a>`;
-    });
+// ===== LANDING =====
+function rLanding(){
+let phases='';
+PHS.forEach(ph=>{
+const mods=MODS.filter(m=>m.ph===ph.n);
+let cards='';
+mods.forEach(m=>{
+const avail=m.id==='m1';
+const cls=avail?'':'locked';
+cards+=`<div class="mcard ${cls}" onclick="${avail?`enterMod('${m.id}')`:'void(0)'}"><div class="mcard-icon" style="background:linear-gradient(135deg,${m.color},${m.cB})">${m.icon}</div><div class="mcard-name">${m.title}</div><div class="mcard-prog none">${avail?'Disponible':'Próximamente'}</div></div>`;
+});
+phases+=`<div class="ph"><div class="ph-h"><div class="ph-n">${ph.e}</div><div><div class="ph-t">${ph.t}</div></div></div><div class="mgrid">${cards}</div></div>`;
+});
 
-    phasesHtml += `<div class="phase"><div class="phase-head"><div class="phase-num ${ph.cls}">${ph.num}</div><div style="flex:1"><div class="phase-title">${ph.title}</div><div class="phase-sub">${ph.sub}</div></div></div>${modsHtml}</div>`;
-  });
+$a.innerHTML=`<div class="top"><div style="flex:1"><div class="top-t">AFC Praxis</div><div class="top-s">Entrenamiento en Análisis Funcional</div></div><div class="top-acts"><div class="top-btn" onclick="togDk()">${isDk()?IC.sun:IC.moon}</div></div></div>
+<div class="cnt">
+<div class="hero anim"><div class="hero-logo">🧠</div><div class="hero-t">AFC Praxis</div><div class="hero-d">Plataforma de entrenamiento progresivo en habilidades clínicas de Análisis Funcional de la Conducta</div></div>
+<div class="stats anim d1"><div class="stat"><b>13</b><span>Módulos</span></div><div class="stat"><b>520</b><span>Ejercicios</span></div><div class="stat"><b>5</b><span>Fases</span></div></div>
+<div class="callout anim d2" style="margin:14px 0"><em>🔒 Criterio de dominio:</em> Cada nivel requiere ≥80% para avanzar. Los ejercicios se aleatorizan en cada intento.</div>
+<div class="anim d3">${phases}</div>
+<div style="text-align:center;padding:20px 0;font-size:13px;color:var(--muted)">AFC Praxis · Basado en Manual de ITEMA</div>
+</div>`}
 
-  app.innerHTML = `
-  <div class="topbar">
-    <div class="topbar-info" style="flex:1"><div class="topbar-title">AFC Praxis</div><div class="topbar-sub">Entrenamiento en Análisis Funcional</div></div>
-    <div class="topbar-actions">
-      <div class="topbar-btn" onclick="toggleThemeLanding()" title="Tema">${isDark?AFC.ICO.sun:AFC.ICO.moon}</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="landing-hero anim">
-      <div class="landing-logo">${AFC.ICO.brain}</div>
-      <div class="landing-title">AFC Praxis</div>
-      <div class="landing-sub">Plataforma de entrenamiento progresivo en habilidades clínicas de Análisis Funcional de la Conducta</div>
-    </div>
-
-    <div class="dash-grid anim d1">
-      <div class="dash-stat"><b>${totalDone}</b><span>Módulos</span></div>
-      <div class="dash-stat"><b>${totalMods}</b><span>Total</span></div>
-      <div class="dash-stat"><b>${globalPct}%</b><span>Progreso</span></div>
-      <div class="dash-stat"><b>520</b><span>Ejercicios</span></div>
-    </div>
-
-    <div class="callout anim d2" style="margin:14px 0">
-      <em>Criterio de dominio:</em> Cada nivel requiere ≥80% de aciertos para desbloquearse. Los ejercicios se aleatorizan en cada intento.
-    </div>
-
-    <div class="anim d3">${phasesHtml}</div>
-
-    <div style="text-align:center;padding:20px 0;font-size:12px;color:var(--muted)">
-      AFC Praxis · Basado en el Manual de ITEMA · Análisis Funcional de la Conducta
-    </div>
-  </div>`;
+function enterMod(id){
+if(id==='m1'){MOD=M1;S.mod='m1';loadP();go('home')}
 }
 
-function isModDone(modId, global){
-  const mData = global[modId];
-  if(!mData) return false;
-  for(let i=0;i<5;i++){
-    const sc = mData[`lvl${i}`];
-    if(!sc || (sc.correct/sc.total) < AFC.MASTERY_THRESHOLD) return false;
-  }
-  return true;
-}
+// ===== MODULE HOME =====
+function rHome(){
+const m=MOD;let levels='';
+m.levels.forEach((l,i)=>{
+const done=isLD(i),unl=i===0||isLD(i-1),cls=done?'done':(!unl?'locked':'');
+const sc=P.scores[`l${i}`];let mbar='';
+if(sc){const p=Math.round((sc.correct/sc.total)*100);mbar=`<div class="lbar"><div class="lbar-f" style="width:${p}%;background:${p>=80?'var(--green)':(p>=50?'var(--gold)':'var(--red)')}"></div></div>`}
+levels+=`<div class="lcard ${cls}" onclick="${unl?`go('theory',{level:${i}})`:'void(0)'}"><div class="lcard-icon" style="background:${done?'var(--green-g)':`linear-gradient(135deg,${LVL_C[i]},${LVL_C[i]}22)`}">${done?'✅':LVL_E[i]}</div><div style="flex:1"><div class="lcard-name">${LVL_N[i]}</div><div class="lcard-sub">${l.title} · ${l.exercises.length} ejercicios</div>${mbar}</div><div class="lcard-arrow">›</div></div>`
+});
+const tl=m.levels.length;let dl=0;for(let i=0;i<tl;i++)if(isLD(i))dl++;const pct=Math.round((dl/tl)*100);
+$a.innerHTML=`${topH(m.phase,m.title,"go('landing')")}
+<div class="cnt">
+<div class="anim" style="text-align:center;margin-bottom:16px"><div style="font-size:52px;margin-bottom:8px">${m.icon}</div><div class="card-t" style="font-size:26px">${m.title}</div><div class="card-d" style="max-width:360px;margin:6px auto 0">${m.description}</div></div>
+<div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:16px" class="anim d1">
+<div class="ring"><svg width="80" height="80"><circle cx="40" cy="40" r="33" fill="none" stroke="var(--border)" stroke-width="5"/><circle cx="40" cy="40" r="33" fill="none" stroke="var(--accent)" stroke-width="5" stroke-dasharray="${2*Math.PI*33}" stroke-dashoffset="${2*Math.PI*33*(1-pct/100)}" stroke-linecap="round"/></svg><div class="ring-v">${pct}%</div></div>
+<div><div class="stat" style="border:none;padding:4px 0"><b>${dl}/${tl}</b><span>Niveles</span></div></div>
+</div>
+<div style="font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:16px 0 8px" class="anim d2">Niveles del módulo</div>
+<div class="anim d3">${levels}</div>
+</div>`}
 
-function toggleThemeLanding(){
-  AFC.toggleTheme();
-  renderLanding(); // Re-render to update icon
-}
+function isLD(i){const sc=P.scores[`l${i}`];return sc&&(sc.correct/sc.total)>=MASTERY}
 
-// Init
-renderLanding();
+// ===== THEORY =====
+function rTheory(){
+const l=MOD.levels[S.level];let acc='';
+(l.theory||[]).forEach((t,i)=>{acc+=`<div class="acc ${i===0?'open':''}" onclick="this.classList.toggle('open')"><div class="acc-h"><div class="acc-i" style="background:var(--${t.color||'accent'}-g)">${t.icon||'📖'}</div><div class="acc-l">${t.title}</div><div class="acc-a">▼</div></div><div class="acc-b"><div class="acc-in prose">${t.body}</div></div></div>`});
+$a.innerHTML=`${topH(`Nivel ${S.level+1}`,l.title,"go('home')")}
+<div class="cnt"><div class="anim"><div class="card"><div class="tag tag-b">📖 Nivel ${S.level+1} — ${LVL_N[S.level]}</div><div class="card-t">${l.title}</div><div class="card-d">${l.description||''}</div></div>${acc}</div></div>
+<div class="bot"><button class="btn btn-p" onclick="go('exercise')">Comenzar ejercicios ›</button></div>`}
+
+// ===== EXERCISE =====
+function rEx(){
+const l=MOD.levels[S.level],pi=S.pool[S.exIdx],ex=l.exercises[pi],total=S.pool.length;
+let ft=0,fc=0;S.pool.forEach((p,i)=>{const e=l.exercises[p];const c=e.type==='seq'?e.questions.length:(e.type==='classify'?e.items.length:1);if(i<S.exIdx)fc+=c;else if(i===S.exIdx)fc+=S.seqIdx;ft+=c});
+let pips='<div class="pips">';let pi2=0;
+S.pool.forEach((p,i)=>{const e=l.exercises[p];const c=e.type==='seq'?e.questions.length:(e.type==='classify'?e.items.length:1);for(let s=0;s<c;s++){const k=`${i}-${s}`,a=S.answers[k];let cl=i===S.exIdx&&s===S.seqIdx?'cur':(a===true?'ok':(a===false?'fail':''));pips+=`<div class="pip ${cl}"></div>`;pi2++}});pips+='</div>';
+const prog=ft?Math.round(fc/ft*100):0;
+let body='';
+if(ex.type==='tf')body=mkTF(ex);else if(ex.type==='single')body=mkSingle(ex);else if(ex.type==='multi')body=mkMulti(ex);else if(ex.type==='classify')body=mkCl(ex);else if(ex.type==='order')body=mkOrd(ex);else if(ex.type==='seq')body=mkSeq(ex);else if(ex.type==='fib')body=mkFib(ex);else if(ex.type==='build')body=mkBld(ex);else if(ex.type==='match')body=mkMat(ex);
+$a.innerHTML=`${topH(`Nivel ${S.level+1}`,l.title,"go('home')",prog)}<div class="cnt">${pips}<div id="exW" class="anim">${body}</div></div><div class="bot" id="botB"></div>${tpHTML()}`}
+
+function curK(){return `${S.exIdx}-${S.seqIdx}`}
+function curE(){return MOD.levels[S.level].exercises[S.pool[S.exIdx]]}
+function rec(ok,ex){S.answers[curK()]=ok;if(ex&&ex.skill){if(!P.skills[ex.skill])P.skills[ex.skill]={c:0,t:0};P.skills[ex.skill].t++;if(ok)P.skills[ex.skill].c++}if(!ok&&ex){if(!P.errors[S.level])P.errors[S.level]=[];const q=ex.text||ex.s||(ex.questions?ex.questions[S.seqIdx]?.text:'')||'';const c=typeof ex.c==='number'&&ex.opts?ex.opts[ex.c]:'';P.errors[S.level].push({q:q.substring(0,100),a:(typeof c==='string'?c:'').substring(0,100)})}saveP()}
+function showNext(){const b=$('botB');if(b)b.innerHTML=`<button class="btn btn-p" onclick="nextEx()">Siguiente ›</button>`}
+function showFB(ok,t,h){const f=$('fb');if(!f)return;f.className=`fb show ${ok?'fbok':'fbfail'}`;let hh='';if(!ok&&h)hh=`<div class="fb-hint show">💡 ${h}</div>`;f.innerHTML=`<strong>${ok?'✅ ¡Correcto!':'❌ Incorrecto'}</strong>${t}${hh}`;if(!ok){const w=$('exW');if(w){w.classList.add('shake');setTimeout(()=>w.classList.remove('shake'),400)}}}
+
+// TF
+function mkTF(ex){return `<div class="card"><div class="q-h"><span class="q-type">⚡</span><span class="q-tag">V / F</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div><div class="q-text">${ex.s}</div><div class="tf"><div class="tf-b" id="tfV" onclick="chkTF(true)">✓ Verdadero</div><div class="tf-b" id="tfF" onclick="chkTF(false)">✗ Falso</div></div><div class="fb" id="fb"></div></div>`}
+function chkTF(v){const ex=curE(),ok=v===ex.c;$('tf'+(v?'V':'F')).classList.add(ok?'ok':'bad','dis');$('tf'+(v?'F':'V')).classList.add('dis');if(!ok)$(ex.c?'tfV':'tfF').classList.add('ok');showFB(ok,ok?ex.ok:ex.fail,ex.hint);rec(ok,ex);showNext()}
+
+// SINGLE
+function mkSingle(ex){let o='';ex.opts.forEach((t,i)=>{o+=`<div class="opt" id="so${i}" onclick="chkS(${i})"><div class="opt-m">${String.fromCharCode(65+i)}</div><div class="opt-t">${t}</div></div>`});return `<div class="card"><div class="q-h"><span class="q-type">🎯</span><span class="q-tag">Selección</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div>${ex.context?`<div class="q-ctx">${ex.context}</div>`:''}<div class="q-text">${ex.text}</div>${o}<div class="fb" id="fb"></div></div>`}
+function chkS(i){const ex=curE(),ok=i===ex.c;document.querySelectorAll('.opt').forEach((o,j)=>{o.classList.add('dis');if(j===i)o.classList.add(ok?'ok':'bad');if(j===ex.c&&!ok)o.classList.add('rev')});showFB(ok,ok?ex.ok:ex.fail,ex.hint);rec(ok,ex);showNext()}
+
+// MULTI
+let _ms=[];
+function mkMulti(ex){_ms=[];let o='';ex.opts.forEach((t,i)=>{o+=`<div class="opt" id="mo${i}" onclick="togM(${i})"><div class="opt-m chk">☐</div><div class="opt-t">${t}</div></div>`});return `<div class="card"><div class="q-h"><span class="q-type">☑️</span><span class="q-tag">Multi-selección</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div><div class="q-text">${ex.text}</div>${o}<div class="fb" id="fb"></div></div><div style="text-align:center;margin-top:6px"><button class="btn btn-p btn-sm" onclick="chkM()">Comprobar</button></div>`}
+function togM(i){const e=$('mo'+i);if(!e||e.classList.contains('dis'))return;const x=_ms.indexOf(i);if(x===-1){_ms.push(i);e.classList.add('pick');e.querySelector('.opt-m').textContent='☑'}else{_ms.splice(x,1);e.classList.remove('pick');e.querySelector('.opt-m').textContent='☐'}}
+function chkM(){const ex=curE(),ok=JSON.stringify(_ms.sort())===JSON.stringify([...ex.c].sort());document.querySelectorAll('.opt').forEach((o,i)=>{o.classList.add('dis');if(ex.c.includes(i))o.classList.add('ok');else if(_ms.includes(i))o.classList.add('bad')});showFB(ok,ok?ex.ok:ex.fail,ex.hint);rec(ok,ex);_ms=[];showNext()}
+
+// CLASSIFY
+function mkCl(ex){const it=ex.items[S.seqIdx];let c='<div class="cl-cats">';ex.categories.forEach(cat=>{c+=`<div class="cl-c" onclick="chkCl('${cat}')">${cat}</div>`});c+='</div>';return `<div class="card"><div class="q-h"><span class="q-type">📂</span><span class="q-tag">Clasifica</span><span class="q-n">${S.seqIdx+1}/${ex.items.length}</span></div><div class="q-text">"${it.text}"</div>${c}<div class="fb" id="fb"></div></div>`}
+function chkCl(cat){const ex=curE(),it=ex.items[S.seqIdx],ok=cat===it.cat;document.querySelectorAll('.cl-c').forEach(c=>{c.classList.add('dis');if(c.textContent===it.cat)c.classList.add('ok');else if(c.textContent===cat&&!ok)c.classList.add('bad')});showFB(ok,ok?`"${it.text}" → ${it.cat}.`:`Correcto: "${it.text}" → ${it.cat}`);S.answers[curK()]=ok;if(!ok){if(!P.errors[S.level])P.errors[S.level]=[];P.errors[S.level].push({q:it.text.substring(0,80),a:it.cat})}saveP();setTimeout(()=>{if(S.seqIdx<ex.items.length-1){S.seqIdx++;render()}else{S.seqIdx=0;advEx()}},1500)}
+
+// ORDER
+let _os=[];
+function mkOrd(ex){_os=[];const sh=shuffle(ex.items.map((t,i)=>({t,i})));let p='';sh.forEach((s,i)=>{p+=`<div class="ord-i" id="oi${i}" data-t="${s.t}" onclick="pickO(${i})">${s.t}</div>`});return `<div class="card"><div class="q-h"><span class="q-type">📊</span><span class="q-tag">Ordena</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div><div class="q-text">${ex.prompt||'Ordena de peor a mejor:'}</div><div class="ord-s" id="ordS"></div><div style="margin-bottom:6px"><span class="ord-u" id="ordU" onclick="undoO()">↩ Deshacer</span></div><div class="ord-pool" id="ordP">${p}</div><div class="fb" id="fb"></div></div>`}
+function pickO(i){const e=$('oi'+i);if(!e||e.classList.contains('placed'))return;e.classList.add('placed');_os.push({i,text:e.dataset.t});updO();const ex=curE();if(_os.length===ex.items.length){const ok=_os.every((o,j)=>o.text===ex.items[j]);document.querySelectorAll('.ord-p').forEach((p,j)=>p.classList.add(_os[j].text===ex.items[j]?'ok':'bad'));document.querySelectorAll('.ord-i,.ord-u').forEach(e=>e.style.pointerEvents='none');showFB(ok,ok?ex.ok:ex.fail);rec(ok,ex);showNext()}}
+function undoO(){if(!_os.length)return;const l=_os.pop();$('oi'+l.i).classList.remove('placed');updO()}
+function updO(){const s=$('ordS');if(s)s.innerHTML=_os.map((o,i)=>`<div class="ord-p"><span class="n">${i+1}.</span>${o.text}</div>`).join('');const u=$('ordU');if(u)u.classList.toggle('show',_os.length>0)}
+
+// SEQ
+function mkSeq(ex){const q=ex.questions[S.seqIdx];let o='';q.opts.forEach((t,i)=>{o+=`<div class="opt" id="sq${i}" onclick="chkSq(${i})"><div class="opt-m">${String.fromCharCode(65+i)}</div><div class="opt-t">${t}</div></div>`});let ph='';if(ex.patient){const p=ex.patient;ph=`<div class="pat"><div class="pat-h"><div class="pat-av ${p.gender}">${p.initial}</div><div><div class="pat-name">${p.name}</div><div class="pat-age">${p.age}</div></div><div class="pat-badge">${p.badge}</div></div><div class="pat-q">${ex.quote}</div></div>`}return `${ph}<div class="card"><div class="q-h"><span class="q-type">🏥</span><span class="q-tag">Caso clínico</span><span class="q-n">${S.seqIdx+1}/${ex.questions.length}</span></div><div class="q-text">${q.text}</div>${o}<div class="fb" id="fb"></div></div>`}
+function chkSq(i){const ex=curE(),q=ex.questions[S.seqIdx],ok=i===q.c;document.querySelectorAll('.opt').forEach((o,j)=>{o.classList.add('dis');if(j===i)o.classList.add(ok?'ok':'bad');if(j===q.c&&!ok)o.classList.add('rev')});showFB(ok,q.fb,q.hint);S.answers[curK()]=ok;if(!ok){if(!P.errors[S.level])P.errors[S.level]=[];P.errors[S.level].push({q:q.text.substring(0,80),a:q.opts[q.c].substring(0,80)})}saveP();const b=$('botB');if(b){const last=S.seqIdx>=ex.questions.length-1;b.innerHTML=`<button class="btn btn-p" onclick="seqN(${last})">${last?'Siguiente ›':'Siguiente pregunta ›'}</button>`}}
+function seqN(last){if(last){S.seqIdx=0;advEx()}else{S.seqIdx++;render()}}
+
+// FIB
+let _fib={},_fibA=null;
+function mkFib(ex){_fib={};_fibA=null;let t=ex.text;ex.blanks.forEach((b,i)=>{t=t.replace(`{${i}}`,`<span class="fib-bl" id="fb${i}" onclick="fibSel(${i})">${b.placeholder||'___'}</span>`)});const allO=shuffle(ex.blanks.map(b=>b.options).flat());let bk='<div class="fib-bk">';allO.forEach((o,i)=>{bk+=`<span class="fib-o" id="fo${i}" onclick="fibPk(${i},'${o.replace(/'/g,"\\'")}')">${o}</span>`});bk+='</div>';return `<div class="card"><div class="q-h"><span class="q-type">✏️</span><span class="q-tag">Completa</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div><div class="fib-t">${t}</div>${bk}<div style="text-align:center;margin-top:6px"><button class="btn btn-p btn-sm" onclick="chkFib()">Comprobar</button></div><div class="fb" id="fb"></div></div>`}
+function fibSel(i){_fibA=i;document.querySelectorAll('.fib-bl').forEach(b=>b.style.outline=b.id===`fb${i}`?'2px solid var(--accent)':'none')}
+function fibPk(i,v){if(_fibA===null)return;const b=$('fb'+_fibA);if(b){b.textContent=v;b.classList.add('filled')}_fib[_fibA]=v;$('fo'+i).classList.add('used');_fibA=null;document.querySelectorAll('.fib-bl').forEach(b=>b.style.outline='none')}
+function chkFib(){const ex=curE();let ok=true;ex.blanks.forEach((b,i)=>{const el=$('fb'+i);if(!el)return;const v=_fib[i];const c=b.correct.includes(v);el.classList.add(c?'ok':'bad');if(!c){ok=false;el.textContent=b.correct[0]}});document.querySelectorAll('.fib-o').forEach(o=>o.style.pointerEvents='none');showFB(ok,ok?ex.ok:ex.fail,ex.hint);rec(ok,ex);showNext()}
+
+// BUILD
+let _bld={},_bldA=null;
+function mkBld(ex){_bld={};_bldA=null;let sl='<div class="bld-slots">';ex.slots.forEach((s,i)=>{sl+=`<div class="bld-slot" id="bs${i}" onclick="bldSC(${i})"><div class="bld-lbl">${s.label}</div><div class="bld-val" id="bsv${i}"></div></div>`});sl+='</div>';const pc=shuffle([...ex.pieces]);let pl='<div class="bld-pool">';pc.forEach((p,i)=>{pl+=`<span class="bld-pc" id="bp${i}" data-v="${p}" onclick="bldPk(${i},'${p.replace(/'/g,"\\'")}')">${p}</span>`});pl+='</div>';return `<div class="card"><div class="q-h"><span class="q-type">🏗️</span><span class="q-tag">Construye</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div><div class="q-text">${ex.text}</div>${sl}${pl}<div style="text-align:center;margin-top:8px"><button class="btn btn-p btn-sm" onclick="chkBld()">Comprobar</button></div><div class="fb" id="fb"></div></div>`}
+function bldSC(i){_bldA=i;document.querySelectorAll('.bld-slot').forEach((s,j)=>s.style.outline=j===i?'2px solid var(--accent)':'none')}
+function bldPk(i,v){if(_bldA===null)return;const sv=$('bsv'+_bldA),sl=$('bs'+_bldA);if(sv){sv.textContent=v;sv.style.display='block'}if(sl)sl.classList.add('filled');_bld[_bldA]=v;$('bp'+i).classList.add('used');_bldA=null;document.querySelectorAll('.bld-slot').forEach(s=>s.style.outline='none')}
+function chkBld(){const ex=curE();let ok=true;ex.slots.forEach((s,i)=>{const el=$('bs'+i),v=_bld[i],c=s.correct.includes(v);if(el)el.classList.add(c?'ok':'bad');if(!c)ok=false});document.querySelectorAll('.bld-pc').forEach(p=>p.style.pointerEvents='none');showFB(ok,ok?ex.ok:ex.fail,ex.hint);rec(ok,ex);showNext()}
+
+// MATCH
+let _mL=null,_mP={},_mC=0;
+function mkMat(ex){_mL=null;_mP={};_mC=0;const ls=shuffle(ex.pairs.map((p,i)=>({...p,idx:i}))),rs=shuffle(ex.pairs.map((p,i)=>({...p,idx:i})));let l='<div class="mat-c">';ls.forEach(p=>{l+=`<div class="mat-i" id="ml${p.idx}" onclick="matL(${p.idx})">${p.left}</div>`});l+='</div>';let r='<div class="mat-c">';rs.forEach(p=>{r+=`<div class="mat-i" id="mr${p.idx}" onclick="matR(${p.idx})">${p.right}</div>`});r+='</div>';return `<div class="card"><div class="q-h"><span class="q-type">🔗</span><span class="q-tag">Empareja</span><span class="q-n">${S.exIdx+1}/${S.pool.length}</span></div><div class="q-text">${ex.text}</div><div class="mat-w">${l}${r}</div><div class="fb" id="fb"></div></div>`}
+function matL(i){document.querySelectorAll('.mat-c:first-child .mat-i').forEach(m=>m.classList.remove('sel'));$('ml'+i).classList.add('sel');_mL=i}
+function matR(i){if(_mL===null)return;const ok=_mL===i,ml=$('ml'+_mL),mr=$('mr'+i);if(ml)ml.classList.add(ok?'ok':'bad','dis');if(mr)mr.classList.add(ok?'ok':'bad','dis');if(!ok){setTimeout(()=>{if(ml){ml.classList.remove('bad','dis')}if(mr){mr.classList.remove('bad','dis')}},800)}else{_mC++;const ex=curE();if(_mC===ex.pairs.length){showFB(true,ex.ok||'Todos correctos.');rec(true,ex);showNext()}}
+_mL=null;document.querySelectorAll('.mat-i').forEach(m=>m.classList.remove('sel'))}
+
+// ADVANCE
+function advEx(){if(S.exIdx<S.pool.length-1){S.exIdx++;S.seqIdx=0;render()}else{let c=0,t=0;for(const[k,v]of Object.entries(S.answers)){if(typeof v==='boolean'){t++;if(v)c++}}P.scores[`l${S.level}`]={correct:c,total:t};saveP();const p=t?c/t:0;if(p>=MASTERY){fireConfetti();go('level-sum')}else{go('gate')}}}
+function nextEx(){const ex=curE();if(ex.type==='classify'||ex.type==='seq')return;advEx()}
+
+// GATE
+function rGate(){const sc=P.scores[`l${S.level}`],pct=sc?Math.round((sc.correct/sc.total)*100):0,need=Math.ceil(sc.total*MASTERY);
+let errs='';const el=P.errors[S.level]||[];const seen=new Set;el.forEach(e=>{if(!seen.has(e.q)&&seen.size<5){seen.add(e.q);errs+=`<div class="rev"><div class="rev-q">${e.q}</div><div class="rev-a">✓ ${e.a}</div></div>`}});
+$a.innerHTML=`${topH(`Nivel ${S.level+1}`,MOD.levels[S.level].title,"go('home')")}
+<div class="cnt"><div class="gate anim"><div class="gate-ic">🔒</div><div class="gate-t">Criterio no alcanzado</div><div class="gate-d">Necesitas <strong>≥80%</strong> (${need}/${sc.total}) para avanzar. Obtuviste ${sc.correct}/${sc.total}.</div><div class="gate-bar"><div class="gate-bar-f" style="width:${pct}%;background:${pct>=80?'var(--green)':(pct>=50?'var(--gold)':'var(--red)')}"></div></div><div class="gate-sc" style="color:${pct>=50?'var(--gold)':'var(--red)'}">${pct}%</div>${errs?'<div style="font-family:\'Space Mono\',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:12px 0 6px">Revisar</div>'+errs:''}<p style="font-size:14px;color:var(--dim);margin-top:12px">Los ejercicios se reordenan. Se priorizan los fallados.</p></div></div>
+<div class="bot"><button class="btn btn-o" onclick="go('home')">← Módulo</button><button class="btn btn-w" onclick="retryLvl()">🔄 Reintentar</button></div>`}
+function retryLvl(){delete P.scores[`l${S.level}`];P.errors[S.level]=[];saveP();go('exercise')}
+
+// LEVEL SUM
+function rLSum(){const sc=P.scores[`l${S.level}`],pct=sc?Math.round((sc.correct/sc.total)*100):0,cls=pct>=80?'great':(pct>=50?'mid':'low');
+const l=MOD.levels[S.level],hasN=S.level<MOD.levels.length-1;
+let sk=renderSk(),er=renderEr(),ch='';
+if(l.cheat){ch=`<div class="cheat"><div class="cheat-t">📋 Conceptos clave</div>`;l.cheat.forEach(c=>{ch+=`<div class="cheat-i">• ${c}</div>`});ch+='</div>'}
+$a.innerHTML=`${topH(`Nivel ${S.level+1}`,'Resultados',"go('home')")}
+<div class="cnt" style="text-align:center"><div class="anim"><div class="sum-c ${cls}"><div class="sum-n">${sc.correct}</div><div class="sum-t">de ${sc.total}</div></div><div class="sum-msg">${pct>=90?'🌟 ¡Excelente!':(pct>=80?'✅ ¡Nivel superado!':'💪 Buen progreso')}</div><div class="sum-sub">${LVL_N[S.level]}: ${l.title} — ${pct}%</div></div><div style="text-align:left" class="anim d1">${sk}</div><div style="text-align:left" class="anim d2">${er}</div><div style="text-align:left" class="anim d3">${ch}</div></div>
+<div class="bot"><button class="btn btn-icon btn-o" onclick="retryLvl()">${IC.refresh}</button>${hasN?`<button class="btn btn-p" onclick="go('theory',{level:${S.level+1}})">Nivel ${S.level+2} ›</button>`:`<button class="btn btn-g" onclick="go('mod-sum')">Resumen ›</button>`}</div>`}
+
+function rMSum(){let tc=0,tt=0,rows='';MOD.levels.forEach((l,i)=>{const sc=P.scores[`l${i}`];if(sc){tc+=sc.correct;tt+=sc.total;const p=Math.round((sc.correct/sc.total)*100);rows+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2)"><span style="font-size:16px">${p>=80?'✅':(p>=50?'🟡':'🔴')}</span><span style="flex:1;font-size:14px">${LVL_N[i]}: ${l.title}</span><span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:${p>=80?'var(--green)':(p>=50?'var(--gold)':'var(--red)')}">${p}%</span></div>`}});const pct=tt?Math.round((tc/tt)*100):0;
+$a.innerHTML=`${topH(MOD.phase,MOD.title,"go('home')")}
+<div class="cnt" style="text-align:center"><div class="anim"><div style="font-size:48px;margin-bottom:6px">${pct>=80?'🎉':'💪'}</div><div class="sum-c ${pct>=80?'great':(pct>=50?'mid':'low')}"><div class="sum-n">${tc}</div><div class="sum-t">de ${tt}</div></div><div class="sum-msg">${pct>=80?'¡Módulo completado!':'Sigue practicando'}</div><div class="sum-sub">${MOD.title} — ${pct}%</div></div><div class="card anim d1" style="text-align:left">${rows}</div><div style="text-align:left" class="anim d2">${renderSk()}</div></div>
+<div class="bot"><button class="btn btn-o" onclick="go('landing')">← Plataforma</button></div>`}
+
+function renderSk(){const sk=P.skills,ks=Object.keys(sk);if(!ks.length)return '';let h='<div style="font-family:\'Space Mono\',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:12px 0 6px">📊 Habilidades</div><div class="sk-grid">';ks.forEach(k=>{const s=sk[k],p=s.t?Math.round((s.c/s.t)*100):0,c=p>=80?'var(--green)':(p>=50?'var(--gold)':'var(--red)');h+=`<div class="sk-r"><span class="sk-name">${k.replace(/_/g,' ').replace(/\b\w/g,l=>l.toUpperCase())}</span><div class="sk-bar"><div class="sk-bar-f" style="width:${p}%;background:${c}"></div></div><span class="sk-pct" style="color:${c}">${p}%</span></div>`});return h+'</div>'}
+function renderEr(){const e=P.errors[S.level];if(!e||!e.length)return '';let h='<div style="font-family:\'Space Mono\',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:12px 0 6px">❌ Revisar</div>';const seen=new Set;e.forEach(x=>{if(!seen.has(x.q)&&seen.size<6){seen.add(x.q);h+=`<div class="rev"><div class="rev-q">${x.q}</div><div class="rev-a">✓ ${x.a}</div></div>`}});return h}
+
+// INIT
+render();
 </script>
 </body>
 </html>
