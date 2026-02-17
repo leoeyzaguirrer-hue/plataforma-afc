@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Módulo 1: Operacionalización de la Conducta — AFC Praxis</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/platform.css">
+<style>@keyframes confDrop{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(50vh) rotate(720deg);opacity:0}}</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="confWrap" style="position:fixed;top:0;left:0;right:0;height:50vh;pointer-events:none;z-index:999;overflow:hidden"></div>
+
+<script src="../js/engine.js"></script>
+<script>
+// ======================================================
+// MODULE DATA — This is ALL you edit for each module
+// The engine.js handles everything else
+// ======================================================
+const MODULE = {
+  id: 'm1',
+  phase: 'Fase 1 · Fundamentos',
+  title: 'Operacionalización de la Conducta',
+  description: 'Aprende a definir conductas de forma observable, medible y funcional. De la etiqueta a la descripción conductual.',
+  icon: '🎯',
+  color: '#2563eb',
+  colorB: '#3b82f6',
+
+  levels: [
+    // ========================
+    // NIVEL 1 — Discriminación
+    // ========================
+    {
+      title: '¿Qué es conducta?',
+      description: 'Discrimina entre conductas reales y etiquetas mentalistas.',
+      showCount: 12, // Show 12 of the pool (randomized)
+      cheat: [
+        'Conducta = actividad del organismo en interacción con su entorno',
+        'Se expresa como VERBO, no como sustantivo',
+        'Las etiquetas (ansiedad, depresión) NO explican la conducta',
+        'Conducta privada opera bajo los mismos principios que la pública',
+        'Si dos observadores no pueden verificarlo → no está operacionalizado'
+      ],
+      theory: [
+        { icon:'📖', title:'¿Qué es conducta?', color:'accent',
+          body:`<p>La <strong>conducta</strong> es cualquier actividad del organismo en interacción con su entorno. No es sinónimo de "acción observable": incluye también eventos privados como pensamientos, imágenes y respuestas fisiológicas.</p><p>Lo que diferencia la conducta es su <strong>relación funcional</strong> con el ambiente.</p>` },
+        { icon:'🏷️', title:'Conducta ≠ Etiqueta', color:'gold',
+          body:`<div class="callout callout-gold"><em>Principio clave:</em> La conducta siempre se expresa como verbo. "Gritar" es conducta; "agresividad" es etiqueta.</div><p>Desde el Análisis Funcional, las <strong>etiquetas diagnósticas</strong> no explican conducta: decir que alguien "es agresivo" o "tiene ansiedad" describe un rótulo, no lo que hace.</p>` },
+        { icon:'🔬', title:'Ejemplo práctico', color:'green',
+          body:`<div class="example-box"><div class="example-label">De etiqueta a conducta</div><p><b>Etiqueta:</b> "Pedro es agresivo" → No es conducta<br><b>Conducta:</b> "Pedro golpea la mesa y grita cuando su jefe le corrige" → Observable, medible, en contexto</p></div>` }
+      ],
+      exercises: [
+        // TF — 10 items (pool), engine picks 12 total from all types
+        { type:'tf', skill:'discriminacion', s:'"Pensar «no voy a poder» antes de un examen es una conducta."', c:true, ok:'Pensar es verbalización encubierta — conducta privada que opera bajo los mismos principios de aprendizaje.', fail:'Pensar es conducta privada. Las verbalizaciones encubiertas son conducta.' },
+        { type:'tf', skill:'discriminacion', s:'"María es una persona ansiosa" es una descripción conductual adecuada.', c:false, ok:'"Es ansiosa" es etiqueta de rasgo, no descripción conductual. No dice qué hace.', fail:'"Es ansiosa" es etiqueta. No especifica qué hace María, cuándo, ni en qué contexto.' },
+        { type:'tf', skill:'discriminacion', s:'"Sentir taquicardia al entrar en el metro" describe una conducta.', c:true, ok:'Taquicardia es respuesta fisiológica condicionada — componente fisiológico de la conducta.', fail:'Taquicardia es conducta fisiológica en un contexto específico.' },
+        { type:'tf', skill:'discriminacion', s:'"Juan tiene baja autoestima" describe una conducta.', c:false, ok:'"Baja autoestima" es etiqueta disposicional. La conducta sería lo que Juan HACE.', fail:'"Baja autoestima" es etiqueta. ¿Qué hace Juan? "Se dice que no vale", "rechaza invitaciones"...' },
+        { type:'tf', skill:'discriminacion', s:'"Imaginarse fracasando en una entrevista" es una conducta.', c:true, ok:'Imaginar es conducta encubierta (cognitiva). Puede funcionar como estímulo antecedente.', fail:'Imaginar es conducta encubierta.' },
+        { type:'tf', skill:'discriminacion', s:'"La personalidad extrovertida explica su comportamiento social."', c:false, ok:'"Personalidad" no explica conducta — es circular. Lo que explica son las contingencias.', fail:'Personalidad es constructo circular.' },
+        { type:'tf', skill:'discriminacion', s:'"Decirse repetidamente «soy un inútil» es una conducta."', c:true, ok:'Es verbalización encubierta con función de estímulo para otras respuestas.', fail:'Decirse algo es conducta verbal encubierta.' },
+        { type:'tf', skill:'discriminacion', s:'"La depresión es una conducta."', c:false, ok:'"Depresión" es categoría diagnóstica que agrupa múltiples conductas (quedarse en cama, llorar, dejar actividades...).', fail:'"Depresión" agrupa diversas conductas que deben operacionalizarse por separado.' },
+        { type:'tf', skill:'discriminacion', s:'"Evitar coger el ascensor cada vez" es una conducta.', c:true, ok:'Evitar es conducta operante observable, medible, mantenida por R-.', fail:'Evitar el ascensor es conducta operante.' },
+        { type:'tf', skill:'discriminacion', s:'"Carlos tiene un problema de agresividad" describe una conducta.', c:false, ok:'Es etiqueta. La conducta: "golpea a compañeros 3 veces/semana cuando le quitan el balón."', fail:'Es etiqueta. Necesitamos: ¿qué hace? ¿cuándo? ¿con qué frecuencia?' },
+        // Classify
+        { type:'classify', skill:'discriminacion', categories:['Observable','Encubierta'], items:[
+          { text:'Gritar a su pareja durante una discusión', cat:'Observable' },
+          { text:'Pensar "seguro que me sale mal"', cat:'Encubierta' },
+          { text:'Salir corriendo del aula de examen', cat:'Observable' },
+          { text:'Taquicardia al ver al ex en la calle', cat:'Encubierta' },
+          { text:'Llamar por teléfono a su madre 5 veces al día', cat:'Observable' },
+          { text:'Decirse "no valgo para nada"', cat:'Encubierta' },
+          { text:'Quedarse en la cama hasta las 14h', cat:'Observable' },
+          { text:'Nudo en el estómago antes de cada reunión', cat:'Encubierta' }
+        ]},
+        // Match
+        { type:'match', skill:'discriminacion', text:'Empareja cada etiqueta con su operacionalización conductual.',
+          pairs:[
+            { left:'Es agresivo', right:'Golpea la mesa 3 veces/semana' },
+            { left:'Tiene ansiedad', right:'Sudor, temblor al hablar en público' },
+            { left:'Es dependiente', right:'Llama 8 veces/día para saber dónde está' },
+            { left:'Baja autoestima', right:'Rechaza invitaciones y se dice "nadie me quiere"' }
+          ],
+          ok:'Correcto. Cada etiqueta se traduce en conductas observables y medibles.'
+        }
+      ]
+    },
+
+    // ========================
+    // NIVEL 2 — Transformación
+    // ========================
+    {
+      title: 'Triple sistema y parámetros',
+      description: 'Identifica componentes y cuantifica la conducta.',
+      showCount: 10,
+      cheat: [
+        'Motor: acciones observables (gritar, evitar, llorar, llamar)',
+        'Cognitivo: verbalizaciones encubiertas e imágenes mentales',
+        'Fisiológico: respuestas corporales (taquicardia, sudor, temblor)',
+        'Las emociones = combinación de cognitivo + fisiológico',
+        'Parámetros: ocurrencia, frecuencia, duración, intensidad'
+      ],
+      theory: [
+        { icon:'🧩', title:'Triple sistema de respuesta', color:'accent',
+          body:`<p>Toda conducta se analiza según el <strong>triple sistema</strong>: Motor (acciones observables), Cognitivo (pensamientos e imágenes), Fisiológico (respuestas corporales).</p><div class="callout"><em>Las emociones</em> no son un cuarto componente — son la combinación de cognitivo + fisiológico.</div>` },
+        { icon:'📏', title:'Parámetros de medida', color:'gold',
+          body:`<p>Para que una descripción sea operacional necesitamos <strong>cuantificar</strong>: Ocurrencia (¿se da?), Frecuencia (¿cuántas veces?), Duración (¿cuánto tiempo?), Intensidad (¿con qué magnitud?).</p><div class="callout callout-gold"><em>Sin parámetros no hay línea base</em>, y sin línea base no podemos evaluar si la intervención funciona.</div>` }
+      ],
+      exercises: [
+        { type:'single', skill:'triple_sistema', text:'"Cada vez que veo a mi jefe, el corazón se me acelera." ¿Componente?', opts:['Motor','Cognitivo','Fisiológico'], c:2, ok:'Aceleración cardíaca = respuesta fisiológica.', fail:'Taquicardia = fisiológico.' },
+        { type:'single', skill:'triple_sistema', text:'"Me repito: «mañana va a ser un desastre»." ¿Componente?', opts:['Motor','Cognitivo','Fisiológico'], c:1, ok:'Verbalización encubierta repetitiva = cognitivo.', fail:'Repetirse una frase internamente = cognitivo.' },
+        { type:'single', skill:'triple_sistema', text:'"Me quedo mirando el móvil horas sin hacer nada." ¿Componente?', opts:['Motor','Cognitivo','Fisiológico'], c:0, ok:'"Quedarse mirando" es acción observable = motor.', fail:'Aunque parece inacción, es conducta observable = motor.' },
+        { type:'single', skill:'triple_sistema', text:'"Llamo enferma al trabajo los lunes." ¿Componente?', opts:['Motor','Cognitivo','Fisiológico'], c:0, ok:'Llamar = acción observable y medible = motor.', fail:'Llamar es acción manifiesta = motor.' },
+        { type:'single', skill:'triple_sistema', text:'"Me tiemblan las manos al firmar delante de alguien." ¿Componente?', opts:['Motor','Cognitivo','Fisiológico'], c:2, ok:'Temblor = respuesta del sistema nervioso = fisiológico.', fail:'Temblor = fisiológico.' },
+        { type:'multi', skill:'triple_sistema', text:'"Cuando llego a la fiesta, me sudan las manos, pienso que todos me juzgan y me voy a los 10 min." Componentes:', opts:['Motor: irse','Cognitivo: "me juzgan"','Fisiológico: sudoración','Motor: no hablar con nadie'], c:[0,1,2], ok:'Motor (irse), cognitivo (juicio) y fisiológico (sudoración). El cuarto no se describe.', fail:'Solo los descritos: irse (M), "me juzgan" (C), sudar (F).' },
+        { type:'multi', skill:'triple_sistema', text:'"Antes del examen, dolor de estómago, pienso que voy a suspender y me quedo en blanco." Componentes:', opts:['Fisiológico: dolor','Cognitivo: "voy a suspender"','Motor: quedarse en blanco','Fisiológico: sudoración'], c:[0,1,2], ok:'Dolor (F), anticipación (C), quedarse en blanco (M). El cuarto no está.', fail:'Los presentes: dolor (F), suspender (C), blanco (M).' },
+        // Parameters
+        { type:'single', skill:'parametros', text:'"Se lava las manos 15 veces al día." ¿Parámetro?', opts:['Ocurrencia','Frecuencia','Duración','Intensidad'], c:1, ok:'"15 veces/día" = frecuencia.', fail:'"15 veces/día" = frecuencia.' },
+        { type:'single', skill:'parametros', text:'"Las crisis de llanto duran 20-40 minutos." ¿Parámetro?', opts:['Ocurrencia','Frecuencia','Duración','Intensidad'], c:2, ok:'"20-40 min" = duración.', fail:'"20-40 min" = duración.' },
+        { type:'single', skill:'parametros', text:'"Los gritos son audibles desde el piso de abajo." ¿Parámetro?', opts:['Ocurrencia','Frecuencia','Duración','Intensidad'], c:3, ok:'Magnitud = intensidad.', fail:'Magnitud = intensidad.' },
+        { type:'single', skill:'parametros', text:'"Temblor tan fuerte que no puede sostener un vaso." ¿Parámetro?', opts:['Ocurrencia','Frecuencia','Duración','Intensidad'], c:3, ok:'Magnitud funcional = intensidad.', fail:'Magnitud = intensidad.' },
+        // FIB
+        { type:'fib', skill:'operacionalizacion', text:'La conducta se analiza en tres componentes: {0}, {1} y {2}. Las emociones son combinación de {3}.', blanks:[
+          { placeholder:'___', correct:['Motor'], options:['Motor','Causal','Diagnóstico'] },
+          { placeholder:'___', correct:['Cognitivo'], options:['Cognitivo','Emocional','Inconsciente'] },
+          { placeholder:'___', correct:['Fisiológico'], options:['Fisiológico','Neurológico','Mental'] },
+          { placeholder:'___', correct:['cognitivo + fisiológico'], options:['cognitivo + fisiológico','motor + cognitivo','los tres sistemas'] }
+        ], ok:'Triple sistema: motor, cognitivo y fisiológico. Las emociones = cognitivo + fisiológico.', fail:'Motor, Cognitivo y Fisiológico. Emociones = cognitivo + fisiológico.' }
+      ]
+    },
+
+    // ========================
+    // NIVEL 3 — Micro-situaciones
+    // ========================
+    {
+      title: 'De etiqueta a operacionalización',
+      description: 'Transforma descripciones vagas en formulaciones concretas.',
+      showCount: 8,
+      cheat: [
+        'Operacionalizar = etiqueta → conducta concreta, observable, medible, contextualizada',
+        'Buena operacionalización = topografía + parámetros + contexto',
+        'Regla de oro: si dos observadores no se ponen de acuerdo → no está operacionalizado',
+        'Error frecuente: lenguaje técnico vacío ("sintomatología ansiosa con componentes somáticos")'
+      ],
+      theory: [
+        { icon:'🎯', title:'El arte de operacionalizar', color:'accent',
+          body:`<p><strong>Operacionalizar</strong> = transformar etiquetas en conductas concretas, observables, medibles y contextualizadas.</p><p>Una buena operacionalización incluye: 1) Topografía (triple sistema), 2) Parámetros, 3) Contexto estimular.</p>` },
+        { icon:'✅', title:'Regla de oro', color:'green',
+          body:`<div class="callout"><em>Regla de oro:</em> Si dos observadores independientes no podrían ponerse de acuerdo en si la conducta ocurrió, la descripción NO está operacionalizada.</div>` }
+      ],
+      exercises: [
+        { type:'single', skill:'operacionalizacion', text:'El paciente "es agresivo". ¿Mejor operacionalización?', opts:['Tiene un problema grave de agresividad','Golpea la mesa y grita insultos 3 veces/semana','Su temperamento es violento por naturaleza','Presenta trastorno explosivo intermitente'], c:1, ok:'Conducta observable (golpear, gritar), medible (3/semana), contextualizada.', fail:'La mejor describe conducta observable, medible y contextualizada.' },
+        { type:'single', skill:'operacionalizacion', text:'"Es dependiente emocionalmente". ¿Mejor operacionalización?', opts:['Pide opinión a su pareja antes de cualquier decisión y llama 8 veces/día','Tiene apego inseguro','No puede estar sola por miedo al abandono','Personalidad dependiente'], c:0, ok:'Conductas concretas con parámetros: pedir opinión, llamar 8 veces/día.', fail:'La mejor tiene conductas concretas y parámetros cuantificados.' },
+        { type:'single', skill:'operacionalizacion', text:'"Conductas agresivas frecuentes." ¿Qué falla?', opts:['Está bien','Falta topografía concreta y "frecuentes" no es cuantificable','Solo falta contexto','Solo falta intensidad'], c:1, ok:'"Agresivas" es vago y "frecuentes" no es medible.', fail:'Falta topografía y cuantificación.' },
+        { type:'single', skill:'operacionalizacion', text:'"Sintomatología ansiosa con componentes somáticos y cognitivos." ¿Calidad?', opts:['Buena','Mala — lenguaje técnico que no operacionaliza nada','Regular','Excelente'], c:1, ok:'Suena profesional pero no dice NADA concreto. Lenguaje vacío.', fail:'No operacionaliza nada: ¿qué somáticos? ¿qué cognitivos? ¿cuándo?' },
+        { type:'order', skill:'operacionalizacion', prompt:'Ordena de PEOR a MEJOR operacionalización:', items:['Es agresivo','Conductas agresivas frecuentes','Golpea a compañeros 3/semana','Puñetazos en recreo, 3/semana, cuando le quitan el balón, dejando marcas'], ok:'De etiqueta pura → operacionalización completa.', fail:'Orden: etiqueta → etiqueta+adj → conducta+1 parámetro → completa.' },
+        { type:'order', skill:'operacionalizacion', prompt:'Ordena de PEOR a MEJOR:', items:['Tiene ansiedad','Ansiedad moderada con síntomas somáticos','Suda y tiembla al hablar en público','Antes de presentaciones (2/mes), sudoración, temblor y "me va a dar algo", 5 min previos'], ok:'De etiqueta → descripción vacía → parcial → completa.', fail:'De peor a mejor: etiqueta → jerga → parcial → completa.' },
+        // Build
+        { type:'build', skill:'operacionalizacion', text:'Construye la operacionalización completa de "es agresivo":',
+          slots:[
+            { label:'Topografía', correct:['Golpea puñetazos y grita insultos'] },
+            { label:'Parámetro', correct:['3 veces por semana, 30 segundos'] },
+            { label:'Contexto', correct:['En el recreo, cuando le quitan el balón'] },
+            { label:'Intensidad', correct:['Golpes que dejan marcas'] }
+          ],
+          pieces:['Golpea puñetazos y grita insultos','3 veces por semana, 30 segundos','En el recreo, cuando le quitan el balón','Golpes que dejan marcas','Es violento por naturaleza','Tiene problemas de conducta'],
+          ok:'Topografía + parámetro + contexto + intensidad = operacionalización completa.', fail:'Cada slot necesita datos concretos, no etiquetas.'
+        },
+        { type:'build', skill:'operacionalizacion', text:'Construye la operacionalización de "tiene insomnio":',
+          slots:[
+            { label:'Topografía', correct:['Latencia de sueño 90 min, despertares 2-3 veces'] },
+            { label:'Parámetro', correct:['5 noches/semana, 4-5h de sueño total'] },
+            { label:'Contexto', correct:['Al acostarse, después de jornada laboral'] },
+            { label:'Intensidad', correct:['Somnolencia diurna que impide concentrarse'] }
+          ],
+          pieces:['Latencia de sueño 90 min, despertares 2-3 veces','5 noches/semana, 4-5h de sueño total','Al acostarse, después de jornada laboral','Somnolencia diurna que impide concentrarse','Insomnio crónico severo','Problema neurológico del sueño'],
+          ok:'Datos cuantificados en cada componente.', fail:'Cada slot necesita datos cuantificados, no etiquetas.'
+        }
+      ]
+    },
+
+    // ========================
+    // NIVEL 4 — Integración
+    // ========================
+    {
+      title: 'Función vs. Morfología',
+      description: 'Analiza la conducta por su función, no por su forma.',
+      showCount: 6,
+      cheat: [
+        'La conducta se define por su FUNCIÓN, no por su forma',
+        'Misma topografía puede tener funciones distintas',
+        'Diferente topografía puede cumplir misma función (equivalencia funcional)',
+        'R+: se añade algo → conducta aumenta. R-: se quita aversivo → aumenta',
+        'Si eliminamos una conducta sin abordar la función, aparecerá otra'
+      ],
+      theory: [
+        { icon:'🔄', title:'Función ≠ Forma', color:'accent',
+          body:`<p>Dos conductas pueden verse igual pero tener funciones distintas. Y conductas diferentes pueden cumplir la misma función.</p><div class="callout"><em>La operante se define por su función</em> — por los efectos que produce — no por su morfología.</div>` },
+        { icon:'💡', title:'Ejemplos', color:'gold',
+          body:`<div class="example-box"><div class="example-label">Misma topografía ≠ función</div><p>Niño llora: A) Madre se va → vuelve = <b>R+</b> | B) Le dan verdura → retiran plato = <b>R-</b></p></div><div class="example-box"><div class="example-label">≠ topografía = misma función</div><p>Ante deberes: "me duele la cabeza" / tira libros / llora → todos = <b>R- (escape)</b></p></div>` }
+      ],
+      exercises: [
+        { type:'single', skill:'funcion', text:'María grita: (A) Al hijo → recoge juguetes. (B) A pareja → se calla. ¿Funciones?', opts:['Ambos igual','(A) R+ (obtiene obediencia) y (B) R- (elimina discusión)','María es agresiva','Ambos R+'], c:1, ok:'(A) produce obediencia = R+. (B) elimina discusión = R-.', fail:'(A) R+. (B) R-. Misma topografía, distinta función.' },
+        { type:'single', skill:'funcion', text:'Evita reuniones → ansiedad baja. ¿Función?', opts:['R+','R-','C+','Extinción'], c:1, ok:'Elimina ansiedad = R-. Mantiene la evitación.', fail:'Evitar elimina algo aversivo = R-.' },
+        { type:'single', skill:'funcion', text:'Niño berrinche → madre compra lo que pide. ¿Función?', opts:['R+: obtiene lo que quiere','R-','C+','Extinción'], c:0, ok:'Produce algo deseado = R+.', fail:'Se añade algo deseado = R+.' },
+        { type:'single', skill:'funcion', text:'Publica selfies → likes → publica más. ¿Función?', opts:['R+','R-','C-','Extinción'], c:0, ok:'Se añade positivo (likes) → conducta aumenta = R+.', fail:'Likes = R+.' },
+        { type:'multi', skill:'funcion', text:'Adolescente quiere ESCAPAR de deberes (R-). ¿Cuáles conductas?', opts:['"Me duele la cabeza"','Pelea con hermano','Llorar hasta que mamá los hace','Sentarse a hacerlos','Tirar los libros'], c:[0,1,2,4], ok:'Todas excepto hacerlos = escape (R-). Diferente topografía, misma función.', fail:'Todas excepto hacerlos son escape.' },
+        { type:'single', skill:'funcion', text:'¿Por qué es IMPORTANTE identificar equivalencia funcional?', opts:['Facilita diagnóstico','Si eliminas UNA topografía sin abordar función, aparecerá otra','Misma función siempre','Misma técnica para todas'], c:1, ok:'Si la función no se aborda, la persona encontrará otra conducta.', fail:'Sin abordar la función, eliminar una conducta produce sustitución.' },
+        { type:'single', skill:'funcion', text:'Niño toca plancha → quemadura → no toca más. ¿Función?', opts:['R+','R-','C+: aversivo añadido → baja conducta','C-'], c:2, ok:'Estímulo aversivo añadido → conducta baja = C+.', fail:'Dolor añadido → baja = C+.' },
+        { type:'single', skill:'funcion', text:'Le quitan móvil por llegar tarde → llega tarde menos. ¿Función?', opts:['R+','R-','C+','C-: retiran positivo → baja'], c:3, ok:'Se retira algo deseado → conducta baja = C-.', fail:'Retiran móvil (deseado) → baja = C-.' }
+      ]
+    },
+
+    // ========================
+    // NIVEL 5 — Simulación
+    // ========================
+    {
+      title: 'Casos clínicos integradores',
+      description: 'Aplica todo: operacionalización, triple sistema, parámetros, análisis funcional.',
+      showCount: 3,
+      cheat: [
+        'Secuencia: queja → operacionalizar → cuantificar → contextualizar → consecuencias → hipótesis',
+        'Cada caso es único: misma etiqueta ≠ misma función',
+        'El análisis funcional guía la intervención',
+        'Dos personas con "depresión" pueden tener contingencias completamente distintas'
+      ],
+      theory: [
+        { icon:'🏆', title:'Integración final', color:'accent',
+          body:`<p>El proceso completo: 1) Recibir queja → 2) Operacionalizar → 3) Cuantificar → 4) Contextualizar → 5) Consecuencias → 6) Hipótesis funcional.</p>` }
+      ],
+      exercises: [
+        // Case 1: Laura
+        { type:'seq', skill:'caso_clinico',
+          patient:{ name:'Laura', age:'32 años', gender:'f', initial:'L', badge:'Motivo: "Soy insegura"' },
+          quote:'"Soy muy insegura, no valgo para nada. Tengo un problema de autoestima."',
+          questions:[
+            { text:'¿Cuál de las expresiones de Laura describe una CONDUCTA?', opts:['"Soy muy insegura"','"No valgo para nada"','"Tengo un problema de autoestima"','Ninguna — todas son etiquetas'], c:3, fb:'Todas son etiquetas o autoatribuciones globales. El terapeuta necesita desglosarlas.', hint:'¿Alguna describe algo que una cámara podría grabar?', skill:'discriminacion' },
+            { text:'Laura: "Cada vez que tengo que decidir, llamo a mi madre. Si no me dice qué hacer, me quedo bloqueada." ¿Qué logró el terapeuta?', opts:['Identificar la causa','Operacionalizar en conductas concretas','Diagnóstico diferencial','Relación terapéutica'], c:1, fb:'Convirtió "no valgo" en conductas: llamar a la madre, quedarse bloqueada.', hint:'Transformó algo vago en observable y medible.', skill:'operacionalizacion' },
+            { text:'¿Qué explorar PRIMERO ahora?', opts:['Traumas infantiles','Los parámetros: frecuencia, duración, intensidad','Trastorno de personalidad','La relación con la madre'], c:1, fb:'Siguiente paso: ¿cuántas veces/día? ¿cuánto dura el bloqueo? ¿ante qué decisiones?', hint:'Ya tienes TOPOGRAFÍA. ¿Qué falta para cuantificar?', skill:'parametros' },
+            { text:'Laura: 4-5 llamadas/día, bloqueo 20-40 min, ante cualquier decisión. ¿Qué tipo de información?', opts:['Etiología','Parámetros: frecuencia, duración y contexto','Hipótesis funcional','Diagnóstico'], c:1, fb:'Frecuencia (4-5/día), duración (20-40 min) y contextos. Línea base medible.', hint:'Datos numéricos y cuantificables = ¿qué nombre?', skill:'parametros' }
+          ]
+        },
+        // Case 2: Daniel
+        { type:'seq', skill:'caso_clinico',
+          patient:{ name:'Daniel', age:'10 años', gender:'c', initial:'D', badge:'Derivado: "Se porta mal"' },
+          quote:'Profesora: "Interrumpe, se levanta, a veces tira material al suelo."',
+          questions:[
+            { text:'La profesora dice "es un niño difícil". ¿Respuesta?', opts:['"Probablemente TDAH"','"Necesitamos: ¿qué, cuándo, frecuencia, qué pasa después?"','"Es normal"','"Más disciplina"'], c:1, fb:'Operacionalizar: topografía + parámetros + antecedentes + consecuencias.', hint:'Las etiquetas no guían la intervención.', skill:'operacionalizacion' },
+            { text:'Interrumpe 12 veces/clase de mates, 8 levantadas. NO en educación física ni arte. ¿Qué indica?', opts:['Problema selectivo','CONTROL ESTIMULAR: ocurre ante estímulos específicos','Finge','Profesor malo'], c:1, fb:'Solo ocurre en un contexto = control estimular. No es "rasgo" del niño.', hint:'Si fuera rasgo, ocurriría en todas las clases.', skill:'funcion' },
+            { text:'Cuando interrumpe, profesora dice "¡Daniel, siéntate!" Todos miran. Daniel sonríe. ¿Función?', opts:['R- (escapa de mates)','R+ (obtiene atención)','C+ (recibe regaño)','Impulsividad'], c:1, fb:'Reprimenda + miradas + sonrisa = R+. La "disciplina" refuerza la conducta.', hint:'La sonrisa es la pista clave.', skill:'funcion' },
+            { text:'Función = R+ (atención). ¿Intervención?', opts:['Castigar más','Extinguir atención ante disrupción + reforzar participación adecuada','Medicar','Cambiar de clase'], c:1, fb:'Extinción de R+ + reforzamiento diferencial. Del análisis funcional a la intervención.', hint:'¿Cómo eliminas el R+ y lo rediriges?', skill:'funcion' }
+          ]
+        },
+        // Case 3: Carmen
+        { type:'seq', skill:'caso_clinico',
+          patient:{ name:'Carmen', age:'35 años', gender:'f', initial:'C', badge:'Motivo: "No puedo parar"' },
+          quote:'"No puedo parar de comer. Tengo atracones horribles. Soy adicta a la comida."',
+          questions:[
+            { text:'¿Qué operacionalizar primero?', opts:['Qué come, cuánto, duración, frecuencia','Criterios TCA','Si ha hecho dietas','Relación infantil con comida'], c:0, fb:'"Atracón" debe operacionalizarse: alimentos, cantidad, duración, frecuencia.', hint:'Convierte "atracón" en datos concretos y medibles.', skill:'operacionalizacion' },
+            { text:'"Por la noche, sola, como galletas/chocolate 40 min, 4 veces/semana. Después vomito." ¿Triple sistema?', opts:['Motor: comer+vomitar. Cognitivo: "me siento horrible". Fisiológico: malestar. 4/sem, 40min.','Solo motor','Solo parámetros','No analizable'], c:0, fb:'Motor: ingesta+vómito. Cognitivo: evaluación negativa. Fisiológico: malestar. F: 4/sem. D: 40min.', hint:'Busca los tres componentes y los números.', skill:'triple_sistema' },
+            { text:'"Cuando estoy sola" + "después de día estresante". ¿Función del atracón?', opts:['R+: placer','R-: reduce malestar/estrés','C+: se siente mal','Hábito sin función'], c:1, fb:'El atracón reduce malestar acumulado = R-. El alivio temporal mantiene la conducta.', hint:'¿Qué ELIMINA el atracón?', skill:'funcion' },
+            { text:'¿Función del vómito posterior?', opts:['Sin función','R-: elimina malestar gástrico + culpa','C+: auto-castigo','R+: le gusta'], c:1, fb:'Doble R-: elimina (1) malestar gástrico y (2) culpa. Mantiene el ciclo.', hint:'¿Qué se ELIMINA tras vomitar?', skill:'funcion' }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// ===== INIT =====
+AFC.init(MODULE, document.getElementById('app'));
+</script>
+</body>
+</html>
