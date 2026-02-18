@@ -521,10 +521,11 @@ $a.innerHTML=`<div class="top"><div style="flex:1"><div class="top-t">AFC Praxis
 <div style="text-align:center;padding:20px 0;font-size:13px;color:var(--muted)">AFC Praxis · Entrenamiento en Análisis Funcional</div>
 </div>`}
 
+function getBase(){const p=window.location.pathname;const m=p.match(/^(.*\/)modulo-\d+\//);return m?m[1]:p.substring(0,p.lastIndexOf('/')+1)}
 function enterMod(id){
 if(id==='m1'){MOD=M1;S.mod='m1';loadP();go('home')}
-else if(id==='m2'){window.location.href='modulo-2/index.html'}
-else if(id==='m3'){window.location.href='modulo-3/index.html'}
+else if(id==='m2'){window.location.href=getBase()+'modulo-2/index.html'}
+else if(id==='m3'){window.location.href=getBase()+'modulo-3/index.html'}
 }
 
 // ===== MODULE HOME =====
