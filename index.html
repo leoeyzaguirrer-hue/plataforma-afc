@@ -329,7 +329,7 @@ const MODS=[
 {id:'m1',ph:1,title:'Operacionalización',icon:'🎯',color:'#2563eb',cB:'#3b82f6'},
 {id:'m2',ph:1,title:'Tipos de Conducta',icon:'🔬',color:'#0891b2',cB:'#22d3ee'},
 {id:'m3',ph:2,title:'El Estímulo',icon:'⚡',color:'#d97706',cB:'#f59e0b'},
-{id:'m4',ph:2,title:'Cond. Clásico',icon:'🔗',color:'#b45309',cB:'#d97706'},
+{id:'m4',ph:2,title:'Cond. Clásico',icon:'🔔',color:'#b45309',cB:'#d97706'},
 {id:'m5',ph:2,title:'Cond. Operante',icon:'⚙️',color:'#ea580c',cB:'#f97316'},
 {id:'m6',ph:3,title:'Control Estimular',icon:'🎛️',color:'#7c3aed',cB:'#a78bfa'},
 {id:'m7',ph:3,title:'Secuencias Funcionales',icon:'🔄',color:'#9333ea',cB:'#a855f7'},
@@ -505,7 +505,7 @@ PHS.forEach(ph=>{
 const mods=MODS.filter(m=>m.ph===ph.n);
 let cards='';
 mods.forEach(m=>{
-const avail=m.id==='m1'||m.id==='m2'||m.id==='m3';
+const avail=m.id==='m1'||m.id==='m2'||m.id==='m3'||m.id==='m4';
 const cls=avail?'':'locked';
 cards+=`<div class="mcard ${cls}" onclick="${avail?`enterMod('${m.id}')`:'void(0)'}"><div class="mcard-icon" style="background:linear-gradient(135deg,${m.color},${m.cB})">${m.icon}</div><div class="mcard-name">${m.title}</div><div class="mcard-prog none">${avail?'Disponible':'Próximamente'}</div></div>`;
 });
@@ -526,6 +526,7 @@ function enterMod(id){
 if(id==='m1'){MOD=M1;S.mod='m1';loadP();go('home')}
 else if(id==='m2'){window.location.href=getBase()+'modulo-2/index.html'}
 else if(id==='m3'){window.location.href=getBase()+'modulo-3/index.html'}
+else if(id==='m4'){window.location.href=getBase()+'modulo-4/index.html'}
 }
 
 // ===== MODULE HOME =====
